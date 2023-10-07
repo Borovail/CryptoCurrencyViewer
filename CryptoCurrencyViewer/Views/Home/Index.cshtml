@@ -1,0 +1,64 @@
+﻿
+@model List<CryptoModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crypto List</title>
+    <style>
+        /* Центрирование таблицы */
+        .center-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* Стили для таблицы */
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            text-align: center;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="center-div">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Abbreviation</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int counter = 1;
+                }
+                @foreach (var crypto in Model)
+                {
+                    <tr>
+                        <td>@counter</td>
+                        <td><img src="@crypto.ImageUrl" alt="@crypto.Name" width="50"></td>
+                        <td>@crypto.Name</td>
+                        <td>@crypto.Abbreviation</td>
+                        <td>@crypto.Price USD</td>
+                    </tr>
+                    counter++;
+                }
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
