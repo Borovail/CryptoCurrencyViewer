@@ -1,5 +1,7 @@
-﻿using CryptoCurrencyViewer.Models;
+﻿using CryptoCurrencyViewer.Interfaces;
+using CryptoCurrencyViewer.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
 namespace CryptoCurrencyViewer.Controllers
@@ -7,28 +9,18 @@ namespace CryptoCurrencyViewer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ICryptoService _cryptoService;
+        public HomeController(ILogger<HomeController> logger, ICryptoService cryptoService)
         {
             _logger = logger;
+            _cryptoService = cryptoService;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<CryptoModel> cryptos = new List<CryptoModel>()
- {
-      new CryptoModel { Name = "Ethereum", Abbreviation="BTC", Price = 27561 , ImageUrl = "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" },
-         new CryptoModel { Name = " Bitcoin ", Abbreviation="BTC", Price = 1633, ImageUrl ="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png" },
- new CryptoModel { Name = "XRP", Abbreviation = "XRP", Price = 0.522, ImageUrl ="https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png" },
- new CryptoModel { Name = "Tether ", Abbreviation = "USDt", Price = 1, ImageUrl="https://s2.coinmarketcap.com/static/img/coins/64x64/825.png" },
-  new CryptoModel { Name = "BNB", Abbreviation = "BNB", Price = 212, ImageUrl ="https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png" },
-  new CryptoModel { Name = "Solana ", Abbreviation = "SOL", Price = 23, ImageUrl ="https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png" },
-   new CryptoModel     {        Name = "Tron",    Abbreviation = "TRX",     Price = 0.0089,    ImageUrl="https://s2.coinmarketcap.com/static/img/coins/64x64/1958.png" }
- };
-
-
-
-            return View(cryptos);
+            var BTC = await _cryptoService.AddCryptoAsync("bitcoin");
+            return View(BTC);
 
         }
 
@@ -36,6 +28,14 @@ namespace CryptoCurrencyViewer.Controllers
         {
             return View();
         }
+
+
+        public IActionResult AddCrypto(string cryptoName)
+        {
+           
+            return RedirectToAction("Index");  
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

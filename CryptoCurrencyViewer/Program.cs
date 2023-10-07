@@ -1,7 +1,20 @@
+using CryptoCurrencyViewer.Interfaces;
+using CryptoCurrencyViewer.Models;
+using CryptoCurrencyViewer.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(connectionString));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<ICryptoService, CryptoService>();
+
+
 
 var app = builder.Build();
 
