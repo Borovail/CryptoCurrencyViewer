@@ -1,5 +1,5 @@
+using CryptoCurrencyViewer;
 using CryptoCurrencyViewer.Interfaces;
-using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Services;
 using Microsoft.EntityFrameworkCore;
 

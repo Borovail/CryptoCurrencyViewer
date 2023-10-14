@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CryptoCurrencyViewer.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace CryptoCurrencyViewer.Models
+namespace CryptoCurrencyViewer
 {
     public class AppDbContext : DbContext
     {
