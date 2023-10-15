@@ -1,51 +1,61 @@
-﻿@model CryptoModel
+﻿@model List<CryptoModel>
 
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Top Cryptocurrencies</title>
     <link rel="stylesheet" href="~/css/site.css" />
-    <title>Crypto List</title>
 
 </head>
 <body>
-
     <div class="container">
 
-        <div class="input-group">
-            <button class="add-button" onclick="addCrypto();">Добавить</button>
-            <input type="text" class="add-input" placeholder="Введите название криптовалюты" id="cryptoName">
-            <button class="refresh-button" onclick="location.reload();">Обновить</button>  <!-- Кнопка Обновить -->
+        <button id="subscriptionButton">Subscribe</button>
+
+        <!-- Subscription Form -->
+        <div id="subscriptionForm" style="display:none;">
+            <label for="Name">Name:</label>
+            <input type="text" id="Name" name="Subscription.Name" required />
+
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Subscription.Email" required />
+
+            <button type="submit" id="submitSubscription">Subscribe</button>
         </div>
+
+
+
+        <button data-action="update" class="action-button update-button">Обновить</button>    
+         <button data-action="delete" class="action-button delete-button">Удалить</button>
 
 
         <table>
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th></th> <!-- Колонка для радиокнопки выбора -->
                     <th>Image</th>
                     <th>Name</th>
-                    <th>Abbreviation</th>
-                    <th>Price</th>
+                    <th>Symbol</th>
+                    <th>Price (USD)</th>
+                    <th>Market Cap</th>
                 </tr>
             </thead>
             <tbody>
-                @{
-                    int counter = 1;
-                }
-                @* @foreach (var crypto in Model)
-                { *@
-                    <tr>
-                        <td>@counter</td>
-                    <td><img src="@Model.ImageUrl" alt="@Model.Name" width="50"></td>
-                    <td>@Model.Name</td>
-                    <td>@Model.Abbreviation</td>
-                    <td>@Model.Price USD</td>
+                @foreach (var crypto in Model)
+                {
+                    <tr id=@crypto.Symbol>
+                        <td><input type="radio" name="selectedCrypto" value="@crypto.Symbol" form="updateForm deleteForm"></td>
+                        <td><img src="@crypto.ImageUrl" alt="@crypto.Name" width="50"></td>
+                        <td>@crypto.Name</td>
+                        <td>@crypto.Symbol</td>
+                        <td>@crypto.CurrentPrice USD</td>
+                        <td>@crypto.MarketCap USD</td>
                     </tr>
-                   @*  @counter++; *@
-               @*  } *@
+                }
             </tbody>
         </table>
+        
     </div>
-
+  
 </body>
 </html>

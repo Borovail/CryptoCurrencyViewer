@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <title>Exchange Crypto</title>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Поля для выбора криптовалют и их текущая стоимость в USD -->
+        <div class="exchange-group">
+            <div class="exchange-item">
+                <input type="text" class="exchange-input" id="cryptoFrom" placeholder="From Crypto">
+                <span id="fromUsdPrice">USD Price: N/A</span>
+            </div>
+            <div class="switch-button-wrapper">
+                <button class="switch-button" onclick="switchCurrencies();">🔄</button>
+            </div>
+            <div class="exchange-item">
+                <input type="text" class="exchange-input" id="cryptoTo" placeholder="To Crypto">
+                <span id="toUsdPrice">USD Price: N/A</span>
+            </div>
+            <div class="exchange-button-wrapper">
+                <button class="exchange-button" onclick="performExchange();">Обменять</button>
+            </div>
+        </div>
+
+        <!-- Див для отображения результатов обмена -->
+        <div class="exchange-result" id="exchangeResult">
+            <!-- Здесь будет отображаться информация об обмене -->
+        </div>
+
+        <!-- История обменов -->
+        <div class="exchange-history" id="exchangeHistory">
+            <!-- Здесь будет отображаться история обменов -->
+        </div>
+
+    </div>
+
+</body>
+</html>

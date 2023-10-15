@@ -1,7 +1,9 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models;
+using CryptoCurrencyViewer.Models.MainPagesModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace CryptoCurrencyViewer.Controllers
@@ -9,8 +11,8 @@ namespace CryptoCurrencyViewer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICryptoService _cryptoService;
-        public HomeController(ILogger<HomeController> logger, ICryptoService cryptoService)
+        private readonly IApiService _cryptoService;
+        public HomeController(ILogger<HomeController> logger, IApiService cryptoService)
         {
             _logger = logger;
             _cryptoService = cryptoService;
@@ -19,22 +21,57 @@ namespace CryptoCurrencyViewer.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var BTC = await _cryptoService.AddCryptoAsync("bitcoin");
-            return View(BTC);
 
+            return View(new List<CryptoModel> { await _cryptoService.GetCryptoInfoByName("bitcoin")}) ;
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public JsonResult UpdateOrDeleteSelectedCrypto([FromBody] UpdateCryptoRequest request)
         {
-            return View();
+            bool success = false;
+            string action = request.action;
+            string selectedCrypto = request.selectedCrypto;
+            CryptoModel model = new CryptoModel();
+
+            if(action == TagManager.DELETE_ACTION)
+            {
+
+                ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto).remove   bd.uptade();
+
+                success = true;
+            }
+            if(action == TagManager.UPDATE_ACTION)
+            {
+
+                ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto) =   ApiServices.GetCryptoInfoByName(selectedcrypto)  bd.uptade();
+                success = true;
+            }
+
+            return Json(new { success = success, action = action });
         }
 
+      
+      
 
-        public IActionResult AddCrypto(string cryptoName)
+
+        [HttpPost]
+        public JsonResult ManageSubscription([FromBody] SubscriptionModel model, string action)
         {
-           
-            return RedirectToAction("Index");  
+            if (ModelState.IsValid)
+            {
+                if (action == TagManager.SUBSCRIBE_ACTION)
+                {
+                    // Subscription logic, e.g., save email and name to the database
+                }
+                else if (action == TagManager.UNSUBSCRIBE_ACTION)
+                {
+                    // Unsubscription logic, e.g., remove email from the database
+                }
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
         }
+   
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -12,7 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(conne
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<ICryptoService, CryptoService>();
+builder.Services.AddTransient<IApiService, ApiService>();
 
 
 

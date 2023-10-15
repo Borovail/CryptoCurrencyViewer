@@ -1,92 +1,14 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-
-/* Общие стили */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    padding: 20px;
-    margin-bottom: 40px;
-}
-
-/* Стили для таблицы */
-table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 20px; /* Добавлен отступ снизу */
-    text-align: center;
-    background-color: #ffffff; /* Фоновый цвет для таблицы */
-}
-
-th, td {
-    border: 1px solid #dddddd;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-.refresh-button {
-    background-color: #008CBA; /* Цвет фона */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-left: 20px; /* Добавлен отступ слева */
-    cursor: pointer;
-    border-radius: 16px; /* Скругленные углы */
-}
-
-    .refresh-button:hover {
-        background-color: #005f5f; /* Цвет фона при наведении */
-    }
-
-.input-group {
+/* Общие стили для контейнера кнопок */
+.buttons-container {
     display: flex;
-    justify-content: flex-start; /* Вернул на flex-start */
+    justify-content: space-between;
     margin-bottom: 20px;
+    padding: 0 20px;
 }
 
-.add-input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 70%; /* Вернул на 70% */
-    margin-right: 60px;
-}
-
-.add-button {
-    background-color: #4CAF50;
+/* Стили для кнопок обновить и удалить */
+.action-button {
+    background-color: #008CBA; /* Синий цвет */
     border: none;
     color: white;
     padding: 10px 20px;
@@ -94,11 +16,49 @@ th {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    margin: 4px 2px;
     cursor: pointer;
-    border-radius: 4px;
-    margin-left: 10px; /* Добавлен отступ слева */
+    border-radius: 8px; /* Скругленные углы */
 }
 
-    .add-button:hover {
-        background-color: #45a049;
+/* Стили для кнопки обновить */
+.update-button:hover {
+    background-color: #005f5f; /* Темно-синий цвет при наведении */
+}
+
+/* Стили для кнопки удалить */
+.delete-button {
+    background-color: #f44336; /* Красный цвет */
+}
+
+    .delete-button:hover {
+        background-color: #da190b; /* Темно-красный цвет при наведении */
     }
+
+/* Стили для таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px; /* Добавлен отступ снизу */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Стили для радиокнопки */
+input[type=radio] {
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}

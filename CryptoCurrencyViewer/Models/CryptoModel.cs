@@ -2,19 +2,21 @@
 {
     public class CryptoModel
     {
-        public string? Name { get; set; }
-        public string? Abbreviation { get; set; }
-        public double? Price { get; set; }
-        public string? ImageUrl { get; set; }
+        public string Name { get; set; }
+        public string Symbol { get; set; }
+        public double CurrentPrice { get; set; }
+        public string ImageUrl { get; set; }
+        public double MarketCap { get; set; }
 
-
-        public CryptoModel( string name , string abbreviation, double price, string imageUrl)   
-        { 
+        public CryptoModel(string name, string symbol, double currentPrice, string imageUrl, double marketCap)
+        {
             Name = name;
-            Abbreviation = abbreviation;
-            Price = price;
+            Symbol = symbol;
+            CurrentPrice = currentPrice;
             ImageUrl = imageUrl;
+            MarketCap = marketCap;
         }
+
         public CryptoModel() { }
     }
 }

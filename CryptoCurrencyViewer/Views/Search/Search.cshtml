@@ -1,5 +1,67 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<SearchCryptoModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Cryptocurrency</title>
+    <link rel="stylesheet" href="~/css/search-styles.css" />
+</head>
+<body>
+
+    <div class="search-container">
+        <form method="get" action="/Home/Search" class="search-input-group">
+            <input type="text" name="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required class="search-input">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+
+        @if (Model != null)
+        {
+            <table class="search-table">
+                <thead>
+                    <tr>
+                        <!-- Обновленные классы для ячеек заголовка -->
+                        <th class="search-th">Image</th>
+                        <th class="search-th">Name</th>
+                        <th class="search-th">Symbol</th>
+                        <th class="search-th">Price (USD)</th>
+                        <th class="search-th">Market Cap</th>
+                        <th class="search-th">Price Change (24h)</th>
+                        <th class="search-th">Volume (24h)</th>
+                        <th class="search-th">High (24h)</th>
+                        <th class="search-th">Low (24h)</th>
+                        <th class="search-th">Price Change (7d)</th>
+                        <th class="search-th">Total Supply</th>
+                        <th class="search-th">Max Supply</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var crypto in Model)
+                    {
+
+                        <tr>
+                        <!-- Обновленные классы для ячеек данных -->
+                            <td class="search-td"><img src="@crypto.ImageUrl" alt="@crypto.Name" width="50"></td>
+                            <td class="search-td">@crypto.Name</td>
+                            <td class="search-td">@crypto.Symbol</td>
+                            <td class="search-td">@crypto.CurrentPrice USD</td>
+                            <td class="search-td">@crypto.MarketCap USD</td>
+                            <td class="search-td">@crypto.PriceChangePercentage24h%</td>
+                            <td class="search-td">@crypto.Volume24h USD</td>
+                            <td class="search-td">@crypto.High24h USD</td>
+                            <td class="search-td">@crypto.Low24h USD</td>
+                            <td class="search-td">@crypto.PriceChangePercentage7d%</td>
+                            <td class="search-td">@crypto.TotalSupply</td>
+                            <td class="search-td">@crypto.MaxSupply</td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No cryptocurrency data found.</p>
+        }
+    </div>
+
+</body>
+</html>
