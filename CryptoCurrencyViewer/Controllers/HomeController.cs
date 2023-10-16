@@ -2,59 +2,81 @@
 using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Models.MainPagesModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CryptoCurrencyViewer.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IApiService _cryptoService;
-        public HomeController(ILogger<HomeController> logger, IApiService cryptoService)
+        private readonly IApiService _apiService;
+        private AppDbContext _appDbContext;
+        public HomeController(ILogger<HomeController> logger, IApiService cryptoService, AppDbContext appDbContext)
         {
             _logger = logger;
-            _cryptoService = cryptoService;
-
+            _apiService = cryptoService;
+            _appDbContext = appDbContext;
         }
 
         public async Task<IActionResult> Index()
         {
 
-            return View(new List<CryptoModel> { await _cryptoService.GetCryptoInfoByName("bitcoin")}) ;
+            return View(new List<CryptoModel> { await _apiService.GetCryptoInfoByNameAsync("bitcoin")}) ;
         }
 
+
         [HttpPost]
-        public JsonResult UpdateOrDeleteSelectedCrypto([FromBody] UpdateCryptoRequest request)
+        public async Task<JsonResult> UpdateSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
         {
             bool success = false;
-            string action = request.action;
-            string selectedCrypto = request.selectedCrypto;
-            CryptoModel model = new CryptoModel();
+            ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto) =   ApiServices.GetCryptoInfoByName(selectedcrypto)  bd.uptade();
+            ///
+            ////возможно стоит переписать метод  ,  так как он  возвращзет избыточные данные, некоторые данные о критповалюте не могут обновлятся
+            var updatedCrypto = await _apiService.GetCryptoInfoByNameAsync(selectedCrypto.selectedCrypto);
 
-            if(action == TagManager.DELETE_ACTION)
+            var currentCrypto = await _appDbContext.CryptoList.FirstOrDefaultAsync(c => c.Name == selectedCrypto.selectedCrypto);
+            if (currentCrypto != null)
             {
-
-                ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto).remove   bd.uptade();
+                currentCrypto = updatedCrypto;
 
                 success = true;
-            }
-            if(action == TagManager.UPDATE_ACTION)
-            {
 
-                ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto) =   ApiServices.GetCryptoInfoByName(selectedcrypto)  bd.uptade();
-                success = true;
+                await _appDbContext.SaveChangesAsync();
             }
 
-            return Json(new { success = success, action = action });
+            return Json(new { success = success, updatedCrypto = updatedCrypto });
         }
 
-      
-      
-
-
         [HttpPost]
+        public async Task<JsonResult> DeleteSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
+        {
+            bool success = false;
+            ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto).remove   bd.uptade();
+            ///
+            var currentCrypto = await _appDbContext.CryptoList.FirstOrDefaultAsync(c => c.Name == selectedCrypto.selectedCrypto);
+
+            if (currentCrypto != null)
+            {
+                _appDbContext.CryptoList.Remove(currentCrypto);
+
+                success = true;
+
+                await _appDbContext.SaveChangesAsync();
+
+            }
+
+
+            return Json(new { success = success });
+        }
+
+
+
+            [HttpPost]
         public JsonResult ManageSubscription([FromBody] SubscriptionModel model, string action)
         {
             if (ModelState.IsValid)

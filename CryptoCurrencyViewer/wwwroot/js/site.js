@@ -1,42 +1,85 @@
-﻿var action;
+﻿var selectedCrypto;
+var data;
+
+
+const pathToDeleteFunction = "/Home/DeleteSelectedCrypto";
+const pathToUpdateFunction = "/Home/UpdateSelectedCrypto";
+
+
 document.addEventListener("DOMContentLoaded", function () {
-    // Находим все кнопки с классами "update-button" и "delete-button"
-    document.querySelectorAll(".action-button").forEach(function (button) {
-        button.addEventListener("click", function (event) {
-            // Получаем выбранную криптовалюту и действие (обновить или удалить)
-            var selectedCrypto = document.querySelector('input[name="selectedCrypto"]:checked').value;
-            action = event.target.getAttribute("data-action");
 
-            // Отправляем AJAX-запрос на сервер
-            fetch('/Home/UpdateOrDeleteSelectedCrypto', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ selectedCrypto: selectedCrypto, action: action })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Выполняем действие на клиенте (например, удаляем строку)
-                        if (action === "delete") {
-                            var row = document.getElementById(selectedCrypto);
-                            row.remove();
-                        }
-                        if (action === "update") {
-                            var row = document.getElementById(selectedCrypto);
+    var deleteButton = document.getElementById("delete-button");
+    deleteButton.addEventListener("click", async function (event) {
 
-                            row.querySelector(".price").innerText = data.updatedCrypto.CurrentPrice;
-                            row.querySelector(".marketCap").innerText = data.updatedCrypto.MarketCap;
-                        
-                        }
-                    } else {
-                        alert("Что-то пошло не так.");
-                    }
-                });
-        });
+        try {
+
+            if (await appealToSharpScript(pathToDeleteFunction)) 
+                deleteCrypto();
+            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    var updateButton = document.getElementById("update-button");
+    updateButton.addEventListener("click", async function (event) {
+
+        try {
+
+            if (await appealToSharpScript(pathToUpdateFunction)) 
+                updateCrypto();
+            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+    });
+});
+
+
+function deleteCrypto()
+{
+    document.getElementById(selectedCrypto).remove();
+}
+
+function updateCrypto() {
+    var row = document.getElementById(selectedCrypto);
+
+    row.querySelector(".price").innerText = data.updatedCrypto.CurrentPrice;
+    row.querySelector(".marketCap").innerText = data.updatedCrypto.MarketCap;
+}
+
+async function appealToSharpScript(funcName) {
+    selectedCrypto = document.querySelector('input[name="selectedCrypto"]:checked').value;
+
+    try {
+
+        const response = await fetch(funcName, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ selectedCrypto: selectedCrypto })});
+
+        data = await response.json();
+
+        if (data.success) return true;
+        else alert("Something went wrong, perhaps you forgot to save the selected cryptocurrency");
+
+    } catch (error) {
+        console.error('Error:', error);
+        return false;
+    }
+}
+
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {

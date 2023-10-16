@@ -25,8 +25,8 @@
 
 
 
-        <button data-action="update" class="action-button update-button">Обновить</button>    
-         <button data-action="delete" class="action-button delete-button">Удалить</button>
+        <button data-action="update" id="update-button" class="action-button update-button">Обновить</button>
+        <button data-action="delete" id="delete-button" class="action-button delete-button">Удалить</button>
 
 
         <table>
@@ -43,8 +43,8 @@
             <tbody>
                 @foreach (var crypto in Model)
                 {
-                    <tr id=@crypto.Symbol>
-                        <td><input type="radio" name="selectedCrypto" value="@crypto.Symbol" form="updateForm deleteForm"></td>
+                    <tr id=@crypto.Name>
+                        <td><input type="radio" name="selectedCrypto" value="@crypto.Name" form="updateForm deleteForm"></td>
                         <td><img src="@crypto.ImageUrl" alt="@crypto.Name" width="50"></td>
                         <td>@crypto.Name</td>
                         <td>@crypto.Symbol</td>

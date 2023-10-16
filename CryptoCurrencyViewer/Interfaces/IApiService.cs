@@ -4,9 +4,9 @@ namespace CryptoCurrencyViewer.Interfaces
 {
     public interface IApiService
     {
-        public Task<CryptoModel> GetCryptoInfoByName(string cryptoName);
+        public Task<CryptoModel> GetCryptoInfoByNameAsync(string cryptoName);
 
-        public Task<SearchCryptoModel> GetExtendedCryptoInfoByName(string cryptoName);
+        public Task<SearchCryptoModel> GetExtendedCryptoInfoByNameAsync(string cryptoName);
 
     }
 }

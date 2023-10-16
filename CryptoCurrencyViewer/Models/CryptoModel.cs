@@ -1,7 +1,10 @@
-﻿namespace CryptoCurrencyViewer.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CryptoCurrencyViewer.Models
 {
     public class CryptoModel
     {
+        [Key]
         public string Name { get; set; }
         public string Symbol { get; set; }
         public double CurrentPrice { get; set; }
