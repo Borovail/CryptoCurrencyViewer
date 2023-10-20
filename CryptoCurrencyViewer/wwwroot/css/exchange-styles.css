@@ -1,0 +1,98 @@
+/* Общие стили */
+body {
+    background-color: #f1f3f4;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.main-container {
+    margin: 20px auto;
+    max-width: 1000px; /* Увеличил размер */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для блока обмена */
+.exchange-container {
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.exchange-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.exchange-item {
+    flex: 2;
+}
+
+.exchange-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+.usd-price {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #555;
+    font-style: italic;
+}
+
+.switch-button-wrapper,
+.exchange-button-wrapper {
+    flex: 1;
+    text-align: center;
+}
+
+.switch-button,
+.exchange-button {
+    padding: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.switch-button {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.exchange-button {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* Стили для блока истории и результатов */
+.exchange-history-container,
+.exchange-result-item,
+.exchange-history-item {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.exchange-history-title,
+.from-crypto, .to-crypto, .exchange-rate,
+.history-from-crypto, .history-to-crypto, .history-exchange-rate, .history-date {
+    font-weight: bold;
+}
+
+.exchange-history-title {
+    color: #007bff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}

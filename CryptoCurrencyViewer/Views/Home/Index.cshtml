@@ -1,35 +1,38 @@
 ﻿@model List<CryptoModel>
 
-<!DOCTYPE html>
 <html>
 <head>
     <title>Top Cryptocurrencies</title>
     <link rel="stylesheet" href="~/css/site.css" />
-
 </head>
 <body>
-    <div class="container">
+    <div class="main-container">
+        <!-- Search Form -->
+        <form method="get" action="/Home/Search" class="search-input-group">
+            <input type="text" name="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required class="search-input">
+            <button type="submit" class="search-button">Search</button>
+        </form>
 
-        <button id="subscriptionButton">Subscribe</button>
+        <!-- Список для подсказок -->
+        <div id="suggestions" class="suggestions"></div>
 
-        <!-- Subscription Form -->
-        <div id="subscriptionForm" style="display:none;">
-            <label for="Name">Name:</label>
-            <input type="text" id="Name" name="Subscription.Name" required />
 
-            <label for="Email">Email:</label>
-            <input type="email" id="Email" name="Subscription.Email" required />
-
-            <button type="submit" id="submitSubscription">Subscribe</button>
+        <div class="buttons-container">
+            <button id="subscriptionButton" class="action-button subscribe-button">Subscribe</button>
+            <button data-action="update" id="update-button" class="action-button update-button">Обновить</button>
+            <button data-action="delete" id="delete-button" class="action-button delete-button">Удалить</button>
         </div>
 
+        <!-- Subscription Form -->
+        <div id="subscriptionForm" class="subscription-form">
+            <label for="Name">Name:</label>
+            <input type="text" id="Name" name="Subscription.Name" required />
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Subscription.Email" required />
+            <button type="submit" id="submitSubscription" class="action-button subscribe-button">Subscribe</button>
+        </div>
 
-
-        <button data-action="update" id="update-button" class="action-button update-button">Обновить</button>
-        <button data-action="delete" id="delete-button" class="action-button delete-button">Удалить</button>
-
-
-        <table>
+        <table class="crypto-table">
             <thead>
                 <tr>
                     <th></th> <!-- Колонка для радиокнопки выбора -->

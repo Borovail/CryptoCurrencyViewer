@@ -6,17 +6,16 @@ namespace CryptoCurrencyViewer.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly ICryptoService _cryptoService;
+        private readonly IApiService _apiService;
 
-        public SearchController(ICryptoService cryptoService)
+        public SearchController(IApiService cryptoService)
         {
-            _cryptoService = cryptoService;
+            _apiService = cryptoService;
         }
 
         public async Task< IActionResult> Search()
         {
-            var btc = await _cryptoService.GetCryptoInfoAsync();
-            btc.AddRange( await _cryptoService.GetCryptoInfoAsync());
+            var btc = await _apiService.GetExtendedCryptoInfoByNameAsync("bitcoin");
 
             return View(btc);
         }

@@ -1,6 +1,6 @@
 ﻿namespace CryptoCurrencyViewer.Models
 {
-    public class SearchCryptoModel:CryptoModel
+    public class SearchCryptoModel:CryptoModel 
     {
         public double PriceChangePercentage24h { get; set; }
         public double Volume24h { get; set; }

@@ -1,4 +1,4 @@
-﻿@model List<SearchCryptoModel>
+﻿@model SearchCryptoModel
 
 <!DOCTYPE html>
 <html>
@@ -7,61 +7,54 @@
     <link rel="stylesheet" href="~/css/search-styles.css" />
 </head>
 <body>
-
-    <div class="search-container">
+    
+    <div class="main-container">
+        <!-- Search Form -->
         <form method="get" action="/Home/Search" class="search-input-group">
             <input type="text" name="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required class="search-input">
             <button type="submit" class="search-button">Search</button>
         </form>
 
-        @if (Model != null)
-        {
-            <table class="search-table">
-                <thead>
-                    <tr>
-                        <!-- Обновленные классы для ячеек заголовка -->
-                        <th class="search-th">Image</th>
-                        <th class="search-th">Name</th>
-                        <th class="search-th">Symbol</th>
-                        <th class="search-th">Price (USD)</th>
-                        <th class="search-th">Market Cap</th>
-                        <th class="search-th">Price Change (24h)</th>
-                        <th class="search-th">Volume (24h)</th>
-                        <th class="search-th">High (24h)</th>
-                        <th class="search-th">Low (24h)</th>
-                        <th class="search-th">Price Change (7d)</th>
-                        <th class="search-th">Total Supply</th>
-                        <th class="search-th">Max Supply</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var crypto in Model)
-                    {
+        <!-- Crypto Information Holder -->
+        <div class="crypto-holder">
+            <div class="crypto-header">
+                <img src="@Model.ImageUrl" alt="Crypto Icon" class="crypto-icon">
+                <div class="crypto-basic-info">
+                    <span class="crypto-name">Cryptocurrency @Model.Name</span>
+                    <span class="crypto-symbol">Symbol: @Model.Symbol</span>
+                    <span class="crypto-current-price">Current Price: @Model.CurrentPrice</span>
+                </div>
+            </div>
 
-                        <tr>
-                        <!-- Обновленные классы для ячеек данных -->
-                            <td class="search-td"><img src="@crypto.ImageUrl" alt="@crypto.Name" width="50"></td>
-                            <td class="search-td">@crypto.Name</td>
-                            <td class="search-td">@crypto.Symbol</td>
-                            <td class="search-td">@crypto.CurrentPrice USD</td>
-                            <td class="search-td">@crypto.MarketCap USD</td>
-                            <td class="search-td">@crypto.PriceChangePercentage24h%</td>
-                            <td class="search-td">@crypto.Volume24h USD</td>
-                            <td class="search-td">@crypto.High24h USD</td>
-                            <td class="search-td">@crypto.Low24h USD</td>
-                            <td class="search-td">@crypto.PriceChangePercentage7d%</td>
-                            <td class="search-td">@crypto.TotalSupply</td>
-                            <td class="search-td">@crypto.MaxSupply</td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>No cryptocurrency data found.</p>
-        }
+            <div class="crypto-details">
+                <div class="crypto-market-info">
+                    <h3>Market Info</h3>
+                    <span>Market Cap: @Model.MarketCap</span>
+                    <span>Volume (24h): @Model.Volume24h</span>
+                    <span>Price Change (24h):  @Model.PriceChangePercentage24h%</span>
+                    <span>High (24h):  @Model.High24h</span>
+                    <span>Low (24h):  @Model.Low24h</span>
+                    <span>Price Change (7d):  @Model.PriceChangePercentage7d%</span>
+                </div>
+
+                <div class="crypto-supply-info">
+                    <h3>Supply Info</h3>
+                    <span>Total Supply:  @Model.TotalSupply</span>
+                    <span>Max Supply:  @Model.MaxSupply</span>
+                </div>
+            </div>
+        </div>
+        <!-- Crypto History Holder -->
+        <div class="crypto-history-holder">
+            <h2 class="crypto-history-title">Search History</h2>
+            <ul id="search-history">
+                <li class="search-history-item">Bitcoin - BTC</li>
+                <li class="search-history-item">Ethereum - ETH</li>
+                <li class="search-history-item">Ripple - XRP</li>
+                <!-- More history items here -->
+            </ul>
+        </div>
     </div>
-
+   
 </body>
 </html>

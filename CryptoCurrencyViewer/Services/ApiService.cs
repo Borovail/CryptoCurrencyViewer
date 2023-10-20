@@ -11,7 +11,7 @@ namespace CryptoCurrencyViewer.Services
         {
 
             using HttpClient client = new HttpClient();
-            string url = BaseUrl + "coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
+            string url = BaseUrl + "coins/"+ cryptoName + "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
 
             using HttpResponseMessage response = await client.GetAsync(url);
 
@@ -36,7 +36,7 @@ namespace CryptoCurrencyViewer.Services
         {
 
             using HttpClient client = new HttpClient();
-            string url = BaseUrl + "coins/bitcoin?localization=false&tickers=true&market_data=true&community_data=true&developer_data=true&sparkline=false";
+            string url = BaseUrl + "coins/"+ cryptoName + "?localization=false&tickers=true&market_data=true&community_data=true&developer_data=true&sparkline=false";
 
             using HttpResponseMessage response = await client.GetAsync(url);
 

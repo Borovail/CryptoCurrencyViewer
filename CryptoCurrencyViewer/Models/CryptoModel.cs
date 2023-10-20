@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CryptoCurrencyViewer.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace CryptoCurrencyViewer.Models
 {
-    public class CryptoModel
+    public class CryptoModel : ICryptoModel
     {
         [Key]
         public string Name { get; set; }

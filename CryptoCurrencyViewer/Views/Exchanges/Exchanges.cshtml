@@ -1,41 +1,54 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/exchange-styles.css" />
     <title>Exchange Crypto</title>
 </head>
 <body>
 
-    <div class="container">
+    <div class="main-container">
 
-        <!-- Поля для выбора криптовалют и их текущая стоимость в USD -->
-        <div class="exchange-group">
-            <div class="exchange-item">
-                <input type="text" class="exchange-input" id="cryptoFrom" placeholder="From Crypto">
-                <span id="fromUsdPrice">USD Price: N/A</span>
+        <div class="exchange-container">
+            <!-- Поля для выбора криптовалют и их текущая стоимость в USD -->
+            <div class="exchange-group">
+                <div class="exchange-item">
+                    <input type="text" class="exchange-input" id="cryptoFrom" placeholder="From Crypto">
+                    <span class="usd-price" id="fromUsdPrice">USD Price: N/A</span>
+                </div>
+                <div class="switch-button-wrapper">
+                    <button class="switch-button" onclick="switchCurrencies();">🔄</button>
+                </div>
+                <div class="exchange-item">
+                    <input type="text" class="exchange-input" id="cryptoTo" placeholder="To Crypto">
+                    <span class="usd-price" id="toUsdPrice">USD Price: N/A</span>
+                </div>
+                <div class="exchange-button-wrapper">
+                    <button class="exchange-button" onclick="performExchange();">Обменять</button>
+                </div>
             </div>
-            <div class="switch-button-wrapper">
-                <button class="switch-button" onclick="switchCurrencies();">🔄</button>
-            </div>
-            <div class="exchange-item">
-                <input type="text" class="exchange-input" id="cryptoTo" placeholder="To Crypto">
-                <span id="toUsdPrice">USD Price: N/A</span>
-            </div>
-            <div class="exchange-button-wrapper">
-                <button class="exchange-button" onclick="performExchange();">Обменять</button>
-            </div>
-        </div>
 
-        <!-- Див для отображения результатов обмена -->
-        <div class="exchange-result" id="exchangeResult">
-            <!-- Здесь будет отображаться информация об обмене -->
+            <!-- Див для отображения результатов обмена -->
+            <div class="exchange-result" id="exchangeResult">
+                <!-- Пример строки с результатом обмена -->
+                <div class="exchange-result-item">
+                    <span class="from-crypto">BTC</span> ➔ <span class="to-crypto">ETH</span>
+                    <span class="exchange-rate">Exchange Rate: 0.05</span>
+                </div>
+            </div>
         </div>
 
         <!-- История обменов -->
-        <div class="exchange-history" id="exchangeHistory">
-            <!-- Здесь будет отображаться история обменов -->
+        <div class="exchange-history-container">
+            <h2 class="exchange-history-title">Exchange History</h2>
+            <div class="exchange-history" id="exchangeHistory">
+                <!-- Пример строки с историей обмена -->
+                <div class="exchange-history-item">
+                    <span class="history-from-crypto">BTC</span> ➔ <span class="history-to-crypto">ETH</span>
+                    <span class="history-exchange-rate">Exchange Rate: 0.05</span>
+                    <span class="history-date">Date: 2023-10-16</span>
+                </div>
+            </div>
         </div>
-
     </div>
 
 </body>

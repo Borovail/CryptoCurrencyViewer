@@ -1,13 +1,10 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Models.MainPagesModels;
+using CryptoCurrencyViewer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using System;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using static System.Collections.Specialized.BitVector32;
 
 namespace CryptoCurrencyViewer.Controllers
 {
@@ -15,12 +12,14 @@ namespace CryptoCurrencyViewer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IApiService _apiService;
-        private AppDbContext _appDbContext;
-        public HomeController(ILogger<HomeController> logger, IApiService cryptoService, AppDbContext appDbContext)
+        private readonly IEmailDistributionService _emailDistributionService;
+        private readonly IDbService _dbService;
+        public HomeController(ILogger<HomeController> logger,IEmailDistributionService emailDistributionService, IDbService dbService, IApiService apiService)
         {
             _logger = logger;
-            _apiService = cryptoService;
-            _appDbContext = appDbContext;
+            _emailDistributionService = emailDistributionService;
+            _dbService = dbService;
+            _apiService = apiService;
         }
 
         public async Task<IActionResult> Index()
@@ -30,6 +29,8 @@ namespace CryptoCurrencyViewer.Controllers
         }
 
 
+
+        ///нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
         [HttpPost]
         public async Task<JsonResult> UpdateSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
         {
@@ -39,62 +40,36 @@ namespace CryptoCurrencyViewer.Controllers
             ////возможно стоит переписать метод  ,  так как он  возвращзет избыточные данные, некоторые данные о критповалюте не могут обновлятся
             var updatedCrypto = await _apiService.GetCryptoInfoByNameAsync(selectedCrypto.selectedCrypto);
 
-            var currentCrypto = await _appDbContext.CryptoList.FirstOrDefaultAsync(c => c.Name == selectedCrypto.selectedCrypto);
-            if (currentCrypto != null)
-            {
-                currentCrypto = updatedCrypto;
-
-                success = true;
-
-                await _appDbContext.SaveChangesAsync();
-            }
+            await _dbService.UpdateItemAsync(updatedCrypto);
 
             return Json(new { success = success, updatedCrypto = updatedCrypto });
         }
 
+        ///нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
         [HttpPost]
         public async Task<JsonResult> DeleteSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
         {
             bool success = false;
             ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto).remove   bd.uptade();
             ///
-            var currentCrypto = await _appDbContext.CryptoList.FirstOrDefaultAsync(c => c.Name == selectedCrypto.selectedCrypto);
-
-            if (currentCrypto != null)
-            {
-                _appDbContext.CryptoList.Remove(currentCrypto);
-
-                success = true;
-
-                await _appDbContext.SaveChangesAsync();
-
-            }
-
 
             return Json(new { success = success });
         }
 
 
-
-            [HttpPost]
-        public JsonResult ManageSubscription([FromBody] SubscriptionModel model, string action)
+        [HttpPost]
+        public JsonResult ManageSubscription([FromBody] SubscriberModel user, string action)
         {
             if (ModelState.IsValid)
             {
-                if (action == TagManager.SUBSCRIBE_ACTION)
-                {
-                    // Subscription logic, e.g., save email and name to the database
-                }
-                else if (action == TagManager.UNSUBSCRIBE_ACTION)
-                {
-                    // Unsubscription logic, e.g., remove email from the database
-                }
-                return Json(new { success = true });
+                if (action == "subscribe")
+                    _emailDistributionService.Subscribe(user.Email);
+                else if (action == "unsubscribe")
+                    _emailDistributionService.Unsubscribe(user.Email);
             }
+
             return Json(new { success = false });
         }
-   
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

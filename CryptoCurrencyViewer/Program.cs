@@ -13,8 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(conne
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IApiService, ApiService>();
-
-
+builder.Services.AddTransient<IEmailDistributionService, EmailDistributionService>();
+builder.Services.AddTransient<IDbService, DbService>();
 
 var app = builder.Build();
 

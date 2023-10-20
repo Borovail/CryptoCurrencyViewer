@@ -1,4 +1,14 @@
-/* Общие стили для контейнера кнопок */
+/* Собранные стили для этой страницы, подогнанные под предыдущие */
+
+.main-container {
+    margin: 20px auto;
+    max-width: 1000px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .buttons-container {
     display: flex;
     justify-content: space-between;
@@ -6,9 +16,8 @@
     padding: 0 20px;
 }
 
-/* Стили для кнопок обновить и удалить */
 .action-button {
-    background-color: #008CBA; /* Синий цвет */
+    background-color: #008CBA;
     border: none;
     color: white;
     padding: 10px 20px;
@@ -18,28 +27,34 @@
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-    border-radius: 8px; /* Скругленные углы */
+    border-radius: 8px;
 }
 
-/* Стили для кнопки обновить */
 .update-button:hover {
-    background-color: #005f5f; /* Темно-синий цвет при наведении */
+    background-color: #005f5f;
 }
 
-/* Стили для кнопки удалить */
 .delete-button {
-    background-color: #f44336; /* Красный цвет */
+    background-color: #f44336;
 }
 
     .delete-button:hover {
-        background-color: #da190b; /* Темно-красный цвет при наведении */
+        background-color: #da190b;
     }
 
-/* Стили для таблицы */
-table {
+.subscription-form {
+    display: none;
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.crypto-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px; /* Добавлен отступ снизу */
+    margin-bottom: 20px;
 }
 
 th, td {
@@ -52,7 +67,6 @@ th {
     background-color: #f2f2f2;
 }
 
-/* Стили для радиокнопки */
 input[type=radio] {
     margin: 0;
     padding: 0;
@@ -62,3 +76,60 @@ input[type=radio] {
     left: 50%;
     transform: translateX(-50%);
 }
+
+/* Форма поиска */
+.search-input-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.search-input {
+    flex: 3;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.search-button {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+/* Стили для списка подсказок */
+.suggestions {
+    display: none; /* Скрываем по умолчанию */
+    max-width: 300px; /* Максимальная ширина */
+    border: 1px solid #ccc; /* Граница */
+    border-radius: 4px; /* Скругленные углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+    overflow-y: auto; /* Прокрутка, если много элементов */
+    max-height: 200px; /* Максимальная высота */
+}
+
+    .suggestions.active {
+        display: block; /* Показываем, если есть активные подсказки */
+    }
+
+    /* Стили для элементов в списке подсказок */
+    .suggestions div {
+        padding: 8px; /* Отступы */
+        cursor: pointer; /* Курсор рука */
+        border-bottom: 1px solid #eee; /* Граница снизу */
+    }
+
+        .suggestions div:last-child {
+            border-bottom: none; /* Убираем границу у последнего элемента */
+        }
+
+        .suggestions div:hover {
+            background-color: #f5f5f5; /* Фон при наведении */
+        }
