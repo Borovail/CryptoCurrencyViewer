@@ -15,7 +15,7 @@ namespace CryptoCurrencyViewer.Controllers
 
         public async Task< IActionResult> Search()
         {
-            var btc = await _apiService.GetExtendedCryptoInfoByNameAsync("bitcoin");
+            var btc = await _apiService.GetCryptoInfoByNameAsync("bitcoin");
 
             return View(btc);
         }

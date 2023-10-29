@@ -24,32 +24,7 @@ namespace CryptoCurrencyViewer.Services
                 string symbol = cryptoData?["symbol"]?.ToString().ToUpper();
                 double currentPrice = Convert.ToDouble(cryptoData["market_data"]["current_price"]["usd"]);
                 string imageUrl = cryptoData["image"]["large"].ToString();
-                double marketCap = Convert.ToDouble(cryptoData["market_data"]["market_cap"]["usd"]);
-
-                return new CryptoModel(name, symbol, currentPrice, imageUrl, marketCap) ;
-            }
-
-            return new CryptoModel();
-        }
-
-        public async Task<SearchCryptoModel> GetExtendedCryptoInfoByNameAsync(string cryptoName)
-        {
-
-            using HttpClient client = new HttpClient();
-            string url = BaseUrl + "coins/"+ cryptoName + "?localization=false&tickers=true&market_data=true&community_data=true&developer_data=true&sparkline=false";
-
-            using HttpResponseMessage response = await client.GetAsync(url);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string responseData = await response.Content.ReadAsStringAsync();
-                JObject cryptoData = JObject.Parse(responseData);
-
-                string name = cryptoData["name"]?.ToString();
-                string symbol = cryptoData?["symbol"]?.ToString().ToUpper();
-                double currentPrice = Convert.ToDouble(cryptoData["market_data"]["current_price"]["usd"]);
-                string imageUrl = cryptoData["image"]["large"].ToString();
-                double marketCap = Convert.ToDouble(cryptoData["market_data"]["market_cap"]["usd"]);
+                double marketCap = Convert.ToDouble(cryptoData["market_data"]["market_cap"]["usd"]);   
                 double priceChangePercentage24h = Convert.ToDouble(cryptoData["market_data"]["price_change_percentage_24h"]);
                 double volume24h = Convert.ToDouble(cryptoData["market_data"]["total_volume"]["usd"]);
                 double high24h = Convert.ToDouble(cryptoData["market_data"]["high_24h"]["usd"]);
@@ -58,9 +33,9 @@ namespace CryptoCurrencyViewer.Services
                 double totalSupply = Convert.ToDouble(cryptoData["market_data"]["total_supply"]);
                 double maxSupply = Convert.ToDouble(cryptoData["market_data"]["max_supply"]);
 
-                return  new SearchCryptoModel(
-                    name,
-                    symbol,
+                return new CryptoModel(
+                    name, 
+                    symbol, 
                     currentPrice,
                     imageUrl,
                     marketCap,
@@ -70,12 +45,10 @@ namespace CryptoCurrencyViewer.Services
                     low24h,
                     priceChangePercentage7d,
                     totalSupply,
-                    maxSupply  ) ;
+                    maxSupply);
             }
 
-            return new SearchCryptoModel();
+            return new CryptoModel();
         }
-
-  
     }
 }
