@@ -1,4 +1,7 @@
 ﻿
+var currentCrypto;
+
+
 document.getElementById("searchbutton").addEventListener("click" ,async function (event) {
 
    var inputField= document.getElementById("cryptoId");
@@ -14,8 +17,18 @@ document.getElementById("searchbutton").addEventListener("click" ,async function
 
     });
 
+   
+
     if (response.ok) {
-        const result =await response.json();
+        const result = await response.json();
+
+        currentCryptoName = result;
+
+        $.ajax({
+            url: '/Search/SaveSearchHistory',  // Укажите правильный URL для вашего метода
+            type: 'POST',
+            data: { 'crypto': result }
+        });
 
         document.getElementById("cryptoIcon").src = result.imageUrl;
         document.getElementById("cryptoName").innerText = `Cryptocurrency ${result.name}`;
@@ -34,5 +47,18 @@ document.getElementById("searchbutton").addEventListener("click" ,async function
         alert("Crypto name is incorrect");
     }
 
+
+});
+
+
+
+
+document.getElementById("addCrypto").addEventListener("click",  function (event) {
+
+    $.ajax({
+        url: '/Search/AddCryptoToMain',  // Укажите правильный URL для вашего метода
+        type: 'POST',
+        data: { 'crypto': currentCrypto }
+    });
 
 });

@@ -24,8 +24,7 @@ namespace CryptoCurrencyViewer.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            return View(new List<CryptoModel> { await _apiService.GetCryptoInfoByNameAsync("bitcoin")}) ;
+            return View( await _dbService.GetAllItemsAsync<CryptoModel>()) ;
         }
 
 
@@ -42,7 +41,7 @@ namespace CryptoCurrencyViewer.Controllers
 
             await _dbService.UpdateItemAsync(updatedCrypto);
 
-            return Json(new { success = success, updatedCrypto = updatedCrypto });
+            return Json(new { success = true, updatedCrypto = updatedCrypto });
         }
 
         ///нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
@@ -53,7 +52,7 @@ namespace CryptoCurrencyViewer.Controllers
             ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto).remove   bd.uptade();
             ///
 
-            return Json(new { success = success });
+            return Json(new { success = true });
         }
 
 

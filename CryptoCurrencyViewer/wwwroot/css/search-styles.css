@@ -6,6 +6,11 @@ body {
     color: #333;
 }
 
+#addCrypto {
+    width: 100px;
+    height: 100px;
+}
+
 .main-container {
     margin: 20px;
     background-color: #fff;

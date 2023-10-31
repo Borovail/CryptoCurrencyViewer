@@ -7,5 +7,7 @@ namespace CryptoCurrencyViewer
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<CryptoModel> CryptoList { get; set; }
+        public DbSet<SearchHistoryModel> SearchHistoryList { get; set; }
+
     }
 }

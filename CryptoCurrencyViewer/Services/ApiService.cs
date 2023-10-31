@@ -10,6 +10,7 @@ namespace CryptoCurrencyViewer.Services
         private const string BaseUrl = "https://api.coingecko.com/api/v3/";
         public async Task<CryptoModel> GetCryptoInfoByNameAsync(string cryptoName)
         {
+            cryptoName = cryptoName.ToLower();
 
             using HttpClient client = new HttpClient();
             string url = BaseUrl + "coins/"+ cryptoName + "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";

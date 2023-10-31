@@ -9,8 +9,8 @@
     <div class="main-container">
         <!-- Search Form -->
         <form method="get" action="/Home/Search" class="search-input-group">
-            <input type="text" name="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required class="search-input">
-            <button type="submit" class="search-button">Search</button>
+            <input type="text" name="cryptoId" id="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required class="search-input">
+            <button type="submit" id="searchButton" class="search-button">Search</button>
         </form>
 
         <!-- Список для подсказок -->
@@ -32,7 +32,7 @@
             <button type="submit" id="submitSubscription" class="action-button subscribe-button">Subscribe</button>
         </div>
 
-        <table class="crypto-table">
+        <table id="cryptoTable" class="crypto-table">
             <thead>
                 <tr>
                     <th></th> <!-- Колонка для радиокнопки выбора -->
@@ -47,12 +47,12 @@
                 @foreach (var crypto in Model)
                 {
                     <tr id=@crypto.Name>
-                        <td><input type="radio" name="selectedCrypto" value="@crypto.Name" form="updateForm deleteForm"></td>
+                        <td><input type="radio" name="selectedCrypto" value="@crypto.Name" ></td>
                         <td><img src="@crypto.ImageUrl" alt="@crypto.Name" width="50"></td>
-                        <td>@crypto.Name</td>
+                        <td class="custom-link crypto-name" data-crypto-name="@crypto.Name" ondblclick="openSearchPage(this.getAttribute('data-crypto-name'))"><a>@crypto.Name</a></td>
                         <td>@crypto.Symbol</td>
-                        <td>@crypto.CurrentPrice USD</td>
-                        <td>@crypto.MarketCap USD</td>
+                        <td class="price">@crypto.CurrentPrice USD</td>
+                        <td class="marketCap">@crypto.MarketCap USD</td>
                     </tr>
                 }
             </tbody>
