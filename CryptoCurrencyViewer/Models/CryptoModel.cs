@@ -8,18 +8,18 @@ namespace CryptoCurrencyViewer.Models
         [Key]
         public string Name { get; set; }
         public string Symbol { get; set; }
-        public double CurrentPrice { get; set; }
+        public double? CurrentPrice { get; set; }
         public string ImageUrl { get; set; }
-        public double MarketCap { get; set; }
-        public double PriceChangePercentage24h { get; set; }
-        public double Volume24h { get; set; }
-        public double High24h { get; set; }
-        public double Low24h { get; set; }
-        public double PriceChangePercentage7d { get; set; }
-        public double TotalSupply { get; set; }
-        public double MaxSupply { get; set; }
+        public double? MarketCap { get; set; }
+        public double? PriceChangePercentage24h { get; set; }
+        public double? Volume24h { get; set; }
+        public double? High24h { get; set; }
+        public double? Low24h { get; set; }
+        public double? PriceChangePercentage7d { get; set; }
+        public double? TotalSupply { get; set; }
+        public double? MaxSupply { get; set; }
 
-        public CryptoModel(string name, string symbol, double currentPrice, string imageUrl,  double marketCap, 
+        public CryptoModel(string name, string symbol, double currentPrice, string imageUrl, double marketCap,
         double priceChangePercentage24h, double volume24h, double high24h,
         double low24h, double priceChangePercentage7d, double totalSupply, double maxSupply)
         {
@@ -35,6 +35,23 @@ namespace CryptoCurrencyViewer.Models
             PriceChangePercentage7d = priceChangePercentage7d;
             TotalSupply = totalSupply;
             MaxSupply = maxSupply;
+        }
+
+
+        public CryptoModel(ICryptoModel cryptoModel)
+        {
+           Name = cryptoModel.Name;
+            Symbol = cryptoModel.Symbol;
+            CurrentPrice = cryptoModel.CurrentPrice;
+            ImageUrl = cryptoModel.ImageUrl;
+            MarketCap = cryptoModel.MarketCap;
+            PriceChangePercentage24h = cryptoModel.PriceChangePercentage24h;
+            Volume24h = cryptoModel.Volume24h;
+            High24h = cryptoModel.High24h;
+            Low24h = cryptoModel.Low24h;
+            PriceChangePercentage7d = cryptoModel.PriceChangePercentage7d;
+            TotalSupply = cryptoModel.TotalSupply;
+            MaxSupply = cryptoModel.MaxSupply;
         }
 
         public CryptoModel() { }

@@ -16,7 +16,7 @@ namespace CryptoCurrencyViewer.Services
         
         async Task IDbService.AddItemAsync<T>(T crypto)
         {
-            await   _context.Set<T>().AddAsync(crypto);
+          var temp=  await   _context.Set<T>().AddAsync(crypto);
 
             await _context.SaveChangesAsync();
         }
@@ -33,6 +33,11 @@ namespace CryptoCurrencyViewer.Services
             _context.Set<T>().Update(crypto);
 
             await _context.SaveChangesAsync();
+        }
+
+        async Task<T> IDbService.GetItemByNameAsync<T>(string cryptoName)
+        {
+           return await  _context.Set<T>().FirstOrDefaultAsync(c => c.Name == cryptoName);
         }
     }
 }

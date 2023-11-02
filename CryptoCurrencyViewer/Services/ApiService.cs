@@ -8,7 +8,7 @@ namespace CryptoCurrencyViewer.Services
     public class ApiService : IApiService
     {
         private const string BaseUrl = "https://api.coingecko.com/api/v3/";
-        public async Task<CryptoModel> GetCryptoInfoByNameAsync(string cryptoName)
+        public async Task<ICryptoModel> GetCryptoInfoByNameAsync(string cryptoName)
         {
             cryptoName = cryptoName.ToLower();
 

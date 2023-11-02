@@ -1,4 +1,4 @@
-﻿@model CryptoModel
+﻿@model SearchHistoryModel
 
 <!DOCTYPE html>
 <html>
@@ -10,9 +10,9 @@
     
     <div class="main-container">
         <!-- Search Form -->
-        <div method="get" action="/Home/Search" class="search-input-group">
+        <div  class="search-input-group">
             <input type="text" name="cryptoId" id="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required class="search-input">
-            <button type="submit" class="search-button" id="searchbutton">Search</button>
+            <button type="button" class="search-button" id="searchbutton">Search</button>
          
         </div>
 
@@ -26,9 +26,6 @@
                     <span id="cryptoCurrentPrice" class="crypto-current-price">Current Price: @Model.CurrentPrice</span>
                 </div>
             </div>
-
-            <button id="addCrypto" value="Add crypto" ></button>
-
             <div class="crypto-details">
                 <div class="crypto-market-info">
                     <h3>Market Info</h3>
@@ -50,16 +47,12 @@
         <!-- Crypto History Holder -->
         <div class="crypto-history-holder">
             <h2 class="crypto-history-title">Search History</h2>
-            <ul id="search-history">
-                <li class="search-history-item">Bitcoin - BTC</li>
-                <li class="search-history-item">Ethereum - ETH</li>
-                <li class="search-history-item">Ripple - XRP</li>
-                <!-- More history items here -->
+            <ul id="search-history">  
             </ul>
         </div>
     </div>
    
 
-    <script src="~/js/search.js"></script>
+    <script src="~/js/searchpagejs.js"></script>
 </body>
 </html>
