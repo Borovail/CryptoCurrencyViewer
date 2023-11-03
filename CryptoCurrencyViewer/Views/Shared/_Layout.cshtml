@@ -27,9 +27,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Exchanges" asp-action="Exchanges">Exchanges</a>
                         </li>
-                        <li>
-                            <button> Pivosos</button>
-                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Authorization" asp-action="Logout">Sign Out</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Authorization" asp-action="Login">Sign In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link">/</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Authorization" asp-action="Register">Sign Up</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -41,11 +58,6 @@
         </main>
     </div>
 
-  @*   <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - CryptoCurrencyViewer - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
