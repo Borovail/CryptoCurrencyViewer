@@ -1,5 +1,5 @@
-﻿namespace CryptoCurrencyViewer.Interfaces
-{
+﻿namespace CryptoCurrencyViewer.Interfaces;
+
     public interface IDbService
     {
         Task<List<T>> GetAllItemsAsync<T>() where T : class, ICryptoModel;
@@ -10,4 +10,4 @@
 
 
     }
-}
+

@@ -1,9 +1,8 @@
-namespace CryptoCurrencyViewer.Models
-{
+namespace CryptoCurrencyViewer.Models;
+
     public class ErrorViewModel
     {
         public string? RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
-}

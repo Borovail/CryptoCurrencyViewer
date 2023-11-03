@@ -1,8 +1,8 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
-using System.ComponentModel.DataAnnotations;
 
-namespace CryptoCurrencyViewer.Models
-{
+
+namespace CryptoCurrencyViewer.Models;
+
     public class CryptoModel : ICryptoModel
     {
         [Key]
@@ -56,4 +56,4 @@ namespace CryptoCurrencyViewer.Models
 
         public CryptoModel() { }
     }
-}
+

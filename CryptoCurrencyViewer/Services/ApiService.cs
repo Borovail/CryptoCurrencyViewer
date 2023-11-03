@@ -1,10 +1,9 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models;
-using Newtonsoft.Json.Linq;
-using System.ComponentModel;
 
-namespace CryptoCurrencyViewer.Services
-{
+
+namespace CryptoCurrencyViewer.Services;
+
     public class ApiService : IApiService
     {
         private const string BaseUrl = "https://api.coingecko.com/api/v3/";
@@ -72,4 +71,4 @@ namespace CryptoCurrencyViewer.Services
             return new CryptoModel();
         }
     }
-}
+

@@ -1,8 +1,7 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
-using System.ComponentModel.DataAnnotations;
 
-namespace CryptoCurrencyViewer.Models
-{
+namespace CryptoCurrencyViewer.Models;
+
     public class SearchHistoryModel :ICryptoModel
     {
         [Key]
@@ -54,4 +53,4 @@ namespace CryptoCurrencyViewer.Models
         }
         public SearchHistoryModel() { }
     }
-}
+

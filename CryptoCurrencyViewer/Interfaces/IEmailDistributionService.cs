@@ -1,9 +1,8 @@
-﻿namespace CryptoCurrencyViewer.Interfaces
+﻿namespace CryptoCurrencyViewer.Interfaces;
+
+public interface IEmailDistributionService
 {
-    public interface IEmailDistributionService
-    {
-        Task Subscribe(string email);
-        Task Unsubscribe(string email);
-        Task SendTestEmail();
-    }
+    Task Subscribe(string email);
+    Task Unsubscribe(string email);
+    Task SendTestEmail();
 }

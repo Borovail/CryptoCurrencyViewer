@@ -1,8 +1,7 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
-namespace CryptoCurrencyViewer.Services
-{
+namespace CryptoCurrencyViewer.Services;
+
     public class DbService : IDbService
     {
         private readonly AppDbContext _context;
@@ -40,4 +39,4 @@ namespace CryptoCurrencyViewer.Services
            return await  _context.Set<T>().FirstOrDefaultAsync(c => c.Name == cryptoName);
         }
     }
-}
+

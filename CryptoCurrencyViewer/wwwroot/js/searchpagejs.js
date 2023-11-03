@@ -3,7 +3,7 @@ var currentCrypto;
 
 document.addEventListener("DOMContentLoaded", async function (event) {
 
-    alert("fsd");
+
 
   await  fetch('/Search/GetSearchHistory')
         .then(response => response.json())
@@ -105,7 +105,7 @@ async function restoreCryptoFromHistory(cryptoName) {
             .then(data => {
                 updateCryptoToNew(data);
             })
-            .catch((error) => console.error('Ошибка: restoreCryptoFromHistory function', error));
+            .catch((error) => console.error('Ошибка: restoreCryptoFromHistory function', error))
     });
 
 }

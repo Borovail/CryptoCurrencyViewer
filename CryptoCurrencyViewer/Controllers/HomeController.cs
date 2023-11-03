@@ -1,13 +1,10 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Models.MainPagesModels;
-using CryptoCurrencyViewer.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
-namespace CryptoCurrencyViewer.Controllers
-{
+
+namespace CryptoCurrencyViewer.Controllers;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -76,4 +73,3 @@ namespace CryptoCurrencyViewer.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
-}

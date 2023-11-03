@@ -1,11 +1,10 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Models.MainPagesModels;
-using CryptoCurrencyViewer.Services;
-using Microsoft.AspNetCore.Mvc;
 
-namespace CryptoCurrencyViewer.Controllers
-{
+
+namespace CryptoCurrencyViewer.Controllers;
+
     [Controller]
     public class SearchController : Controller
     {
@@ -81,4 +80,4 @@ namespace CryptoCurrencyViewer.Controllers
         }
 
     }
-}
+

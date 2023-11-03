@@ -1,8 +1,8 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models.MainPagesModels;
 
-namespace CryptoCurrencyViewer.Services
-{
+namespace CryptoCurrencyViewer.Services;
+
     public class EmailDistributionService : IEmailDistributionService
     {
         private readonly AppDbContext _context;
@@ -43,4 +43,4 @@ namespace CryptoCurrencyViewer.Services
             //}
         }
     }
-}
+

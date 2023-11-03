@@ -1,7 +1,6 @@
-﻿namespace CryptoCurrencyViewer.Models.MainPagesModels
+﻿namespace CryptoCurrencyViewer.Models.MainPagesModels;
+
+public class CryptoRequestModel
 {
-    public class CryptoRequestModel
-    {
-        public string selectedCrypto { get; set; }
-    }
+    public string selectedCrypto { get; set; }
 }

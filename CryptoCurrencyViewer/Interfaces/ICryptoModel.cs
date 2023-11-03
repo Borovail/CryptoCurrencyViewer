@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+namespace CryptoCurrencyViewer.Interfaces;
 
-namespace CryptoCurrencyViewer.Interfaces
-{
     public interface ICryptoModel
     {
         public string Name { get; set; }
@@ -17,4 +16,4 @@ namespace CryptoCurrencyViewer.Interfaces
         public double? TotalSupply { get; set; }
         public double? MaxSupply { get; set; }
     }
-}
+
