@@ -67,25 +67,29 @@ async function appealToSharpScript(funcName) {
         return false;
     }
 
-    selectedCrypto = radio.value;
+    const selectedCrypto = radio.value;
 
     try {
+        // Вызываем fetchWithAuth и обрабатываем ответ
         const response = await fetch(funcName, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({selectedCrypto: selectedCrypto })
+            body: JSON.stringify({ selectedCrypto: selectedCrypto })
         });
 
-        data = await response.json();
-
-        if (data.success) {
+        // Поскольку fetchWithAuth возвращает результат response.json(), 
+        // мы можем сразу же использовать переменную data
+        if (response.success) {
+            // Успех
             return true;
         } else {
+            // Ошибка связанная с логикой на сервере
             alert("Something went wrong. Perhaps you forgot to save the selected cryptocurrency.");
             return false;
         }
     } catch (error) {
-        alert('An error occurred: ' + error);
+        // Ошибка связанная с сетевым запросом или обработкой данных
+        alert('An error occurred: ' + error.message); // Убедитесь, что используете error.message
         return false;
     }
 }
@@ -114,13 +118,6 @@ function updateCrypto() {
 function openSearchPage(cryptoName) {
     window.location.href = `/Search/ExtendedInfo?selectedCrypto=${cryptoName}`;
 }
-
-
-
-
-
-
-
 
 
 
@@ -191,3 +188,61 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+//async function fetchWithAuth(url, options) {
+//    const token = localStorage.getItem('jwtToken'); // Извлекаем токен из хранилища
+
+//    // Убедитесь, что токен существует, иначе обработайте отсутствие авторизации
+//    if (!token) {
+//        alert("You are not logged in or your session has expired.");
+//        return null; // Возвращаем null или throw new Error("No token available.");
+//    }
+
+//    // Устанавливаем заголовок Authorization, если он уже не задан
+//    options.headers = options.headers || {};
+//    options.headers['Authorization'] = `Bearer ${token}`;
+
+//    // Делаем запрос с установленным заголовком Authorization
+//    const response = await fetch(url, options);
+//    if (!response.ok) {
+//        // Обработка HTTP ошибок
+//        throw new Error(`HTTP error! status: ${response.status}`);
+//    }
+
+//    return response.json(); // Возвращаем результат в формате JSON
+//}
+
+
+
+
+
+//$(document).ready(function () {
+//    // При нажатии на кнопку "Удалить" показать модальное окно
+//    $('#delete-button').on('click', function () {
+//        $('#deleteConfirmationModal').modal('show');
+//    });
+
+//    // При нажатии на кнопку "Отмена" или крестик в модальном окне
+//    $('#deleteConfirmationModal .btn-secondary, #deleteConfirmationModal .close').on('click', function () {
+//        $('#deleteConfirmationModal').modal('hide');
+//    });
+
+//    // При нажатии на "Подтвердить удаление" в модальном окне
+//    $('#confirmDeleteButton').on('click', function () {
+//        // Здесь должен быть AJAX-запрос или другой метод для удаления криптовалюты
+//        console.log('Криптовалюта удалена');
+//        $('#deleteConfirmationModal').modal('hide');
+//    });
+
+//    // Анимация для формы подписки
+//    $('#subscriptionButton').on('click', function () {
+//        $('#subscriptionForm').slideToggle();
+//    });
+
+//    // Уведомление при нажатии на "Обновить"
+//    $('#update-button').on('click', function () {
+//        alert('Данные обновляются...');
+//        // Здесь должен быть AJAX-запрос или другой метод для обновления данных
+//    });
+//});

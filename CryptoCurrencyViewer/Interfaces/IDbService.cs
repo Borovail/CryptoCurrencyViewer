@@ -2,12 +2,13 @@
 
     public interface IDbService
     {
-        Task<List<T>> GetAllItemsAsync<T>() where T : class, ICryptoModel;
-        Task AddItemAsync<T>(T crypto) where T : class, ICryptoModel;
-        Task DeleteItemAsync<T>(T crypto) where T : class, ICryptoModel;
-        Task UpdateItemAsync<T>(T crypto) where T : class, ICryptoModel;
-        Task<T> GetItemByNameAsync<T>(string cryptoName) where T : class, ICryptoModel;
-
-
-    }
+        Task<List<T>> GetAllItemsAsync<T>() where T : class;
+        Task AddItemAsync<T>(T crypto) where T : class;
+        Task DeleteItemAsync<T>(T crypto) where T : class;
+        Task UpdateItemAsync<T>(T crypto) where T : class ;
+        Task<T> GetItemByNameAsync<T>(string name) where T : class, ICryptoModel;
+        Task<T> GetItemByIdAsync<T>(int id) where T : class,IHasId;
+       string HashPassword(string password);
+ 
+}
 

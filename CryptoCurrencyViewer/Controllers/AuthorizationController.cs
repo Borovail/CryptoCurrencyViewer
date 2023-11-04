@@ -1,93 +1,86 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using CryptoCurrencyViewer.Interfaces;
+using CryptoCurrencyViewer.Models;
+using CryptoCurrencyViewer.Views.Authorization;
+using Newtonsoft.Json.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-namespace CryptoCurrencyViewer.Controllers
+namespace CryptoCurrencyViewer.Controllers;
+
+public class AuthorizationController : Controller
 {
-    public class AuthorizationController : Controller
+
+   private readonly IDbService _dbService;
+    private readonly IConfiguration _configuration;
+
+    public AuthorizationController(IDbService dbService, IConfiguration configuration) 
+    { 
+        _dbService = dbService;
+
+        _configuration = configuration;
+    }
+
+    /// <summary>
+    /// /return form with register form
+    /// </summary>
+    /// <returns></returns>
+    public ActionResult Register()
     {
-        // GET: AuthorizationController
-        public ActionResult Register()
-        {
-            return View();
-        }
+        return View("Authorization", PageState.Registration);
+    }
 
-        public ActionResult Login()
-        {
-            return View();
-        }
+    /// <summary>
+    /// /return form with  login form
+    /// </summary>
+    /// <returns></returns>
+    public ActionResult Login()
+    {
+        return View("Authorization", PageState.Login);
+    }
 
-        public ActionResult Logout()
-        {
-            return View();
-        }
 
-        // GET: AuthorizationController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+    /// <summary>
+    /// login user can return null    ////   proce=cesing data  in js  ///called by
+    /// </summary>
+    public IActionResult LoginUser([FromBody]UserModel user)
+    {
+        ////check if  user registred after  generateToken
+        return Ok(new { token = GenerateJwtToken(user.Email) });
 
-        // GET: AuthorizationController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        return Unauthorized();
 
-        // POST: AuthorizationController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    }
 
-        // GET: AuthorizationController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: AuthorizationController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    /// <summary>
+    /// add user to db    ///all data validation does in js   ///called by
+    /// </summary>
+    public void RegisterUser()
+    {
+        /////register user add to db   if all data correct
+    }
 
-        // GET: AuthorizationController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: AuthorizationController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+    /// <summary>
+    /// generate jtw token after succesfull login   ///called by
+    /// </summary>
+    public string GenerateJwtToken(string email)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, email) }),
+            Expires = DateTime.UtcNow.AddDays(7),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            Issuer = _configuration["Jwt:Issuer"],
+            Audience = _configuration["Jwt:Audience"]
+        };
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 }
+
+
+

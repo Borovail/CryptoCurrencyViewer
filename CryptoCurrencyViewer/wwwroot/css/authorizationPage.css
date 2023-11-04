@@ -1,0 +1,62 @@
+﻿/* Стилизация карточки */
+.card {
+    background: rgba(255, 255, 255, 0.9); /* Прозрачный фон */
+    border-radius: 20px; /* Скругление углов */
+    border: none; /* Убрать стандартную рамку */
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+    overflow: hidden; /* Скрыть всё, что выходит за границы */
+}
+
+body {
+    background-color: #f0f0f0; /* Светлый фон для всей страницы */
+    color: #333; /* Цвет текста */
+    background-image: repeating-linear-gradient( 45deg, #f0f0f0 0, #f0f0f0 10px, #fafafa 10px, #fafafa 20px ); /* Светлый узор */
+}
+
+/* Стилизация заголовка */
+.card-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    background: #006fbd; /* Менее насыщенный синий фон заголовка */
+    border-bottom: none;
+}
+
+/* Стилизация полей ввода */
+.form-control {
+    border: 2px solid #006fbd; /* Граница в цвете заголовка */
+    border-radius: 1rem; /* Скругление полей ввода */
+    height: 3rem; /* Высота полей ввода */
+    transition: all 0.3s; /* Плавные переходы */
+}
+
+    .form-control:focus {
+        border-color: #0056b3; /* Темно-синяя граница при фокусе */
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Световой эффект */
+    }
+
+/* Стилизация кнопки */
+.btn-primary {
+    background-color: #006fbd;
+    border-color: #006fbd;
+    border-radius: 1rem; /* Скругление кнопки */
+    padding: 10px 30px; /* Паддинги для кнопки */
+    font-size: 1.2rem; /* Увеличенный шрифт для кнопки */
+    transition: all 0.3s; /* Плавные переходы */
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+/* Общие стили для формы */
+.container {
+   
+}
+
+/* Стилизация меток формы */
+label {
+    font-weight: bold; /* Жирное начертание */
+    color: #006fbd; /* Цвет в тон заголовку */
+}

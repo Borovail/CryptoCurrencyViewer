@@ -32,19 +32,19 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authorization" asp-action="Logout">Sign Out</a>
+                                <a class="nav-link text-dark" onclick="signOut()" >Sign Out</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Authorization" asp-action="Login">Sign In</a>
+                                <a class="nav-link"  asp-controller="Authorization" asp-action="Login">Sign In</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link">/</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Authorization" asp-action="Register">Sign Up</a>
+                                <a class="nav-link" asp-controller="Authorization" asp-action="Register">Sign Up</a>
                             </li>
                         }
                     </ul>
@@ -60,6 +60,8 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/layout.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

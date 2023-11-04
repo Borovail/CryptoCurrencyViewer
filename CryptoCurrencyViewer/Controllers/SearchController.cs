@@ -38,6 +38,8 @@ namespace CryptoCurrencyViewer.Controllers;
             return View("Search", new SearchHistoryModel(btc));
         }
 
+
+    [Authorize]
         [HttpPost]
         //// func to search crypto by searching field on the search page
         public async Task<JsonResult> SearchCrypto([FromBody] CryptoRequestModel selectedCrypto)
@@ -55,6 +57,8 @@ namespace CryptoCurrencyViewer.Controllers;
              await _dbService.AddItemAsync(crypto);
         }
 
+
+    [Authorize]
         [HttpGet]
         /////for initialization history
         public async Task<List<SearchHistoryModel>> GetSearchHistory()

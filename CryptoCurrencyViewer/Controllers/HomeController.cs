@@ -41,8 +41,9 @@ namespace CryptoCurrencyViewer.Controllers;
             return Json(new { success = true, updatedCrypto = updatedCrypto });
         }
 
-        ///нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
-        [HttpPost]
+    ///нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
+    [Authorize]
+    [HttpPost]
         public async Task<JsonResult> DeleteSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
         {
             bool success = false;
@@ -52,7 +53,7 @@ namespace CryptoCurrencyViewer.Controllers;
             return Json(new { success = true });
         }
 
-
+        [Authorize]
         [HttpPost]
         public JsonResult ManageSubscription([FromBody] SubscriberModel user, string action)
         {

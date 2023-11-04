@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async function (event) {
 
 
 
-  await  fetch('/Search/GetSearchHistory')
+    await fetch('/Search/GetSearchHistory')
         .then(response => response.json())
         .then(data => {
             data.forEach(item => {
@@ -19,8 +19,6 @@ document.addEventListener("DOMContentLoaded", async function (event) {
 
 
 document.getElementById("searchbutton").addEventListener("click", async function (event) {
-
-    alert("asda");
 
     var inputField = document.getElementById("cryptoId");
 
@@ -136,3 +134,28 @@ document.getElementById("addCrypto").addEventListener("click", function (event) 
     //});
 
 });
+
+
+
+//async function fetchWithAuth(url, options) {
+//    const token = localStorage.getItem('jwtToken'); // Извлекаем токен из хранилища
+
+//    // Убедитесь, что токен существует, иначе обработайте отсутствие авторизации
+//    if (!token) {
+//        alert("You are not logged in or your session has expired.");
+//        return null; // Возвращаем null или throw new Error("No token available.");
+//    }
+
+//    // Устанавливаем заголовок Authorization, если он уже не задан
+//    options.headers = options.headers || {};
+//    options.headers['Authorization'] = `Bearer ${token}`;
+
+//    // Делаем запрос с установленным заголовком Authorization
+//    const response = await fetch(url, options);
+//    if (!response.ok) {
+//        // Обработка HTTP ошибок
+//        throw new Error(`HTTP error! status: ${response.status}`);
+//    }
+
+//    return response; // Возвращаем результат в формате JSON
+//}
