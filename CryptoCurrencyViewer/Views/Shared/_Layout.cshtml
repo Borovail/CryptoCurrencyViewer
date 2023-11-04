@@ -29,24 +29,21 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" onclick="signOut()" >Sign Out</a>
+                        
+                            <li class="nav-item" id="signOutLink">
+                            <a class="nav-link" onclick="signOut()">Sign Out</a>
                             </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
+                        
+                            <li class="nav-item authorization">
                                 <a class="nav-link"  asp-controller="Authorization" asp-action="Login">Sign In</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item authorization">
                                 <a class="nav-link">/</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item authorization">
                                 <a class="nav-link" asp-controller="Authorization" asp-action="Register">Sign Up</a>
                             </li>
-                        }
+                        
                     </ul>
                 </div>
             </div>

@@ -8,7 +8,9 @@
         Task UpdateItemAsync<T>(T crypto) where T : class ;
         Task<T> GetItemByNameAsync<T>(string name) where T : class, ICryptoModel;
         Task<T> GetItemByIdAsync<T>(int id) where T : class,IHasId;
-       string HashPassword(string password);
+        Task<T> GetItemByEmailAsync<T>(string email) where T : class, IHasEmail;
+
+    string HashPassword(string password);
  
 }
 

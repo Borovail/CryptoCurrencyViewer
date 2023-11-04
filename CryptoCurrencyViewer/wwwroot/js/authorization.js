@@ -1,41 +1,39 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Обработчик для формы регистрации
-    //document.getElementById('registerSubmitBtn').addEventListener('click', function (event) {
-    //    event.preventDefault(); // Предотвращаем стандартное поведение формы
+   /*  Обработчик для формы регистрации*/
+    document.getElementById('registerSubmitBtn')?.addEventListener('click', function () {
 
-    //    // Собираем данные регистрации
-    //    var registrationData = {
-    //        firstName: document.getElementById('firstName').value,
-    //        lastName: document.getElementById('lastName').value,
-    //        email: document.getElementById('registrationEmail').value,
-    //        password: document.getElementById('password').value,
-    //        confirmPassword: document.getElementById('confirmPassword').value
-    //    };
+        // Собираем данные регистрации
+        var registrationData = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('registrationEmail').value,
+            password: document.getElementById('password').value,
+            confirmPassword: document.getElementById('confirmPassword').value
+        };
 
-    //    // Отправляем данные регистрации
-    //    registerUser(registrationData);
-    //});
+        // Отправляем данные регистрации
+        registerUser(registrationData);
+    });
+});
 
-
+    document.addEventListener('DOMContentLoaded', function () {
 
     // Обработчик для формы входа
-    document.getElementById('loginSubmitBtn').addEventListener('click', function (event) {
-        event.preventDefault(); // Предотвращаем стандартное поведение формы
+        document.getElementById('loginSubmitBtn')?.addEventListener('click', function (event) {
 
         // Собираем данные входа
         var loginData = {
             email: document.getElementById('loginEmail').value,
             password: document.getElementById('loginPassword').value,
-        };
+            };
 
         // Отправляем данные входа
-        loginUser(loginData);
+          loginUser(loginData);
     });
 });
 
 
-
-function registerUser(data) {
+ function registerUser(data) {
     //...check if all data is okay
     fetch("/Authorization/RegisterUser", {
         method: "POST",
@@ -44,12 +42,28 @@ function registerUser(data) {
         },
         body: JSON.stringify(data)
     })
-    // Здесь следует добавить обработку ответа сервера, как в функции loginUser
+        .then(response => {
+            if (response.ok) {
+
+                alert("Succesfull registration!");
+
+                window.location.reload();
+
+            }
+            else
+                Promise.reject('Authorization fail')
+            })
+ 
+        .catch(error => {
+            console.error('Error: ', error); // Обработка ошибок в случае отклонения промиса или сетевых проблем
+        });
+  
 }
 
 
 
-function loginUser(data) {
+ function loginUser(data) {
+
     fetch("/Authorization/LoginUser", {
         method: "POST",
         headers: {
@@ -59,10 +73,14 @@ function loginUser(data) {
     })
         .then(response => response.ok ? response.json() : Promise.reject('Authorization fail'))
         .then(data => {
+
             localStorage.setItem("jwtToken", data.token); // Предполагается, что токен действительно возвращается в ответе
+            // Обновить страницу
+            window.location.reload();
+
         })
         .catch(error => {
-            console.error('Ошибка: ', error); // Обработка ошибок в случае отклонения промиса или сетевых проблем
+            console.error('Error: ', error); // Обработка ошибок в случае отклонения промиса или сетевых проблем
         });
 }
 

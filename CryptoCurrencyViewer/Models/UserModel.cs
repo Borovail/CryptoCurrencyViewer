@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CryptoCurrencyViewer.Models
 {
-    public class UserModel : IHasPassword,IHasId
+    public class UserModel : IHasPassword,IHasId,IHasEmail
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

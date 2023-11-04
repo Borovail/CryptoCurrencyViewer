@@ -50,6 +50,12 @@ namespace CryptoCurrencyViewer.Services;
         return await _context.Set<T>().FirstOrDefaultAsync(u => u.Id == id);
     }
 
+    async Task<T> IDbService.GetItemByEmailAsync<T>(string email)
+    {
+        return await _context.Set<T>().FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+
     string IDbService.HashPassword(string inputString)
     {
         using (SHA256 sha256 = SHA256.Create())

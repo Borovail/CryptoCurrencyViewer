@@ -41,24 +41,51 @@ public class AuthorizationController : Controller
 
 
     /// <summary>
-    /// login user can return null    ////   proce=cesing data  in js  ///called by
+    ///ask to db    if  db has user with email     if yes   check if user has correct password
+    ///if no   Unauthorized()    if yes        Ok(new { token = GenerateJwtToken(user.Email) });
     /// </summary>
-    public IActionResult LoginUser([FromBody]UserModel user)
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public async Task<IActionResult> LoginUser([FromBody]UserModel user)
     {
-        ////check if  user registred after  generateToken
-        return Ok(new { token = GenerateJwtToken(user.Email) });
+        var userFromDb = await _dbService.GetItemByEmailAsync<UserModel>(user.Email);
 
-        return Unauthorized();
+        if(userFromDb == null) return Unauthorized();
+        
+        var hashedPassword = _dbService.HashPassword(user.Password);
+
+        if(hashedPassword != userFromDb.Password) return Unauthorized();
+
+
+
+        return Ok(new { token = GenerateJwtToken(user.Email) });
 
     }
 
 
     /// <summary>
-    /// add user to db    ///all data validation does in js   ///called by
+    /// try to add user  if succes return ok
+    /// else catch  db exception or expectionn and return fail code
     /// </summary>
-    public void RegisterUser()
+    public async Task<IActionResult> RegisterUser([FromBody] UserModel user)
     {
-        /////register user add to db   if all data correct
+        try
+        {
+            await _dbService.AddItemAsync(user);
+
+            return Ok();
+        }
+        catch (DbUpdateException ex)
+        {
+            // Если ошибка связана с обновлением БД, например, нарушение уникальности
+            return BadRequest(new { message = ex.InnerException?.Message ?? ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Для других типов исключений возвращаем InternalServerError
+            return StatusCode(500, new { message = ex.Message });
+        }
+
     }
 
 
