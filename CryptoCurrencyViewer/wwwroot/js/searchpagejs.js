@@ -3,9 +3,20 @@ var currentCrypto;
 
 document.addEventListener("DOMContentLoaded", async function (event) {
 
+    var token = getToket();
 
+    if (!token) {
+        alert("You are not logged in or your session has expired.");
+        return;
+    }
 
-    await fetch('/Search/GetSearchHistory')
+    await fetch('/Search/GetSearchHistory', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    })
         .then(response => response.json())
         .then(data => {
             data.forEach(item => {
@@ -25,7 +36,8 @@ document.getElementById("searchbutton").addEventListener("click", async function
     var token = localStorage.getItem("jwtToken");
 
     if (!token) {
-        alert
+        alert("You are not logged in or your session has expired.");
+        return;
     }
 
     var inputField = document.getElementById("cryptoId");
@@ -33,13 +45,13 @@ document.getElementById("searchbutton").addEventListener("click", async function
     const response = await fetch("/Search/SearchCrypto", {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify({
             selectedCrypto: inputField.value
         })
-
-    });
+    }).catch((error) => console.error('Error: Unable to save history', error));
 
 
 
@@ -73,14 +85,22 @@ document.getElementById("searchbutton").addEventListener("click", async function
 
 async function saveSearchHistoryToDb(result) {
 
+    var token = getToket();
+
+    if (token == null) {
+        alert("You are not logged in or your session has expired.");
+        return;
+    }
+
     await fetch("/Search/SaveSearchHistory", {
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify(result)
-
-    });
+            
+    }).catch((error) => console.error('Error: Unable to save history', error));
 }
 
 
@@ -111,8 +131,7 @@ async function restoreCryptoFromHistory(cryptoName) {
             .then(data => {
                 updateCryptoToNew(data);
             })
-            .catch((error) => console.error('Ошибка: restoreCryptoFromHistory function', error))
-    });
+    }).catch((error) => console.error('Error: Unable to save history', error));
 
 }
 
@@ -145,25 +164,16 @@ document.getElementById("addCrypto").addEventListener("click", function (event) 
 
 
 
-//async function fetchWithAuth(url, options) {
-//    const token = localStorage.getItem('jwtToken'); // Извлекаем токен из хранилища
+ function getToket() {
+    const token = localStorage.getItem('jwtToken'); // Извлекаем токен из хранилища
 
-//    // Убедитесь, что токен существует, иначе обработайте отсутствие авторизации
-//    if (!token) {
-//        alert("You are not logged in or your session has expired.");
-//        return null; // Возвращаем null или throw new Error("No token available.");
-//    }
+    // Убедитесь, что токен существует, иначе обработайте отсутствие авторизации
+    if (!token) {
+        alert("You are not logged in or your session has expired.");
+        return null; // Возвращаем null или throw new Error("No token available.");
+    }
 
-//    // Устанавливаем заголовок Authorization, если он уже не задан
-//    options.headers = options.headers || {};
-//    options.headers['Authorization'] = `Bearer ${token}`;
+     return token;
+}
 
-//    // Делаем запрос с установленным заголовком Authorization
-//    const response = await fetch(url, options);
-//    if (!response.ok) {
-//        // Обработка HTTP ошибок
-//        throw new Error(`HTTP error! status: ${response.status}`);
-//    }
 
-//    return response; // Возвращаем результат в формате JSON
-//}

@@ -26,9 +26,14 @@ namespace CryptoCurrencyViewer.Controllers;
 
 
 
-        ///нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
+
+        /// нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
+        /// </summary>
+        /// <param name="selectedCrypto"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<JsonResult> UpdateSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
+    [Authorize]
+    public async Task<JsonResult> UpdateSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
         {
             bool success = false;
             ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto) =   ApiServices.GetCryptoInfoByName(selectedcrypto)  bd.uptade();

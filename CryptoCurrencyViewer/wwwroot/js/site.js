@@ -61,10 +61,16 @@ async function manageSubscription(isSubscribed) {
 
 async function appealToSharpScript(funcName) {
     const radio = document.querySelector('input[name="selectedCrypto"]:checked');
+    var token = getToket();
 
     if (!radio) {
         alert("Please select a cryptocurrency first.");
         return false;
+    }
+
+    if (!token) {
+        alert("You are not logged in or your session has expired.");
+        return;
     }
 
     const selectedCrypto = radio.value;
@@ -73,7 +79,10 @@ async function appealToSharpScript(funcName) {
         // Вызываем fetchWithAuth и обрабатываем ответ
         const response = await fetch(funcName, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
             body: JSON.stringify({ selectedCrypto: selectedCrypto })
         });
 
