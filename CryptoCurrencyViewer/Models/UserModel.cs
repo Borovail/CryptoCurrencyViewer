@@ -24,10 +24,8 @@ namespace CryptoCurrencyViewer.Models
         [Required(ErrorMessage = "Password is required")]
         [StringLength(100, ErrorMessage = "Password must be between 6 and 100 characters", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,100}$",    ErrorMessage = "Password must have at least one lowercase letter, one uppercase letter, and one number.")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Role is required")]
         public string Role { get; set; }
 
     }

@@ -20,7 +20,7 @@ namespace CryptoCurrencyViewer.Services;
         
         async Task IDbService.AddItemAsync<T>(T crypto)
         {
-          var temp=  await   _context.Set<T>().AddAsync(crypto);
+          await   _context.Set<T>().AddAsync(crypto);
 
             await _context.SaveChangesAsync();
         }

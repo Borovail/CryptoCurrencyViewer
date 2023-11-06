@@ -1,6 +1,7 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Views.Authorization;
+using Microsoft.Data.SqlClient;
 using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -46,20 +47,24 @@ public class AuthorizationController : Controller
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
-    public async Task<IActionResult> LoginUser([FromBody]UserModel user)
+    [HttpPost]
+    public async Task<IActionResult> LoginUser([FromBody] UserModel user)
     {
         var userFromDb = await _dbService.GetItemByEmailAsync<UserModel>(user.Email);
 
-        if(userFromDb == null) return Unauthorized();
-        
+        if (userFromDb == null)
+        {
+            return Unauthorized(new { message = "Account not registered or credentials are incorrect" });
+        }
+
         var hashedPassword = _dbService.HashPassword(user.Password);
 
-        if(hashedPassword != userFromDb.Password) return Unauthorized();
-
-
+        if (hashedPassword != userFromDb.Password)
+        {
+            return Unauthorized(new { message = "Incorrect password." });
+        }
 
         return Ok(new { token = GenerateJwtToken(user.Email) });
-
     }
 
 
@@ -67,25 +72,43 @@ public class AuthorizationController : Controller
     /// try to add user  if succes return ok
     /// else catch  db exception or expectionn and return fail code
     /// </summary>
+    [HttpPost]
     public async Task<IActionResult> RegisterUser([FromBody] UserModel user)
     {
+
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+         .Where(e => e.Value.Errors.Count > 0)
+         .ToDictionary(
+             e => e.Key,
+             e => e.Value.Errors.Select(er => er.ErrorMessage).ToArray()
+         );
+
+            return BadRequest(new { errors });
+        }
+
         try
         {
+            user.Password= _dbService.HashPassword(user.Password);
             await _dbService.AddItemAsync(user);
-
             return Ok();
         }
-        catch (DbUpdateException ex)
+        catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2627 || sqlEx.Number == 2601))
         {
-            // Если ошибка связана с обновлением БД, например, нарушение уникальности
-            return BadRequest(new { message = ex.InnerException?.Message ?? ex.Message });
+            // Это пример, который перехватывает исключения SQL, связанные с нарушениями ограничения уникальности
+            return BadRequest(new { message = "User already exists or duplicate data provided." });
         }
-        catch (Exception ex)
+        catch (DbUpdateException)
         {
-            // Для других типов исключений возвращаем InternalServerError
-            return StatusCode(500, new { message = ex.Message });
+            // Для других ошибок обновления базы данных отправляем обобщенное сообщение
+            return BadRequest(new { message = "Invalid data provided, please check your input and try again." });
         }
-
+        catch (Exception)
+        {
+            // Для всех остальных исключений отправляем обобщенное сообщение
+            return StatusCode(500, new { message = "An error occurred while processing your request, please try again later." });
+        }
     }
 
 

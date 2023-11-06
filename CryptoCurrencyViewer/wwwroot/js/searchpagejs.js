@@ -20,6 +20,14 @@ document.addEventListener("DOMContentLoaded", async function (event) {
 
 document.getElementById("searchbutton").addEventListener("click", async function (event) {
 
+
+
+    var token = localStorage.getItem("jwtToken");
+
+    if (!token) {
+        alert
+    }
+
     var inputField = document.getElementById("cryptoId");
 
     const response = await fetch("/Search/SearchCrypto", {

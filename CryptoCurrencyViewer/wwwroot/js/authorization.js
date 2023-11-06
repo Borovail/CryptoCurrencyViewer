@@ -2,13 +2,19 @@ document.addEventListener('DOMContentLoaded', function () {
    /*  Обработчик для формы регистрации*/
     document.getElementById('registerSubmitBtn')?.addEventListener('click', function () {
 
+        if (document.getElementById('confirmPassword').value !== document.getElementById('password').value) {
+            alert("Password does not match");
+
+            return;
+        }
+
         // Собираем данные регистрации
         var registrationData = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
+            name: document.getElementById('firstName').value,
+            surname: document.getElementById('lastName').value,
             email: document.getElementById('registrationEmail').value,
             password: document.getElementById('password').value,
-            confirmPassword: document.getElementById('confirmPassword').value
+            role: "role"
         };
 
         // Отправляем данные регистрации
@@ -33,8 +39,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
- function registerUser(data) {
-    //...check if all data is okay
+
+
+
+////try  to add user to db   by calling a csharp script
+////if ok   notify   success   and redirect to main page  if not ok   notify  not succes
+function registerUser(data) {
     fetch("/Authorization/RegisterUser", {
         method: "POST",
         headers: {
@@ -44,26 +54,37 @@ document.addEventListener('DOMContentLoaded', function () {
     })
         .then(response => {
             if (response.ok) {
-
-                alert("Succesfull registration!");
-
-                window.location.reload();
-
+                alert("Successful registration!");
+                window.location.href = '/Authorization/Login'; // Успешная регистрация
+            } else {
+                return response.json(); // Если ответ не 'ok', предполагается, что сервер вернул ошибки валидации в JSON
             }
-            else
-                Promise.reject('Authorization fail')
-            })
- 
+        })
+        .then(responseData => {
+            if (responseData && responseData.errors) {
+                // Показываем ошибки валидации, если они есть
+                let errorMessage = "";
+                for (const [key, value] of Object.entries(responseData.errors)) {
+                    errorMessage += `${key}: ${value.join(", ")}\n`; // Соединяем все ошибки в одну строку
+                }
+                alert(`Registration failed: \n${errorMessage}`); // Показываем ошибки пользователю
+            }
+        })
         .catch(error => {
-            console.error('Error: ', error); // Обработка ошибок в случае отклонения промиса или сетевых проблем
+            // Отображаем ошибку, полученную от сервера или сетевую ошибку
+            console.error('Error:', error);
         });
-  
 }
 
 
 
- function loginUser(data) {
 
+
+////try  to  login user  by searching  his email in db  and after if password matchs  returns  ok  else   unautchorized
+////all checks in  csharp  here    proccesing response
+
+/////if  all data ok set token   and redirect to main page
+function loginUser(data) {
     fetch("/Authorization/LoginUser", {
         method: "POST",
         headers: {
@@ -71,18 +92,24 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         body: JSON.stringify(data)
     })
-        .then(response => response.ok ? response.json() : Promise.reject('Authorization fail'))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                // Обработка неудачного ответа от сервера
+                return response.json().then(err => Promise.reject(err.message));
+            }
+        })
         .then(data => {
-
             localStorage.setItem("jwtToken", data.token); // Предполагается, что токен действительно возвращается в ответе
-            // Обновить страницу
-            window.location.reload();
-
+            window.location.href = '/Home/Index'; // Перенаправление на домашнюю страницу
         })
         .catch(error => {
-            console.error('Error: ', error); // Обработка ошибок в случае отклонения промиса или сетевых проблем
+            // Теперь error будет содержать сообщение, полученное от сервера
+            alert('Error: ' + error); // Показываем ошибку пользователю
         });
 }
+
 
 
 

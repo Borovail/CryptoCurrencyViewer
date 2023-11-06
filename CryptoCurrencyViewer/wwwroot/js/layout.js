@@ -12,7 +12,7 @@ function signOut() {
     Array.from(authorizationLinks).forEach(link => link.style.display = 'block');
 
     // Перенаправление на страницу входа
-    window.location.href = '/login';
+    window.location.href = '/Home/Index';
 }
 
 
