@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using CryptoCurrencyViewer.Models.Crypto;
+
+@model List<TickerCryptoModel?>?
+
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="~/css/exchange-styles.css" />
@@ -51,7 +55,29 @@
         </div>
     </div>
 
+    <!-- Bootstrap DropDown with Scrollable Menu -->
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Список элементов
+        </button>
+        <div class="dropdown-menu pre-scrollable" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Элемент 1</a>
+            <a class="dropdown-item" href="#">Элемент 2</a>
+            <!-- Добавьте больше элементов, чтобы активировать прокрутку -->
+            <!-- ... -->
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Bundle JS (includes Popper.js) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/exchange.js"></script>
+
 </body>
 </html>
     

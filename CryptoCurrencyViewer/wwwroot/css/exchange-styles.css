@@ -96,3 +96,10 @@ body {
     font-size: 24px;
     margin-bottom: 20px;
 }
+
+
+/* CSS for making the dropdown scrollable */
+.pre-scrollable {
+    max-height: 200px; /* Adjust the height according to your need */
+    overflow-y: scroll;
+}

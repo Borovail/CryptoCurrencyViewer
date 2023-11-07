@@ -1,11 +1,11 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
-using CryptoCurrencyViewer.Models;
+using CryptoCurrencyViewer.Models.Crypto;
 using CryptoCurrencyViewer.Models.MainPagesModels;
 
 
 namespace CryptoCurrencyViewer.Controllers;
 
-    [Controller]
+[Controller]
     public class SearchController : Controller
     {
         private readonly IApiService _apiService;
@@ -22,9 +22,11 @@ namespace CryptoCurrencyViewer.Controllers;
 
         public async Task<IActionResult> Search()
         {
-            var btc = await _apiService.GetCryptoInfoByNameAsync("bitcoin");
+        //var btc = await _apiService.GetFullCryptoInfoByNameAsync("bitcoin");
 
-            return View(new SearchHistoryModel(btc));
+        //return View(btc);
+
+        return View();
         }
 
 
@@ -33,9 +35,10 @@ namespace CryptoCurrencyViewer.Controllers;
         ///////function to load this page from main page with selected crypto
         public async Task<IActionResult> ExtendedInfo([FromQuery] CryptoRequestModel cryptoName)
         {
-            var btc = await _apiService.GetCryptoInfoByNameAsync(cryptoName.selectedCrypto.ToLower());
+            //var btc = await _apiService.GetFullCryptoInfoByNameAsync(cryptoName.selectedCrypto.ToLower());
 
-            return View("Search", new SearchHistoryModel(btc));
+            //return View("Search", btc);
+            return View("Search");
         }
 
 
@@ -44,15 +47,15 @@ namespace CryptoCurrencyViewer.Controllers;
         //// func to search crypto by searching field on the search page
         public async Task<JsonResult> SearchCrypto([FromBody] CryptoRequestModel selectedCrypto)
         {
-            var crypto = await _apiService.GetCryptoInfoByNameAsync(selectedCrypto.selectedCrypto);
+            var crypto = await _apiService.GetFullCryptoInfoByNameAsync(selectedCrypto.selectedCrypto);
 
-            return Json(new SearchHistoryModel(crypto));
+            return Json(crypto);
         }
 
 
         [HttpPost]
         //////for saving element to db
-        public async Task SaveSearchHistory([FromBody] SearchHistoryModel crypto)
+        public async Task SaveSearchHistory([FromBody] CryptoModel crypto)
         {
              await _dbService.AddItemAsync(crypto);
         }
@@ -61,17 +64,19 @@ namespace CryptoCurrencyViewer.Controllers;
     [Authorize]
         [HttpGet]
         /////for initialization history
-        public async Task<List<SearchHistoryModel>> GetSearchHistory()
+        public async Task<List<CryptoModel>> GetSearchHistory()
         {
-            return await _dbService.GetAllItemsAsync<SearchHistoryModel>();
+            //return await _dbService.GetAllItemsAsync<CryptoModel>();
+
+        return null;
         }
 
 
         [HttpGet]
         /////func for getting crypto by name from the search history table  // called from js by  restoreCryptoFromHistory
-        public async Task<SearchHistoryModel> GetCryptoFromHystoryByNameAsync(string cryptoName)
+        public async Task<ICryptoModel> GetCryptoFromHystoryByNameAsync(string cryptoName)
         {
-            return await _dbService.GetItemByNameAsync<SearchHistoryModel>(cryptoName);
+            return await _dbService.GetItemByNameAsync<ICryptoModel>(cryptoName);
         }
        
 

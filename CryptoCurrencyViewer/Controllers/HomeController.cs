@@ -1,11 +1,12 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models;
+using CryptoCurrencyViewer.Models.Crypto;
 using CryptoCurrencyViewer.Models.MainPagesModels;
 
 
 namespace CryptoCurrencyViewer.Controllers;
 
-    public class HomeController : Controller
+public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IApiService _apiService;
@@ -21,17 +22,20 @@ namespace CryptoCurrencyViewer.Controllers;
 
         public async Task<IActionResult> Index()
         {
-            return View( await _dbService.GetAllItemsAsync<CryptoModel>()) ;
+           //var defaultCrypto = (await _dbService.GetAllItemsAsync<CryptoModel>()).Select(i=>i.DefaultCryptoModel).ToList();
+
+           // return View(defaultCrypto) ;
+           return View(new List<DefaultCryptoModel>());
         }
 
 
+  
 
-
-        /// нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
-        /// </summary>
-        /// <param name="selectedCrypto"></param>
-        /// <returns></returns>
-        [HttpPost]
+    /// нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
+    /// </summary>
+    /// <param name="selectedCrypto"></param>
+    /// <returns></returns>
+    [HttpPost]
     [Authorize]
     public async Task<JsonResult> UpdateSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
         {
@@ -39,7 +43,7 @@ namespace CryptoCurrencyViewer.Controllers;
             ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto) =   ApiServices.GetCryptoInfoByName(selectedcrypto)  bd.uptade();
             ///
             ////возможно стоит переписать метод  ,  так как он  возвращзет избыточные данные, некоторые данные о критповалюте не могут обновлятся
-            var updatedCrypto = await _apiService.GetCryptoInfoByNameAsync(selectedCrypto.selectedCrypto) as CryptoModel;
+            var updatedCrypto = await _apiService.GetDefaultCryptoInfoByNameAsync(selectedCrypto.selectedCrypto) ;
 
             await _dbService.UpdateItemAsync(updatedCrypto);
 

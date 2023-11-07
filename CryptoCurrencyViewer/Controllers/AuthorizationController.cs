@@ -14,12 +14,15 @@ public class AuthorizationController : Controller
 
    private readonly IDbService _dbService;
     private readonly IConfiguration _configuration;
+    private readonly IEmailDistributionService _emailDistributionService;
 
-    public AuthorizationController(IDbService dbService, IConfiguration configuration) 
+    public AuthorizationController(IDbService dbService, IConfiguration configuration , IEmailDistributionService emailDistributionService ) 
     { 
         _dbService = dbService;
 
         _configuration = configuration;
+
+        _emailDistributionService = emailDistributionService;
     }
 
     /// <summary>
@@ -111,11 +114,16 @@ public class AuthorizationController : Controller
         }
     }
 
+    [HttpPost]
+    public async Task SendEmail()
+    {
+        _emailDistributionService.SendEmailAsync("criptocrot17",);
+    }
 
-    /// <summary>
-    /// generate jtw token after succesfull login   ///called by
-    /// </summary>
-    public string GenerateJwtToken(string email)
+   /// <summary>
+   /// generate jtw token after succesfull login   ///called by
+   /// </summary>
+   private string GenerateJwtToken(string email)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
@@ -130,6 +138,10 @@ public class AuthorizationController : Controller
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
+   
+
+
 }
 
 

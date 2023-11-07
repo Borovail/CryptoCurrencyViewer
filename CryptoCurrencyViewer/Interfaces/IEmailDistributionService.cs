@@ -2,7 +2,5 @@
 
 public interface IEmailDistributionService
 {
-    Task Subscribe(string email);
-    Task Unsubscribe(string email);
-    Task SendTestEmail();
+    Task SendEmailAsync(string email, string subject, string message);
 }

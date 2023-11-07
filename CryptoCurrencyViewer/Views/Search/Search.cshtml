@@ -1,4 +1,5 @@
-﻿@model SearchHistoryModel
+﻿@using CryptoCurrencyViewer.Models.Crypto;
+@model CryptoModel
 
 <!DOCTYPE html>
 <html>
@@ -19,28 +20,28 @@
         <!-- Crypto Information Holder -->
         <div class="crypto-holder">
             <div class="crypto-header">
-                <img id="cryptoIcon" src="@Model.ImageUrl" alt="Crypto Icon" class="crypto-icon">
+                <img id="cryptoIcon" src="@Model.DefaultCryptoModel.ImageUrl" alt="Crypto Icon" class="crypto-icon">
                 <div class="crypto-basic-info">
                     <span id="cryptoName" class="crypto-name">Cryptocurrency @Model.Name</span>
-                    <span id="cryptoSymbol" class="crypto-symbol">Symbol: @Model.Symbol</span>
-                    <span id="cryptoCurrentPrice" class="crypto-current-price">Current Price: @Model.CurrentPrice</span>
+                    <span id="cryptoSymbol" class="crypto-symbol">Symbol: @Model.DefaultCryptoModel.Symbol</span>
+                    <span id="cryptoCurrentPrice" class="crypto-current-price">Current Price: @Model.DefaultCryptoModel.CurrentPrice</span>
                 </div>
             </div>
             <div class="crypto-details">
                 <div class="crypto-market-info">
                     <h3>Market Info</h3>
-                    <span id="cryptoMarketCap">Market Cap: @Model.MarketCap</span>
-                    <span id="cryptoVolume24h">Volume (24h): @Model.Volume24h</span>
-                    <span id="cryptoPriceChange24h">Price Change (24h):  @Model.PriceChangePercentage24h%</span>
-                    <span id="cryptoHigh24h">High (24h):  @Model.High24h</span>
-                    <span id="cryptoLow24h">Low (24h):  @Model.Low24h</span>
-                    <span id="cryptoPriceChange7d">Price Change (7d):  @Model.PriceChangePercentage7d%</span>
+                    <span id="cryptoMarketCap">Market Cap: @Model.DefaultCryptoModel.MarketCap</span>
+                    <span id="cryptoVolume24h">Volume (24h): @Model.ExtendedCryptoModel.Volume24h</span>
+                    <span id="cryptoPriceChange24h">Price Change (24h):  @Model.ExtendedCryptoModel.PriceChangePercentage24h%</span>
+                    <span id="cryptoHigh24h">High (24h):  @Model.ExtendedCryptoModel.High24h</span>
+                    <span id="cryptoLow24h">Low (24h):  @Model.ExtendedCryptoModel.Low24h</span>
+                    <span id="cryptoPriceChange7d">Price Change (7d):  @Model.ExtendedCryptoModel.PriceChangePercentage7d%</span>
                 </div>
 
                 <div class="crypto-supply-info">
                     <h3>Supply Info</h3>
-                    <span id="cryptoTotalSupply">Total Supply:  @Model.TotalSupply</span>
-                    <span id="cryptoMaxSupply">Max Supply:  @Model.MaxSupply</span>
+                    <span id="cryptoTotalSupply">Total Supply:  @Model.ExtendedCryptoModel.TotalSupply</span>
+                    <span id="cryptoMaxSupply">Max Supply:  @Model.ExtendedCryptoModel.MaxSupply</span>
                 </div>
             </div>
         </div>
