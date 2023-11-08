@@ -67,7 +67,7 @@ public class AuthorizationController : Controller
             return Unauthorized(new { message = "Incorrect password." });
         }
 
-        return Ok(new { token = GenerateJwtToken(user.Email) });
+        return Ok(new { token = GenerateJwtToken(user.Email, userFromDb.Id) });
     }
 
 
@@ -117,19 +117,22 @@ public class AuthorizationController : Controller
     [HttpPost]
     public async Task SendEmail()
     {
-        _emailDistributionService.SendEmailAsync("criptocrot17",);
+       await   _emailDistributionService.SendEmailAsync("criptocrot17","Pivo","Go za pivom");
     }
 
    /// <summary>
    /// generate jtw token after succesfull login   ///called by
    /// </summary>
-   private string GenerateJwtToken(string email)
+   private string GenerateJwtToken(string email,int id)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, email) }),
+            Subject = new ClaimsIdentity(new[] { 
+                new Claim(ClaimTypes.Email, email) ,
+                new Claim(ClaimTypes.NameIdentifier, id.ToString()) // Добавление ID пользователя как claim
+            }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             Issuer = _configuration["Jwt:Issuer"],

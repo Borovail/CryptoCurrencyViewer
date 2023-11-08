@@ -199,6 +199,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
+function getToket() {
+    const token = localStorage.getItem('jwtToken'); // Извлекаем токен из хранилища
+
+    // Убедитесь, что токен существует, иначе обработайте отсутствие авторизации
+    if (!token) {
+        alert("You are not logged in or your session has expired.");
+        return null; // Возвращаем null или throw new Error("No token available.");
+    }
+
+    return token;
+}
+
 //async function fetchWithAuth(url, options) {
 //    const token = localStorage.getItem('jwtToken'); // Извлекаем токен из хранилища
 

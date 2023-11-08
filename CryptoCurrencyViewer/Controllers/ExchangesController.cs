@@ -19,7 +19,7 @@ namespace CryptoCurrencyViewer.Controllers
 
         public async Task<IActionResult> Exchanges()
         {
-        var crypto=  (await _apiService.GetFullCryptoInfoByNameAsync("bitcoin"));
+        var crypto=  (await _apiService.GetFullCryptoInfoByNameAsync("bitcoin")).TickerCryptoModels;
 
             return View(crypto);
         }

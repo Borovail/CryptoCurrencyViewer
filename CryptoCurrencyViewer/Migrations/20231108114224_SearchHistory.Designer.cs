@@ -4,6 +4,7 @@ using CryptoCurrencyViewer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoCurrencyViewer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231108114224_SearchHistory")]
+    partial class SearchHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,33 +112,6 @@ namespace CryptoCurrencyViewer.Migrations
                     b.ToTable("DefaultCryptoList");
                 });
 
-            modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.ExchangeHistoryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CryptoModelName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("SearchTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CryptoModelName");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ExchangeHistoryModel");
-                });
-
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.ExtendedCryptoModel", b =>
                 {
                     b.Property<int>("ExtendedCryptoModelId")
@@ -179,50 +155,16 @@ namespace CryptoCurrencyViewer.Migrations
 
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.MarketCryptoModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Identifier")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Identifier");
 
                     b.ToTable("MarketList");
-                });
-
-            modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.SearchHistoryModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CryptoModelName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("SearchTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CryptoModelName");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SearchHistoryModel");
                 });
 
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.TickerCryptoModel", b =>
@@ -246,8 +188,9 @@ namespace CryptoCurrencyViewer.Migrations
                     b.Property<decimal?>("LastPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("MarketId")
-                        .HasColumnType("int");
+                    b.Property<string>("MarketIdentifier")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Target")
                         .IsRequired()
@@ -264,7 +207,7 @@ namespace CryptoCurrencyViewer.Migrations
 
                     b.HasIndex("CryptoModelName");
 
-                    b.HasIndex("MarketId");
+                    b.HasIndex("MarketIdentifier");
 
                     b.ToTable("TickerCryptoList");
                 });
@@ -327,25 +270,6 @@ namespace CryptoCurrencyViewer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.ExchangeHistoryModel", b =>
-                {
-                    b.HasOne("CryptoCurrencyViewer.Models.Crypto.CryptoModel", "Crypto")
-                        .WithMany()
-                        .HasForeignKey("CryptoModelName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CryptoCurrencyViewer.Models.UserModel", "User")
-                        .WithMany("ExchangeHistory")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Crypto");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.ExtendedCryptoModel", b =>
                 {
                     b.HasOne("CryptoCurrencyViewer.Models.Crypto.CryptoModel", "CryptoModel")
@@ -355,25 +279,6 @@ namespace CryptoCurrencyViewer.Migrations
                         .IsRequired();
 
                     b.Navigation("CryptoModel");
-                });
-
-            modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.SearchHistoryModel", b =>
-                {
-                    b.HasOne("CryptoCurrencyViewer.Models.Crypto.CryptoModel", "Crypto")
-                        .WithMany()
-                        .HasForeignKey("CryptoModelName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CryptoCurrencyViewer.Models.UserModel", "User")
-                        .WithMany("SearchHistory")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Crypto");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.TickerCryptoModel", b =>
@@ -398,7 +303,7 @@ namespace CryptoCurrencyViewer.Migrations
 
                     b.HasOne("CryptoCurrencyViewer.Models.Crypto.MarketCryptoModel", "Market")
                         .WithMany("Tickers")
-                        .HasForeignKey("MarketId")
+                        .HasForeignKey("MarketIdentifier")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -430,10 +335,6 @@ namespace CryptoCurrencyViewer.Migrations
             modelBuilder.Entity("CryptoCurrencyViewer.Models.UserModel", b =>
                 {
                     b.Navigation("DefaultCryptos");
-
-                    b.Navigation("ExchangeHistory");
-
-                    b.Navigation("SearchHistory");
                 });
 #pragma warning restore 612, 618
         }

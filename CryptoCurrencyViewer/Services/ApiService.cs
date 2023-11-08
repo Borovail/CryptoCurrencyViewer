@@ -1,5 +1,7 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models.Crypto;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace CryptoCurrencyViewer.Services;
 
@@ -12,7 +14,7 @@ namespace CryptoCurrencyViewer.Services;
 
             using HttpClient client = new HttpClient();
 
-        string url = BaseUrl + "coins/" + cryptoName + "?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false&sparkline=true";
+        string url = BaseUrl + "coins/" + cryptoName + "?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false&sparkline=false";
 
         using HttpResponseMessage response = await client.GetAsync(url);
 
@@ -96,23 +98,26 @@ namespace CryptoCurrencyViewer.Services;
 
 
         List<TickerCryptoModel> tickersInfo = cryptoData["tickers"].Select(t => new TickerCryptoModel(
-            t["target"]?.ToString(),(decimal?)t["last"] ?? 0, (decimal?)t["volume"] ?? 0
-        )).ToList();
+            target:t["target"].ToString(),
+    lastPrice: (decimal?)t["last"] ?? 0,
+    volume: (decimal?)t["volume"] ?? 0,
+    marketCryptoModel: new MarketCryptoModel
+    {
+        Name = t["market"]["name"].ToString(),
+        Identifier = t["market"]["identifier"].ToString()
+    },
+    convertedLastInfo: new ConvertedLastInfo
+    {
+        Usd = (decimal?)t["converted_last"]["usd"] ?? 0
+    },
+    convertedVolumeInfo: new ConvertedVolumeInfo
+    {
+        Usd = (decimal?)t["converted_volume"]["usd"] ?? 0
+
+    })).ToList();
 
 
-        //var prices7d = cryptoData["market_data"]["sparkline_in_7d"]["price"].Select(p => (decimal)p).ToList();
-
-        //var graphCrypto = new GraphCryptoModel(prices7d);
-
-
-
-       string name = cryptoData["name"]?.ToString();
-
-
-
-
-
-        return new CryptoModel(name, defaultCrypto, extendedCrypto, tickersInfo);
+        return new CryptoModel(cryptoName, defaultCrypto, extendedCrypto, tickersInfo);
 
     }
 }

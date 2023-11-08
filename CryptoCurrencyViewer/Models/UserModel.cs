@@ -1,4 +1,5 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
+using CryptoCurrencyViewer.Models.Crypto;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CryptoCurrencyViewer.Models
@@ -27,6 +28,13 @@ namespace CryptoCurrencyViewer.Models
         public string Password { get; set; }
 
         public string Role { get; set; }
+
+        public virtual ICollection<DefaultCryptoModel> DefaultCryptos { get; set; } = new List<DefaultCryptoModel>();
+        // Связь "один ко многим" с SearchHistoryModel
+        public virtual ICollection<SearchHistoryModel> SearchHistory { get; set; } = new List<SearchHistoryModel>();
+
+        public virtual ICollection<ExchangeHistoryModel> ExchangeHistory { get; set; } = new List<ExchangeHistoryModel>();
+
 
     }
 }

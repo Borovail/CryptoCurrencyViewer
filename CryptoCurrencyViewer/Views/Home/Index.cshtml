@@ -1,5 +1,5 @@
 ﻿@using CryptoCurrencyViewer.Models.Crypto;
-@model List<DefaultCryptoModel>
+@model List<DefaultCryptoModel>?
 
 <html>
 <head>
@@ -49,14 +49,14 @@
             <tbody>
                 @foreach (var crypto in Model)
                 {
-                   @*  <tr id=@crypto.Name>
-                        <td><input type="radio" name="selectedCrypto" value="@crypto.Name" ></td>
-                        <td><img src="@crypto.ImageUrl" alt="@crypto.Name" width="50"></td>
-                        <td class="custom-link crypto-name" data-crypto-name="@crypto.Name" ondblclick="openSearchPage(this.getAttribute('data-crypto-name'))"><a>@crypto.Name</a></td>
+                    <tr id=@crypto.CryptoModelName>
+                        <td><input type="radio" name="selectedCrypto" value="@crypto.CryptoModelName"></td>
+                        <td><img src="@crypto.ImageUrl" alt="@crypto.CryptoModelName" width="50"></td>
+                        <td class="custom-link crypto-name" data-crypto-name="@crypto.CryptoModelName" ondblclick="openSearchPage(this.getAttribute('data-crypto-name'))"><a>@crypto.CryptoModelName</a></td>
                         <td>@crypto.Symbol</td>
                         <td class="price">@crypto.CurrentPrice USD</td>
                         <td class="marketCap">@crypto.MarketCap USD</td>
-                    </tr> *@
+                    </tr>
                 }
             </tbody>
         </table>

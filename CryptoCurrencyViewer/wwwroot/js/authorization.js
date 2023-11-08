@@ -1,5 +1,6 @@
 // Event listener for DOM content loaded
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
+
     /* Handler for the registration form submit action */
     document.getElementById('registerSubmitBtn')?.addEventListener('click', function () {
         // Check if the confirm password matches the password entered

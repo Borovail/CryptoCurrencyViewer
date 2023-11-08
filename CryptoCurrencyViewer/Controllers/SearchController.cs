@@ -1,7 +1,7 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models.Crypto;
 using CryptoCurrencyViewer.Models.MainPagesModels;
-
+using System.Security.Claims;
 
 namespace CryptoCurrencyViewer.Controllers;
 
@@ -22,13 +22,22 @@ namespace CryptoCurrencyViewer.Controllers;
 
         public async Task<IActionResult> Search()
         {
-        //var btc = await _apiService.GetFullCryptoInfoByNameAsync("bitcoin");
+        var btc = await _apiService.GetFullCryptoInfoByNameAsync("bitcoin");
 
-        //return View(btc);
+        //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-        return View();
+        //    int userId = int.Parse(userIdClaim.Value);
+
+        //btc.DefaultCryptoModel.UserId = userId;
+
+        // await  _dbService.AddItemAsync(btc);
+
+        return View(btc);
+
         }
 
+
+        
 
        
         [HttpPost]
@@ -55,9 +64,20 @@ namespace CryptoCurrencyViewer.Controllers;
 
         [HttpPost]
         //////for saving element to db
-        public async Task SaveSearchHistory([FromBody] CryptoModel crypto)
+        public async Task SaveSearchHistory(/*[FromBody] CryptoModel crypto*/)
         {
-             await _dbService.AddItemAsync(crypto);
+
+        var btc = await _apiService.GetFullCryptoInfoByNameAsync("bitcoin");
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        int userId = int.Parse(userIdClaim.Value);
+
+        btc.DefaultCryptoModel.UserId = userId;
+
+
+
+        await _dbService.AddItemAsync(/*crypto*/btc);
         }
 
 
@@ -74,9 +94,9 @@ namespace CryptoCurrencyViewer.Controllers;
 
         [HttpGet]
         /////func for getting crypto by name from the search history table  // called from js by  restoreCryptoFromHistory
-        public async Task<ICryptoModel> GetCryptoFromHystoryByNameAsync(string cryptoName)
+        public async Task<IHasName> GetCryptoFromHystoryByNameAsync(string cryptoName)
         {
-            return await _dbService.GetItemByNameAsync<ICryptoModel>(cryptoName);
+            return await _dbService.GetItemByNameAsync<IHasName>(cryptoName);
         }
        
 

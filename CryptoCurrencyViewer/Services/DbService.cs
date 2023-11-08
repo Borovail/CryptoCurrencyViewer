@@ -40,7 +40,7 @@ namespace CryptoCurrencyViewer.Services;
 
         }
 
-        async Task<T> IDbService.GetItemByNameAsync<T>(string cryptoName)
+        async Task<T> IDbService.GetItemByNameAsync<T>(string cryptoName) 
         {
            return await  _context.Set<T>().FirstOrDefaultAsync(c => c.Name == cryptoName);
         }

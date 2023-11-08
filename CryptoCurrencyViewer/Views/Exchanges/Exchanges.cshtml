@@ -1,6 +1,6 @@
 ﻿@using CryptoCurrencyViewer.Models.Crypto;
 
-@model List<TickerCryptoModel?>?
+@model ICollection<TickerCryptoModel>?
 
 <!DOCTYPE html>
 <html>
@@ -61,10 +61,11 @@
             Список элементов
         </button>
         <div class="dropdown-menu pre-scrollable" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Элемент 1</a>
-            <a class="dropdown-item" href="#">Элемент 2</a>
-            <!-- Добавьте больше элементов, чтобы активировать прокрутку -->
-            <!-- ... -->
+            @foreach(var ticker in Model)
+            {
+                <a class="dropdown-item" href="#">@ticker.Market.Name</a>
+            }
+            
         </div>
     </div>
 

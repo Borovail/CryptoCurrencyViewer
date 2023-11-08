@@ -3,6 +3,9 @@ var currentCrypto;
 
 document.addEventListener("DOMContentLoaded", async function (event) {
 
+    saveSearchHistoryToDb(null);
+
+
     var token = getToket();
 
     if (!token) {
@@ -97,8 +100,8 @@ async function saveSearchHistoryToDb(result) {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify(result)
+        }//,
+        //body: JSON.stringify(result)
             
     }).catch((error) => console.error('Error: Unable to save history', error));
 }

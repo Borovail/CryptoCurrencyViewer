@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CryptoCurrencyViewer.Models.Crypto;
 
 
-public class CryptoModel
+public class CryptoModel : IHasName
 {
     [Key]
     public string Name { get; set; }
@@ -39,12 +39,22 @@ public class DefaultCryptoModel
     [ForeignKey("CryptoModel")] // Это FK, связывающий с CryptoModel
     public string CryptoModelName { get; set; }
 
+    [ForeignKey("UserId")]
+    public int UserId { get; set; } // ID пользователя, который добавил криптовалюту в избранное
+
+
     public string Symbol { get; set; }
     public double? CurrentPrice { get; set; }
     public string ImageUrl { get; set; }
     public double? MarketCap { get; set; }
 
+    public bool IsFavorite { get; set; } // Новое свойство, указывающее на то, является ли запись
+                                         
+   
 
+
+
+    public virtual UserModel User { get; set; }
     public virtual CryptoModel CryptoModel { get; set; }
 
     public DefaultCryptoModel(string symbol, double? currentPrice, string imageUrl, double? marketCap)
@@ -98,7 +108,7 @@ public class TickerCryptoModel
     [ForeignKey("CryptoModel")] // Связь с CryptoModel
     public string CryptoModelName { get; set; }
     [ForeignKey("MarketCryptoModel")] // Связь с MarketCryptoModel
-    public string MarketIdentifier { get; set; }
+    public int  MarketId { get; set; }
 
     public string Target { get; set; }
     public decimal? LastPrice { get; set; }
@@ -114,11 +124,15 @@ public class TickerCryptoModel
 
 
     // Конструктор для прямого задания полей, которые относятся к столбцам в базе данных
-    public TickerCryptoModel(string target, decimal? lastPrice, decimal? volume)
+    public TickerCryptoModel(string target, decimal? lastPrice, decimal? volume, MarketCryptoModel marketCryptoModel, ConvertedLastInfo convertedLastInfo  , ConvertedVolumeInfo convertedVolumeInfo)
     {
         Target = target;
         LastPrice = lastPrice;
         Volume = volume;
+        Market = marketCryptoModel;
+        ConvertedLast = convertedLastInfo;
+        ConvertedVolume = convertedVolumeInfo;
+
     }
     public TickerCryptoModel() { }
 }
@@ -128,6 +142,8 @@ public class TickerCryptoModel
 public class MarketCryptoModel
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     public string Identifier { get; set; } // Уникальный идентификатор для рынка
     public string Name { get; set; }
 

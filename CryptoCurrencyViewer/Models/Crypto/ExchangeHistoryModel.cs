@@ -1,11 +1,9 @@
-﻿using CryptoCurrencyViewer.Interfaces;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CryptoCurrencyViewer.Models.Crypto;
-
-public class SearchHistoryModel 
+namespace CryptoCurrencyViewer.Models.Crypto
 {
-   
+    public class ExchangeHistoryModel
+    {
         [Key]
         public int Id { get; set; } // Уникальный идентификатор для истории поиска
         public int UserId { get; set; } // ID пользователя для связи с таблицей пользователей
@@ -21,12 +19,10 @@ public class SearchHistoryModel
 
 
 
-       public SearchHistoryModel()
-       {
-        SearchTime=DateTime.Now;
-       }
+        public ExchangeHistoryModel()
+        {
+            SearchTime = DateTime.Now;
+        }
 
-    
-
+    }
 }
-

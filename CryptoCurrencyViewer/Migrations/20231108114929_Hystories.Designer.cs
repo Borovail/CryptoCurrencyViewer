@@ -4,6 +4,7 @@ using CryptoCurrencyViewer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoCurrencyViewer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231108114929_Hystories")]
+    partial class Hystories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,21 +182,14 @@ namespace CryptoCurrencyViewer.Migrations
 
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.MarketCryptoModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Identifier")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Identifier");
 
                     b.ToTable("MarketList");
                 });
@@ -246,8 +242,9 @@ namespace CryptoCurrencyViewer.Migrations
                     b.Property<decimal?>("LastPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("MarketId")
-                        .HasColumnType("int");
+                    b.Property<string>("MarketIdentifier")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Target")
                         .IsRequired()
@@ -264,7 +261,7 @@ namespace CryptoCurrencyViewer.Migrations
 
                     b.HasIndex("CryptoModelName");
 
-                    b.HasIndex("MarketId");
+                    b.HasIndex("MarketIdentifier");
 
                     b.ToTable("TickerCryptoList");
                 });
@@ -398,7 +395,7 @@ namespace CryptoCurrencyViewer.Migrations
 
                     b.HasOne("CryptoCurrencyViewer.Models.Crypto.MarketCryptoModel", "Market")
                         .WithMany("Tickers")
-                        .HasForeignKey("MarketId")
+                        .HasForeignKey("MarketIdentifier")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
