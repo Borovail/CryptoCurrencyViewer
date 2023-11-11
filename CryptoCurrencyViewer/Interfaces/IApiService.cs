@@ -7,6 +7,9 @@ namespace CryptoCurrencyViewer.Interfaces;
     {
         public Task<CryptoModel> GetFullCryptoInfoByNameAsync(string cryptoName);
 
-        public Task<DefaultCryptoModel> GetDefaultCryptoInfoByNameAsync(string cryptoName);
+    public Task<List<CryptoModel>> GetListFullCryptoInfoByNameAsync();
+
+
+    public Task<DefaultCryptoModel> GetDefaultCryptoInfoByNameAsync(string cryptoName);
 }
 

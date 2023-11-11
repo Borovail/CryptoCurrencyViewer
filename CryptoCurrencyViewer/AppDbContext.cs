@@ -57,6 +57,10 @@ public class AppDbContext : DbContext
          .WithOne(sh => sh.User) // Используйте WithRequired для EF 6.x или WithOne для EF Core
          .HasForeignKey(sh => sh.UserId); // Устанавливаем UserId как FK
 
+   
+
+      
+
     }
 
 }

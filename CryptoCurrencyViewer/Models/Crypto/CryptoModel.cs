@@ -160,6 +160,8 @@ public class ConvertedLastInfo
     public int ConvertedLastInfoId { get; set; } // Уникальный идентификатор для ConvertedLastInfo
     public decimal Usd { get; set; }
     // Дополнительные валютные свойства
+
+
 }
 
 public class ConvertedVolumeInfo
@@ -169,5 +171,7 @@ public class ConvertedVolumeInfo
     public int ConvertedVolumeInfoId { get; set; } // Уникальный идентификатор для ConvertedVolumeInfo
     public decimal Usd { get; set; }
     // Дополнительные валютные свойства
+
+
 }
 

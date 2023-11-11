@@ -268,3 +268,20 @@ function getToket() {
 //        // Здесь должен быть AJAX-запрос или другой метод для обновления данных
 //    });
 //});
+
+
+$('.card').click(function () {
+    $('.card').removeClass('active');
+    $(this).addClass('active');
+});
+
+// Инициализация всплывающих подсказок
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+});
+
+// JavaScript для добавления эффекта 'подпрыгивания' для кнопок при наведении
+$('.btn').hover(
+    function () { $(this).addClass('animated pulse'); },
+    function () { $(this).removeClass('animated pulse'); }
+);

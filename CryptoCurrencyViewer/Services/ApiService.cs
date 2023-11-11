@@ -1,7 +1,9 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models.Crypto;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Asn1.X509;
+using System.Collections.Generic;
 
 namespace CryptoCurrencyViewer.Services;
 
@@ -29,7 +31,7 @@ namespace CryptoCurrencyViewer.Services;
         return null;
         }
 
-    public async Task<DefaultCryptoModel> GetDefaultCryptoInfoByNameAsync(string cryptoName)
+    async Task<DefaultCryptoModel> IApiService.GetDefaultCryptoInfoByNameAsync(string cryptoName)
     {
         cryptoName = cryptoName.ToLower();
 
@@ -120,5 +122,36 @@ namespace CryptoCurrencyViewer.Services;
         return new CryptoModel(cryptoName, defaultCrypto, extendedCrypto, tickersInfo);
 
     }
+
+
+
+ async   Task<List<CryptoModel>> IApiService.GetListFullCryptoInfoByNameAsync()
+    {
+        List<CryptoModel> crypto = new List<CryptoModel>();
+
+        using HttpClient client = new HttpClient();
+
+        string url = BaseUrl + "coins/";
+
+
+        using HttpResponseMessage response = await client.GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string responseData = await response.Content.ReadAsStringAsync();
+           JArray  cryptoData = JArray.Parse(responseData);
+
+            foreach (JObject item in cryptoData)
+            {
+                crypto.Add(Initialize(item, item["symbol"]?.ToString()));
+            }
+
+           
+        }
+
+        return null;
+    }
+
+
 }
 

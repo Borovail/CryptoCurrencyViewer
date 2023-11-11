@@ -2,6 +2,8 @@
 using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Models.Crypto;
 using CryptoCurrencyViewer.Models.MainPagesModels;
+using CryptoCurrencyViewer.Services;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace CryptoCurrencyViewer.Controllers;
@@ -22,12 +24,37 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-       // var defaultcryptoList = (await _dbService.GetAllItemsAsync<CryptoModel>())
-       //.Where(c => /*c.DefaultCryptoModel.IsFavorite &&*/ c.DefaultCryptoModel.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) // Замените userId на фактический ID пользователя
-       //.Select(c => c.DefaultCryptoModel) // Выбираем связанную DefaultCryptoModel напрямую
-       //.ToList();
+        // var defaultcryptoList = (await _dbService.GetAllItemsAsync<CryptoModel>())
+        //.Where(c => /*c.DefaultCryptoModel.IsFavorite &&*/ c.DefaultCryptoModel.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) // Замените userId на фактический ID пользователя
+        //.Select(c => c.DefaultCryptoModel) // Выбираем связанную DefaultCryptoModel напрямую
+        //.ToList();
 
-        return View(/*defaultcryptoList*/ new List<DefaultCryptoModel> { new DefaultCryptoModel("D",0.0,"D",0.0)});
+        // Предположим, что это данные, полученные из API
+
+        var cryptoApiData = await _apiService.GetListFullCryptoInfoByNameAsync();
+
+//        cryptoApiData.DefaultCryptoModel.UserId = 3;
+//        cryptoApiData.DefaultCryptoModel.CryptoModelName = cryptoApiData.Name;
+//        cryptoApiData.ExtendedCryptoModel.CryptoModelName = cryptoApiData.Name;
+
+//foreach (var tickerData in cryptoApiData.TickerCryptoModels)
+//        {
+//            tickerData.MarketId = tickerData.Market.Id;
+//            tickerData.CryptoModelName = cryptoApiData.Name;
+//        }
+
+
+//          await   _dbService.AddItemAsync(cryptoApiData);
+
+//      // После сохранения можно получить данные, включая связанные модели, используя eager loading (жадную загрузку)
+
+
+//      var dbCrypto=  await _dbService.GetCryptoWithDetailsAsync("solana");
+
+
+
+
+        return View();
 
     }
 

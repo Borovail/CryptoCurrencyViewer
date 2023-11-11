@@ -1,61 +1,74 @@
-﻿@using CryptoCurrencyViewer.Models.Crypto;
-@model CryptoModel
-
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Cryptocurrency</title>
-    <link rel="stylesheet" href="~/css/search-styles.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/search-styles.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
-    
-    <div class="main-container">
+
+    <div class="container my-5">
         <!-- Search Form -->
-        <div  class="search-input-group">
-            <input type="text" name="cryptoId" id="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required class="search-input">
-            <button type="button" class="search-button" id="searchbutton">Search</button>
-         
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" name="cryptoId" id="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required>
+                    <button class="btn btn-primary" type="button" id="searchbutton">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Crypto Information Holder -->
-        <div class="crypto-holder">
-            <div class="crypto-header">
-                <img id="cryptoIcon" src="@Model.DefaultCryptoModel.ImageUrl" alt="Crypto Icon" class="crypto-icon">
-                <div class="crypto-basic-info">
-                    <span id="cryptoName" class="crypto-name">Cryptocurrency @Model.Name</span>
-                    <span id="cryptoSymbol" class="crypto-symbol">Symbol: @Model.DefaultCryptoModel.Symbol</span>
-                    <span id="cryptoCurrentPrice" class="crypto-current-price">Current Price: @Model.DefaultCryptoModel.CurrentPrice</span>
-                </div>
+        <div class="card mb-5 shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Crypto Information</h3>
             </div>
-            <div class="crypto-details">
-                <div class="crypto-market-info">
-                    <h3>Market Info</h3>
-                    <span id="cryptoMarketCap">Market Cap: @Model.DefaultCryptoModel.MarketCap</span>
-                    <span id="cryptoVolume24h">Volume (24h): @Model.ExtendedCryptoModel.Volume24h</span>
-                    <span id="cryptoPriceChange24h">Price Change (24h):  @Model.ExtendedCryptoModel.PriceChangePercentage24h%</span>
-                    <span id="cryptoHigh24h">High (24h):  @Model.ExtendedCryptoModel.High24h</span>
-                    <span id="cryptoLow24h">Low (24h):  @Model.ExtendedCryptoModel.Low24h</span>
-                    <span id="cryptoPriceChange7d">Price Change (7d):  @Model.ExtendedCryptoModel.PriceChangePercentage7d%</span>
-                </div>
-
-                <div class="crypto-supply-info">
-                    <h3>Supply Info</h3>
-                    <span id="cryptoTotalSupply">Total Supply:  @Model.ExtendedCryptoModel.TotalSupply</span>
-                    <span id="cryptoMaxSupply">Max Supply:  @Model.ExtendedCryptoModel.MaxSupply</span>
+            <div class="card-body bg-light">
+                <div class="row">
+                    <!-- Crypto icon -->
+                    <div class="col-md-3 d-flex align-items-center justify-content-center">
+                        <img src="@Model.DefaultCryptoModel.ImageUrl" alt="Crypto Icon" class="img-fluid rounded-circle">
+                    </div>
+                    <!-- Crypto info -->
+                    <div class="col-md-9">
+                        <h4 id="cryptoName">@Model.Name (@Model.DefaultCryptoModel.Symbol)</h4>
+                        <p id="cryptoCurrentPrice">Current Price: @Model.DefaultCryptoModel.CurrentPrice USD</p>
+                        <div><strong>Market Info:</strong></div>
+                        <ul class="list-unstyled">
+                            <li id="cryptoMarketCap">Market Cap: @Model.DefaultCryptoModel.MarketCap USD</li>
+                            <li id="cryptoVolume24h">Volume (24h): @Model.ExtendedCryptoModel.Volume24h USD</li>
+                            <li id="cryptoPriceChange24h">Price Change (24h): @Model.ExtendedCryptoModel.PriceChangePercentage24h%</li>
+                        </ul>
+                        <div><strong>Supply Info:</strong></div>
+                        <ul class="list-unstyled">
+                            <li id="cryptoTotalSupply">Total Supply: @Model.ExtendedCryptoModel.TotalSupply</li>
+                            <li id="cryptoMaxSupply">Max Supply: @Model.ExtendedCryptoModel.MaxSupply</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
+
         <!-- Crypto History Holder -->
-        <div class="crypto-history-holder">
-            <h2 class="crypto-history-title">Search History</h2>
-            <ul id="search-history">  
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Search History</h3>
+            </div>
+            <ul class="list-group list-group-flush" id="search-history">
+                <li class="list-group-item">Bitcoin (BTC)</li>
+                <!-- Repeat for other history items -->
             </ul>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    @section Scripts{
-        <script src="~/js/searchpagejs.js" asp-append-version="true"></script>
-    }
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="~/js/searchpagejs.js" asp-append-version="true"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

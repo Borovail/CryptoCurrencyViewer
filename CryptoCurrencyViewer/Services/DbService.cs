@@ -1,5 +1,6 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models;
+using CryptoCurrencyViewer.Models.Crypto;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 using System.Text;
@@ -25,7 +26,16 @@ namespace CryptoCurrencyViewer.Services;
             await _context.SaveChangesAsync();
         }
 
-        async Task IDbService.DeleteItemAsync<T>(T crypto)
+     async Task<CryptoModel> IDbService.GetCryptoWithDetailsAsync(string cryptoName)
+    {
+        return await _context.CryptoList
+            .Include(c => c.DefaultCryptoModel)
+            .Include(c => c.ExtendedCryptoModel)
+            .Include(c => c.TickerCryptoModels) // Добавьте это, если нужны также данные тикеров
+            .FirstOrDefaultAsync(c => c.Name == cryptoName);
+    }
+
+    async Task IDbService.DeleteItemAsync<T>(T crypto)
         {
             _context.Set<T>().Update(crypto);
 
@@ -55,6 +65,16 @@ namespace CryptoCurrencyViewer.Services;
         return await _context.Set<T>().FirstOrDefaultAsync(u => u.Email == email);
     }
 
+
+     async Task IDbService.AddRangeAsync<T>(List<T> cryptolist) where T : class
+    {
+        foreach (var item in cryptolist)
+        {
+            await _context.Set<T>().AddAsync(item);
+        }
+
+        await _context.SaveChangesAsync();
+    }
 
     string IDbService.HashPassword(string inputString)
     {

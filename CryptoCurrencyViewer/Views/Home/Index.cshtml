@@ -1,6 +1,75 @@
 ﻿@using CryptoCurrencyViewer.Models.Crypto;
 @model List<DefaultCryptoModel>?
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Cryptocurrencies</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true">
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container main-container mt-3">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <a class="navbar-brand" href="#">CryptoViewer</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+
+        <!-- Search Form -->
+        <form method="get" action="/Home/Search" class="input-group mb-3">
+            <input type="text" name="cryptoId" id="cryptoId" class="form-control" placeholder="Enter cryptocurrency ID or symbol" required>
+            <button type="submit" id="searchButton" class="btn btn-primary btn-icon"><i class="fa fa-search"></i>Search</button>
+        </form>
+
+        <!-- Button group -->
+        <div class="btn-group mb-3" role="group" aria-label="Basic example">
+            <button data-action="update" id="update-button" class="btn btn-secondary btn-icon"><i class="fa fa-sync-alt"></i>Обновить</button>
+            <button data-action="delete" id="delete-button" class="btn btn-danger btn-icon"><i class="fa fa-trash-alt"></i>Удалить</button>
+
+        </div>
+
+        <!-- Crypto Cards -->
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var crypto in Model)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="@crypto.ImageUrl" class="card-img-top" alt="@crypto.CryptoModelName">
+                        <div class="card-body">
+                            <h5 class="card-title">@crypto.CryptoModelName</h5>
+                            <p class="card-text"><strong>Symbol:</strong> @crypto.Symbol</p>
+                            <p class="card-text"><strong>Price:</strong> @crypto.CurrentPrice USD</p>
+                            <p class="card-text"><strong>Market Cap:</strong> @crypto.MarketCap USD</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+  @*                       @using CryptoCurrencyViewer.Models.Crypto;
+@model List<DefaultCryptoModel>?
+
 <html>
 <head>
     <title>Top Cryptocurrencies</title>
@@ -63,28 +132,8 @@
         
     </div>
 
-   @*  <!-- Модальное окно Bootstrap для подтверждения удаления -->
-    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Подтверждение удаления</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Вы уверены, что хотите удалить выбранную криптовалюту?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Удалить</button>
-                </div>
-            </div>
-        </div>
-    </div> *@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
 </body>
-</html>
+</html> *@

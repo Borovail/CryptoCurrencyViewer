@@ -2,7 +2,6 @@
 using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Views.Authorization;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

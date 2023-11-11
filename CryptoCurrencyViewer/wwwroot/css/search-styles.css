@@ -1,5 +1,22 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Общие стили */
-body {
+/*body {
     background-color: #f4f4f4;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -17,10 +34,10 @@ body {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+}*/
 
 /* Форма поиска */
-.search-input-group {
+/*.search-input-group {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
@@ -43,10 +60,10 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
+}*/
 
 /* Информация о криптовалюте */
-.crypto-holder {
+/*.crypto-holder {
     background-color: #fafafa;
     padding: 20px;
     border-radius: 8px;
@@ -79,10 +96,10 @@ body {
 .crypto-symbol, .crypto-current-price {
     font-size: 20px;
     color: #555;
-}
+}*/
 
 /* Детали криптовалюты */
-.crypto-details {
+/*.crypto-details {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -99,20 +116,20 @@ body {
 h3 {
     font-size: 24px;
     margin-bottom: 15px;
-}
+}*/
 
 /* Адаптивный дизайн */
-@media screen and (max-width: 768px) {
+/*@media screen and (max-width: 768px) {
     .crypto-details {
         flex-direction: column;
     }
-}
+}*/
 
 
 
 
 /* История поиска */
-.crypto-history-holder {
+/*.crypto-history-holder {
     background-color: #fafafa;
     padding: 20px;
     border-radius: 8px;
@@ -136,10 +153,10 @@ h3 {
     margin-bottom: 10px;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-}
+}*/
 
 /* Адаптивный дизайн */
-@media screen and (max-width: 768px) {
+/*@media screen and (max-width: 768px) {
     .crypto-details,
     .crypto-history-holder {
         flex-direction: column;
@@ -158,4 +175,4 @@ h3 {
 .privacy-link {
     color: #fff;
     text-decoration: underline;
-}
+}*/
