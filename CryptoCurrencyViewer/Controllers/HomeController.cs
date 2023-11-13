@@ -12,12 +12,10 @@ public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IApiService _apiService;
-        private readonly IEmailDistributionService _emailDistributionService;
         private readonly IDbService _dbService;
-        public HomeController(ILogger<HomeController> logger,IEmailDistributionService emailDistributionService, IDbService dbService, IApiService apiService)
+        public HomeController(ILogger<HomeController> logger, IDbService dbService, IApiService apiService)
         {
             _logger = logger;
-            _emailDistributionService = emailDistributionService;
             _dbService = dbService;
             _apiService = apiService;
         }
@@ -31,35 +29,40 @@ public class HomeController : Controller
 
         // Предположим, что это данные, полученные из API
 
-        var cryptoApiData = await _apiService.GetListFullCryptoInfoByNameAsync();
+        //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-//        cryptoApiData.DefaultCryptoModel.UserId = 3;
-//        cryptoApiData.DefaultCryptoModel.CryptoModelName = cryptoApiData.Name;
-//        cryptoApiData.ExtendedCryptoModel.CryptoModelName = cryptoApiData.Name;
+        //    int userId = int.Parse(userIdClaim.Value);
 
-//foreach (var tickerData in cryptoApiData.TickerCryptoModels)
-//        {
-//            tickerData.MarketId = tickerData.Market.Id;
-//            tickerData.CryptoModelName = cryptoApiData.Name;
-//        }
+        //        cryptoApiData.DefaultCryptoModel.UserId = 3;
+        //        cryptoApiData.DefaultCryptoModel.CryptoModelName = cryptoApiData.Name;
+        //        cryptoApiData.ExtendedCryptoModel.CryptoModelName = cryptoApiData.Name;
 
-
-//          await   _dbService.AddItemAsync(cryptoApiData);
-
-//      // После сохранения можно получить данные, включая связанные модели, используя eager loading (жадную загрузку)
+        //foreach (var tickerData in cryptoApiData.TickerCryptoModels)
+        //        {
+        //            tickerData.MarketId = tickerData.Market.Id;
+        //            tickerData.CryptoModelName = cryptoApiData.Name;
+        //        }
 
 
-//      var dbCrypto=  await _dbService.GetCryptoWithDetailsAsync("solana");
+        //          await   _dbService.AddItemAsync(cryptoApiData);
+
+        //      // После сохранения можно получить данные, включая связанные модели, используя eager loading (жадную загрузку)
 
 
+        //      var dbCrypto=  await _dbService.GetCryptoWithDetailsAsync("solana");
 
 
-        return View();
+        var crypto = await _dbService.GetCryptoWithDetailsAsync("bitcoin");
+
+      var favorites=  (await _dbService.GetAllItemsAsync<DefaultCryptoModel>()).Where(i=>i.IsFavorite).ToList();
+
+        return View(favorites);
 
     }
 
 
   
+
 
     /// нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
     /// </summary>
@@ -80,13 +83,14 @@ public class HomeController : Controller
 
         /////delete
 
-        var updatedCrypto = (await _dbService.GetItemByNameAsync<CryptoModel>("bitcoin"));
+        //var updatedCrypto = (await _dbService.GetItemByNameAsync<CryptoModel>("bitcoin"));
 
-        updatedCrypto.DefaultCryptoModel.UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        //updatedCrypto.DefaultCryptoModel.UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
 
-            return Json(new { success = true, updatedCrypto = updatedCrypto });
+            return Json(new { success = true,/* updatedCrypto = updatedCrypto */});
         }
+
 
     ///нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
     [Authorize]
@@ -100,20 +104,8 @@ public class HomeController : Controller
             return Json(new { success = true });
         }
 
-        //[Authorize]
-        //[HttpPost]
-        //public JsonResult ManageSubscription([FromBody] SubscriberModel user, string action)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (action == "subscribe")
-        //            _emailDistributionService.Subscribe(user.Email);
-        //        else if (action == "unsubscribe")
-        //            _emailDistributionService.Unsubscribe(user.Email);
-        //    }
 
-        //    return Json(new { success = false });
-        //}
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

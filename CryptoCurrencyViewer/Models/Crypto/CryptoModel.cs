@@ -1,4 +1,4 @@
-﻿using CryptoCurrencyViewer.Interfaces;
+﻿using CryptoCurrencyViewer.Interfaces.DataInterfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CryptoCurrencyViewer.Models.Crypto;
@@ -105,14 +105,22 @@ public class TickerCryptoModel
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int TickerId { get; set; }
-    [ForeignKey("CryptoModel")] // Связь с CryptoModel
-    public string CryptoModelName { get; set; }
-    [ForeignKey("MarketCryptoModel")] // Связь с MarketCryptoModel
-    public int  MarketId { get; set; }
-
+ 
     public string Target { get; set; }
     public decimal? LastPrice { get; set; }
     public decimal? Volume { get; set; }
+
+    [ForeignKey("CryptoModel")] // Связь с CryptoModel
+    public string CryptoModelName { get; set; }
+    // Добавленные поля внешних ключей
+    [ForeignKey("MarketCryptoModel")]
+    public int MarketCryptoModelId { get; set; }
+
+    [ForeignKey("ConvertedLastInfo")]
+    public int ConvertedLastInfoId { get; set; }
+
+    [ForeignKey("ConvertedVolumeInfo")]
+    public int ConvertedVolumeInfoId { get; set; }
 
 
     // Связи с другими сущностями, которые будут инициализированы через свойства
@@ -146,21 +154,15 @@ public class MarketCryptoModel
     public int Id { get; set; }
     public string Identifier { get; set; } // Уникальный идентификатор для рынка
     public string Name { get; set; }
-
-    // Связь "один ко многим" с TickerCryptoModel
-    public virtual ICollection<TickerCryptoModel> Tickers { get; set; }
-
-
 }
 
 public class ConvertedLastInfo
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int ConvertedLastInfoId { get; set; } // Уникальный идентификатор для ConvertedLastInfo
+    public int Id { get; set; } // Уникальный идентификатор для ConvertedLastInfo
     public decimal Usd { get; set; }
     // Дополнительные валютные свойства
-
 
 }
 
@@ -168,10 +170,9 @@ public class ConvertedVolumeInfo
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int ConvertedVolumeInfoId { get; set; } // Уникальный идентификатор для ConvertedVolumeInfo
+    public int Id { get; set; } // Уникальный идентификатор для ConvertedVolumeInfo
     public decimal Usd { get; set; }
     // Дополнительные валютные свойства
-
 
 }
 

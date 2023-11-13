@@ -13,15 +13,13 @@ public class AuthorizationController : Controller
 
    private readonly IDbService _dbService;
     private readonly IConfiguration _configuration;
-    private readonly IEmailDistributionService _emailDistributionService;
 
-    public AuthorizationController(IDbService dbService, IConfiguration configuration , IEmailDistributionService emailDistributionService ) 
+    public AuthorizationController(IDbService dbService, IConfiguration configuration   ) 
     { 
         _dbService = dbService;
 
         _configuration = configuration;
 
-        _emailDistributionService = emailDistributionService;
     }
 
     /// <summary>
@@ -113,11 +111,6 @@ public class AuthorizationController : Controller
         }
     }
 
-    [HttpPost]
-    public async Task SendEmail()
-    {
-       await   _emailDistributionService.SendEmailAsync("criptocrot17","Pivo","Go za pivom");
-    }
 
    /// <summary>
    /// generate jtw token after succesfull login   ///called by

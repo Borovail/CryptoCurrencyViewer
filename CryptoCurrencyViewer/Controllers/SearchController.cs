@@ -24,14 +24,6 @@ namespace CryptoCurrencyViewer.Controllers;
         {
         var btc = await _apiService.GetFullCryptoInfoByNameAsync("bitcoin");
 
-        //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-        //    int userId = int.Parse(userIdClaim.Value);
-
-        //btc.DefaultCryptoModel.UserId = userId;
-
-        // await  _dbService.AddItemAsync(btc);
-
         return View(btc);
 
         }
@@ -44,11 +36,10 @@ namespace CryptoCurrencyViewer.Controllers;
         ///////function to load this page from main page with selected crypto
         public async Task<IActionResult> ExtendedInfo([FromQuery] CryptoRequestModel cryptoName)
         {
-            //var btc = await _apiService.GetFullCryptoInfoByNameAsync(cryptoName.selectedCrypto.ToLower());
+        var btc = await _apiService.GetFullCryptoInfoByNameAsync(cryptoName.selectedCrypto.ToLower());
 
-            //return View("Search", btc);
-            return View("Search");
-        }
+        return View("Search", btc);
+    }
 
 
     [Authorize]
@@ -64,7 +55,7 @@ namespace CryptoCurrencyViewer.Controllers;
 
         [HttpPost]
         //////for saving element to db
-        public async Task SaveSearchHistory(/*[FromBody] CryptoModel crypto*/)
+        public async Task SaveSearchHistory([FromBody] CryptoModel crypto)
         {
 
         var btc = await _apiService.GetFullCryptoInfoByNameAsync("bitcoin");
@@ -77,7 +68,7 @@ namespace CryptoCurrencyViewer.Controllers;
 
 
 
-        await _dbService.AddItemAsync(/*crypto*/btc);
+        //await _dbService.AddItemAsync(crypto);
         }
 
 
@@ -92,21 +83,31 @@ namespace CryptoCurrencyViewer.Controllers;
         }
 
 
-        [HttpGet]
-        /////func for getting crypto by name from the search history table  // called from js by  restoreCryptoFromHistory
-        public async Task<IHasName> GetCryptoFromHystoryByNameAsync(string cryptoName)
-        {
-            return await _dbService.GetItemByNameAsync<IHasName>(cryptoName);
-        }
-       
+    //[HttpGet]
+    ///////func for getting crypto by name from the search history table  // called from js by  restoreCryptoFromHistory
+    //public async Task<IHasName> GetCryptoFromHystoryByNameAsync(string cryptoName)
+    //{
+    //    //return await _dbService.GetItemByNameAsync<IHasName>(cryptoName);
+    //}
 
-        [HttpPost]
-        //////func  for  save crypto in main table for main page
-        public async Task AddCryptoToMain([FromBody] SearchHistoryModel crypto)
+
+    [Authorize]
+    [HttpPost]
+       ///mark as favourite
+        public async Task MarkAsFavourite([FromBody] CryptoModel crypto)
         {
-            /////need  to save in CryptoList
-            await _dbService.AddItemAsync(crypto);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        int userId = int.Parse(userIdClaim.Value);
+
+        crypto.DefaultCryptoModel.UserId=userId;
+
+        crypto.DefaultCryptoModel.IsFavorite=true;
+
+        await   _dbService.AddCryptoAsync(crypto);
+
         }
 
-    }
+
+}
 

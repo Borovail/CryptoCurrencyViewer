@@ -1,4 +1,4 @@
-﻿using CryptoCurrencyViewer.Interfaces;
+﻿using CryptoCurrencyViewer.Interfaces.DataInterfaces;
 using CryptoCurrencyViewer.Models.Crypto;
 using System.ComponentModel.DataAnnotations.Schema;
 

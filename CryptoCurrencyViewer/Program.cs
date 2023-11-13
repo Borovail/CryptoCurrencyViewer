@@ -37,7 +37,6 @@ builder.Services.AddAuthentication(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IApiService, ApiService>();
-builder.Services.AddTransient<IEmailDistributionService, EmailDistributionService>();
 builder.Services.AddTransient<IDbService, DbService>();
 
 var app = builder.Build();

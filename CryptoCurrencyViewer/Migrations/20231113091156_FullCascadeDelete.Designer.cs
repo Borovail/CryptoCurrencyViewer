@@ -4,6 +4,7 @@ using CryptoCurrencyViewer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoCurrencyViewer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231113091156_FullCascadeDelete")]
+    partial class FullCascadeDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,8 +269,7 @@ namespace CryptoCurrencyViewer.Migrations
 
                     b.HasIndex("CryptoModelName");
 
-                    b.HasIndex("MarketCryptoModelId")
-                        .IsUnique();
+                    b.HasIndex("MarketCryptoModelId");
 
                     b.ToTable("TickerCryptoList");
                 });
@@ -400,8 +402,8 @@ namespace CryptoCurrencyViewer.Migrations
                         .IsRequired();
 
                     b.HasOne("CryptoCurrencyViewer.Models.Crypto.MarketCryptoModel", "Market")
-                        .WithOne()
-                        .HasForeignKey("CryptoCurrencyViewer.Models.Crypto.TickerCryptoModel", "MarketCryptoModelId")
+                        .WithMany("Tickers")
+                        .HasForeignKey("MarketCryptoModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -423,6 +425,11 @@ namespace CryptoCurrencyViewer.Migrations
                         .IsRequired();
 
                     b.Navigation("TickerCryptoModels");
+                });
+
+            modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.MarketCryptoModel", b =>
+                {
+                    b.Navigation("Tickers");
                 });
 
             modelBuilder.Entity("CryptoCurrencyViewer.Models.UserModel", b =>

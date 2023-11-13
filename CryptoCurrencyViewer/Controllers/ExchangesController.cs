@@ -23,5 +23,12 @@ namespace CryptoCurrencyViewer.Controllers
 
             return View(crypto);
         }
+
+
+        [HttpPost]
+        public  IActionResult ExchangeFrom([FromBody]CryptoModel crypto)
+        { 
+            return View("Exchanges",crypto.TickerCryptoModels);
+        }
     }
 }

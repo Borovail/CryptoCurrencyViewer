@@ -17,8 +17,12 @@
             <div class="col-12">
                 <div class="input-group input-group-lg">
                     <input type="text" class="form-control" name="cryptoId" id="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required>
-                    <button class="btn btn-primary" type="button" id="searchbutton">
+                    <button class="btn btn-primary" type="button" id="searchButton">
                         <i class="fas fa-search"></i> Search
+                    </button>
+
+                    <button class="btn btn-primary" type="button" id="markFavouriteButton">
+                        <i class="fas"></i> Mark As Favourite
                     </button>
                 </div>
             </div>
@@ -33,7 +37,7 @@
                 <div class="row">
                     <!-- Crypto icon -->
                     <div class="col-md-3 d-flex align-items-center justify-content-center">
-                        <img src="@Model.DefaultCryptoModel.ImageUrl" alt="Crypto Icon" class="img-fluid rounded-circle">
+                        <img src="@Model.DefaultCryptoModel.ImageUrl" alt="Crypto Icon" class="img-fluid rounded-circle" id="cryptoIcon">
                     </div>
                     <!-- Crypto info -->
                     <div class="col-md-9">
@@ -41,9 +45,14 @@
                         <p id="cryptoCurrentPrice">Current Price: @Model.DefaultCryptoModel.CurrentPrice USD</p>
                         <div><strong>Market Info:</strong></div>
                         <ul class="list-unstyled">
+                            <li id="cryptoSymbol" class="crypto-symbol">Symbol: @Model.DefaultCryptoModel.Symbol</li>
                             <li id="cryptoMarketCap">Market Cap: @Model.DefaultCryptoModel.MarketCap USD</li>
                             <li id="cryptoVolume24h">Volume (24h): @Model.ExtendedCryptoModel.Volume24h USD</li>
                             <li id="cryptoPriceChange24h">Price Change (24h): @Model.ExtendedCryptoModel.PriceChangePercentage24h%</li>
+                            <li id="cryptoHigh24h">High (24h):  @Model.ExtendedCryptoModel.High24h</li>
+                            <li id="cryptoLow24h">Low (24h):  @Model.ExtendedCryptoModel.Low24h</li>
+                            <li id="cryptoPriceChange7d">Price Change (7d):  @Model.ExtendedCryptoModel.PriceChangePercentage7d%</li>
+
                         </ul>
                         <div><strong>Supply Info:</strong></div>
                         <ul class="list-unstyled">
@@ -51,6 +60,10 @@
                             <li id="cryptoMaxSupply">Max Supply: @Model.ExtendedCryptoModel.MaxSupply</li>
                         </ul>
                     </div>
+
+                    <button class="btn btn-primary" type="button" id="tradePairsBtn">
+                        <i class="fas"></i> See Trade Pairs
+                    </button>
                 </div>
             </div>
         </div>

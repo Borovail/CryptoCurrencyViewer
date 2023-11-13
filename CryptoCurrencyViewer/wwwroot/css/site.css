@@ -1,264 +1,8 @@
 
-body {
-    font-weight: 500; /* Make font bolder */
-}
 
-.input-group > .form-control, .btn {
-    font-size: 1.2rem; /* Increase font size */
-    padding: .75rem 1rem; /* Increase padding */
-}
+ Собранные стили для этой страницы, подогнанные под предыдущие 
 
-.navbar .navbar-brand {
-    font-size: 1.5rem; /* Increase navbar brand size */
-}
-
-.btn-group > .btn {
-    padding: .625rem 1.2rem; /* Increase button padding */
-    font-size: 1.1rem; /* Increase button font size */
-}
-
-.table td, .table th {
-    padding: 0.2rem; /* Decrease padding in table cells */
-    font-size: .60rem; /* Decrease font size for table */
-}
-
-.card-body .card-title, .card-body .card-text {
-    font-size: 1.1rem; /* Increase font size for card titles and text */
-}
-
-.card-footer > .text-muted {
-    font-size: 0.9rem; /* Adjust font size for footer text */
-}
-/* Make table borders lighter and text sharper */
-.table th, .table td {
-    border-top: 1px solid rgba(0,0,0,.1);
-    color: #495057; /* Darker text color for better readability */
-}
-
-
-.card {
-    background: linear-gradient(to bottom, #ffffff 0%, #f7f7f7 100%);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-    .card:hover {
-        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-        transform: translateY(-5px);
-    }
-
-/* Анимация при наведении для кнопок */
-.btn {
-    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-    .btn:hover {
-        box-shadow: 0 0.5em 0.5em -0.4em var(--bs-primary);
-        transform: translateY(-0.25em);
-    }
-
-/* Кастомные радиокнопки */
-.form-check-input {
-    accent-color: #007bff;
-}
-
-    .form-check-input:checked {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-
-    .form-check-input:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.25rem rgba(0,123,255,.25);
-    }
-
-/* Эффекты для кнопок обновления и удаления */
-.btn-secondary:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
-
-/* Стилизация скроллбара для таблицы (в случае длинных списков) */
-.table-responsive::-webkit-scrollbar {
-    height: 0.4rem;
-}
-
-.table-responsive::-webkit-scrollbar-thumb {
-    background-color: #007bff;
-    border-radius: 1rem;
-}
-
-.table-responsive::-webkit-scrollbar-track {
-    background: #f7f7f7;
-}
-
-body {
-    background-color: #f4f7fc;
-    color: #5a5a5a;
-}
-
-/* Разделители секций */
-.section-divider {
-    height: 2px;
-    background: #e4e7eb;
-    margin: 2rem 0;
-}
-
-/* Заголовки секций */
-.section-title {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 1rem;
-}
-
-/* Стили таблицы */
-.table-hover tbody tr:hover {
-    background-color: #f4f7fc;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, .05);
-}
-
-/* Кнопки с иконками */
-.btn-icon {
-    display: inline-flex;
-    align-items: center;
-}
-
-    .btn-icon .fa {
-        margin-right: 0.5rem;
-    }
-
-/* Иконки в радиокнопках и чекбоксах */
-.form-check .form-check-input {
-    width: 1.3em;
-    height: 1.3em;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Собранные стили для этой страницы, подогнанные под предыдущие */
-
-/*.main-container {
+.main-container {
     margin: 20px auto;
     max-width: 1000px;
     background-color: #fff;
@@ -335,10 +79,10 @@ input[type=radio] {
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-}*/
+}
 
-/* Форма поиска */
-/*.search-input-group {
+ Форма поиска 
+.search-input-group {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
@@ -361,38 +105,38 @@ input[type=radio] {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}*/
+}
 
 
-/* Стили для списка подсказок */
-/*.suggestions {
-    display: none;*/ /* Скрываем по умолчанию */
-    /*max-width: 300px;*/ /* Максимальная ширина */
-    /*border: 1px solid #ccc;*/ /* Граница */
-    /*border-radius: 4px;*/ /* Скругленные углы */
-    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/ /* Тень */
-    /*overflow-y: auto;*/ /* Прокрутка, если много элементов */
-    /*max-height: 200px;*/ /* Максимальная высота */
-/*}
+ Стили для списка подсказок 
+.suggestions {
+    display: none;  Скрываем по умолчанию 
+    max-width: 300px;  Максимальная ширина 
+    border: 1px solid #ccc;  Граница 
+    border-radius: 4px;  Скругленные углы 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  Тень 
+    overflow-y: auto;  Прокрутка, если много элементов 
+    max-height: 200px;  Максимальная высота 
+}
 
     .suggestions.active {
-        display: block;*/ /* Показываем, если есть активные подсказки */
-    /*}*/
+        display: block;  Показываем, если есть активные подсказки 
+    }
 
-    /* Стили для элементов в списке подсказок */
-    /*.suggestions div {
-        padding: 8px;*/ /* Отступы */
-        /*cursor: pointer;*/ /* Курсор рука */
-        /*border-bottom: 1px solid #eee;*/ /* Граница снизу */
-    /*}
+     Стили для элементов в списке подсказок 
+    .suggestions div {
+        padding: 8px;  Отступы 
+        cursor: pointer;  Курсор рука 
+        border-bottom: 1px solid #eee;  Граница снизу 
+    }
 
         .suggestions div:last-child {
-            border-bottom: none;*/ /* Убираем границу у последнего элемента */
-        /*}
+            border-bottom: none;  Убираем границу у последнего элемента 
+        }
 
         .suggestions div:hover {
-            background-color: #f5f5f5;*/ /* Фон при наведении */
-        /*}
+            background-color: #f5f5f5;  Фон при наведении 
+        }
 
 
 
@@ -411,4 +155,4 @@ input[type=radio] {
 
 .highlight {
     background-color: yellow;
-}*/
+}

@@ -98,8 +98,10 @@ namespace CryptoCurrencyViewer.Services;
 
         var extendedCrypto = new ExtendedCryptoModel(priceChangePercentage24h, volume24h, high24h, low24h, priceChangePercentage7d, totalSupply, maxSupply);
 
+       
 
-        List<TickerCryptoModel> tickersInfo = cryptoData["tickers"].Select(t => new TickerCryptoModel(
+        List<TickerCryptoModel> tickersInfo = cryptoData["tickers"]
+            .Select(t => new TickerCryptoModel(
             target:t["target"].ToString(),
     lastPrice: (decimal?)t["last"] ?? 0,
     volume: (decimal?)t["volume"] ?? 0,
@@ -124,33 +126,6 @@ namespace CryptoCurrencyViewer.Services;
     }
 
 
-
- async   Task<List<CryptoModel>> IApiService.GetListFullCryptoInfoByNameAsync()
-    {
-        List<CryptoModel> crypto = new List<CryptoModel>();
-
-        using HttpClient client = new HttpClient();
-
-        string url = BaseUrl + "coins/";
-
-
-        using HttpResponseMessage response = await client.GetAsync(url);
-
-        if (response.IsSuccessStatusCode)
-        {
-            string responseData = await response.Content.ReadAsStringAsync();
-           JArray  cryptoData = JArray.Parse(responseData);
-
-            foreach (JObject item in cryptoData)
-            {
-                crypto.Add(Initialize(item, item["symbol"]?.ToString()));
-            }
-
-           
-        }
-
-        return null;
-    }
 
 
 }

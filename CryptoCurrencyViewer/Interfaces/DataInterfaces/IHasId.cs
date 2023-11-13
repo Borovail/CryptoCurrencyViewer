@@ -1,4 +1,4 @@
-﻿namespace CryptoCurrencyViewer.Interfaces
+﻿namespace CryptoCurrencyViewer.Interfaces.DataInterfaces
 {
     public interface IHasId
     {

@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async function (event) {
 
 
 
-document.getElementById("searchbutton").addEventListener("click", async function (event) {
+document.getElementById("searchButton").addEventListener("click", async function (event) {
 
 
 
@@ -61,22 +61,24 @@ document.getElementById("searchbutton").addEventListener("click", async function
     if (response.ok) {
         const result = await response.json();
 
+        currentCrypto = result;
+
         saveSearchHistoryToDb(result);
         saveSearchHistoryLocally(result);
 
 
-        document.getElementById("cryptoIcon").src = result.imageUrl;
-        document.getElementById("cryptoName").innerText = `Cryptocurrency ${result.name}`;
-        document.getElementById("cryptoSymbol").innerText = `Symbol: ${result.symbol}`;
-        document.getElementById("cryptoCurrentPrice").innerText = `Current Price: ${result.currentPrice}`;
-        document.getElementById("cryptoMarketCap").innerText = `Market Cap: ${result.marketCap}`;
-        document.getElementById("cryptoVolume24h").innerText = `Volume (24h): ${result.volume24h}`;
-        document.getElementById("cryptoPriceChange24h").innerText = `Price Change (24h): ${result.priceChangePercentage24h}%`;
-        document.getElementById("cryptoHigh24h").innerText = `High (24h): ${result.high24h}`;
-        document.getElementById("cryptoLow24h").innerText = `Low (24h): ${result.low24h}`;
-        document.getElementById("cryptoPriceChange7d").innerText = `Price Change (7d): ${result.priceChangePercentage7d}%`;
-        document.getElementById("cryptoTotalSupply").innerText = `Total Supply: ${result.totalSupply}`;
-        document.getElementById("cryptoMaxSupply").innerText = `Max Supply: ${result.maxSupply}`;
+        document.getElementById("cryptoIcon").src = result.defaultCryptoModel.imageUrl;
+        document.getElementById("cryptoName").innerText = `Cryptocurrency ${result.defaultCryptoModel.name}`;
+        document.getElementById("cryptoSymbol").innerText = `Symbol: ${result.defaultCryptoModel.symbol}`;
+        document.getElementById("cryptoCurrentPrice").innerText = `Current Price: ${result.defaultCryptoModel.currentPrice}`;
+        document.getElementById("cryptoMarketCap").innerText = `Market Cap: ${result.defaultCryptoModel.marketCap}`;
+        document.getElementById("cryptoVolume24h").innerText = `Volume (24h): ${result.extendedCryptoModel.volume24h}`;
+        document.getElementById("cryptoPriceChange24h").innerText = `Price Change (24h): ${result.extendedCryptoModel.priceChangePercentage24h}%`;
+        document.getElementById("cryptoHigh24h").innerText = `High (24h): ${result.extendedCryptoModel.high24h}`;
+        document.getElementById("cryptoLow24h").innerText = `Low (24h): ${result.extendedCryptoModel.low24h}`;
+        document.getElementById("cryptoPriceChange7d").innerText = `Price Change (7d): ${result.extendedCryptoModel.priceChangePercentage7d}%`;
+        document.getElementById("cryptoTotalSupply").innerText = `Total Supply: ${result.extendedCryptoModel.totalSupply}`;
+        document.getElementById("cryptoMaxSupply").innerText = `Max Supply: ${result.extendedCryptoModel.maxSupply}`;
 
     } else {
         alert("Crypto name is incorrect");
@@ -84,6 +86,48 @@ document.getElementById("searchbutton").addEventListener("click", async function
 
 
 });
+
+
+
+
+document.getElementById("markFavouriteButton").addEventListener("click", async function (event)
+{
+    var token = localStorage.getItem("jwtToken");
+
+    if (!token) {
+        alert("You are not logged in or your session has expired.");
+        return;
+    }
+
+    await fetch("/Search/MarkAsFavourite", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(currentCrypto)
+    }).catch((error) => console.error('Error: Unable to save history', error));
+
+})
+
+document.getElementById("tradePairsBtn").addEventListener("click", function (event) {
+    var token = localStorage.getItem("jwtToken");
+
+    if (!token) {
+        alert("You are not logged in or your session has expired.");
+        return;
+    }
+
+    openSearchPage(currentCrypto);
+
+});
+
+
+
+
+function openSearchPage(crypto) {
+    window.location.href = `/Exchanges/ExchangeFrom?crypto=${crypto}`;
+}
 
 
 async function saveSearchHistoryToDb(result) {
@@ -155,15 +199,6 @@ function updateCryptoToNew(data) {
 
 }
 
-document.getElementById("addCrypto").addEventListener("click", function (event) {
-
-    //$.ajax({
-    //    url: '/Search/AddCryptoToMain',  // ”кажите правильный URL дл€ вашего метода
-    //    type: 'POST',
-    //    data: { 'crypto': currentCrypto }
-    //});
-
-});
 
 
 

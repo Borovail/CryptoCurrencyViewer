@@ -2,6 +2,7 @@
 using CryptoCurrencyViewer.Models;
 using CryptoCurrencyViewer.Models.Crypto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -19,20 +20,47 @@ namespace CryptoCurrencyViewer.Services;
 
         async Task<List<T>> IDbService.GetAllItemsAsync<T>() where T : class => await _context.Set<T>().ToListAsync();
         
-        async Task IDbService.AddItemAsync<T>(T crypto)
+        async Task IDbService.AddCryptoAsync<T>(T crypto)
         {
-          await   _context.Set<T>().AddAsync(crypto);
+        crypto.DefaultCryptoModel.CryptoModelName = crypto.Name;
+        crypto.ExtendedCryptoModel.CryptoModelName = crypto.Name;
+
+        foreach (var tickerData in crypto.TickerCryptoModels)
+        {
+            tickerData.CryptoModelName = crypto.Name;
+        }
+
+        await _context.Set<T>().AddAsync(crypto);
 
             await _context.SaveChangesAsync();
         }
 
-     async Task<CryptoModel> IDbService.GetCryptoWithDetailsAsync(string cryptoName)
+    async Task IDbService.AddItemAsync<T>(T model)
     {
+        await _context.Set<T>().AddAsync(model);
+
+        await _context.SaveChangesAsync();
+    }
+
+    async Task<CryptoModel> IDbService.GetCryptoWithDetailsAsync(string cryptoName)
+    {
+#pragma warning disable CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
         return await _context.CryptoList
             .Include(c => c.DefaultCryptoModel)
             .Include(c => c.ExtendedCryptoModel)
-            .Include(c => c.TickerCryptoModels) // Добавьте это, если нужны также данные тикеров
+            .Include(c => c.TickerCryptoModels) 
+            .ThenInclude(c=>c.ConvertedLast)
+            .Include(c => c.TickerCryptoModels) 
+            .ThenInclude(c => c.Market)
+            .Include(c => c.TickerCryptoModels)
+            .ThenInclude(c => c.ConvertedVolume)
             .FirstOrDefaultAsync(c => c.Name == cryptoName);
+#pragma warning restore CS8603 // Возможно, возврат ссылки, допускающей значение NULL.
+    }
+
+    async Task<T> IDbService.GetItemByEmailAsync<T>(string email)
+    {
+        return await _context.Set<T>().FirstOrDefaultAsync(u => u.Email == email);
     }
 
     async Task IDbService.DeleteItemAsync<T>(T crypto)
@@ -49,32 +77,6 @@ namespace CryptoCurrencyViewer.Services;
             await _context.SaveChangesAsync();
 
         }
-
-        async Task<T> IDbService.GetItemByNameAsync<T>(string cryptoName) 
-        {
-           return await  _context.Set<T>().FirstOrDefaultAsync(c => c.Name == cryptoName);
-        }
-
-     async Task<T> IDbService.GetItemByIdAsync<T>(int id) 
-    {
-        return await _context.Set<T>().FirstOrDefaultAsync(u => u.Id == id);
-    }
-
-    async Task<T> IDbService.GetItemByEmailAsync<T>(string email)
-    {
-        return await _context.Set<T>().FirstOrDefaultAsync(u => u.Email == email);
-    }
-
-
-     async Task IDbService.AddRangeAsync<T>(List<T> cryptolist) where T : class
-    {
-        foreach (var item in cryptolist)
-        {
-            await _context.Set<T>().AddAsync(item);
-        }
-
-        await _context.SaveChangesAsync();
-    }
 
     string IDbService.HashPassword(string inputString)
     {

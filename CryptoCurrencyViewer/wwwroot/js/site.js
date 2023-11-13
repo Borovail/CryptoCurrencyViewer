@@ -7,9 +7,6 @@ let data;
 // Обработчик события загрузки DOM
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Управление подпиской
-    initSubscriptionForm();
-
     // Удаление криптовалюты
     const deleteButton = document.getElementById("delete-button");
     deleteButton.addEventListener("click", async function () {
@@ -27,37 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function initSubscriptionForm() {
-    const subscriptionButton = document.getElementById("subscriptionButton");
-    const subscriptionForm = document.getElementById("subscriptionForm");
-    const submitSubscription = document.getElementById("submitSubscription");
-    let isSubscribed = false;
 
-    subscriptionButton.addEventListener("click", function () {
-        toggleSubscriptionForm(subscriptionForm, subscriptionButton, isSubscribed);
-    });
 
-    submitSubscription.addEventListener("click", function () {
-        manageSubscription(isSubscribed);
-    });
-}
-
-function toggleSubscriptionForm(form, button, isSubscribed) {
-    if (form.style.display === "none" || form.style.display === "") {
-        form.style.display = "block";
-        button.textContent = "Collapse";
-    } else {
-        form.style.display = "none";
-        button.textContent = isSubscribed ? "Unsubscribe" : "Subscribe";
-    }
-}
-
-async function manageSubscription(isSubscribed) {
-    const name = document.getElementById("Name").value;
-    const email = document.getElementById("Email").value;
-
-    // Здесь ваш код для подписки/отписки
-}
 
 async function appealToSharpScript(funcName) {
     const radio = document.querySelector('input[name="selectedCrypto"]:checked');
@@ -212,76 +180,3 @@ function getToket() {
     return token;
 }
 
-//async function fetchWithAuth(url, options) {
-//    const token = localStorage.getItem('jwtToken'); // Извлекаем токен из хранилища
-
-//    // Убедитесь, что токен существует, иначе обработайте отсутствие авторизации
-//    if (!token) {
-//        alert("You are not logged in or your session has expired.");
-//        return null; // Возвращаем null или throw new Error("No token available.");
-//    }
-
-//    // Устанавливаем заголовок Authorization, если он уже не задан
-//    options.headers = options.headers || {};
-//    options.headers['Authorization'] = `Bearer ${token}`;
-
-//    // Делаем запрос с установленным заголовком Authorization
-//    const response = await fetch(url, options);
-//    if (!response.ok) {
-//        // Обработка HTTP ошибок
-//        throw new Error(`HTTP error! status: ${response.status}`);
-//    }
-
-//    return response.json(); // Возвращаем результат в формате JSON
-//}
-
-
-
-
-
-//$(document).ready(function () {
-//    // При нажатии на кнопку "Удалить" показать модальное окно
-//    $('#delete-button').on('click', function () {
-//        $('#deleteConfirmationModal').modal('show');
-//    });
-
-//    // При нажатии на кнопку "Отмена" или крестик в модальном окне
-//    $('#deleteConfirmationModal .btn-secondary, #deleteConfirmationModal .close').on('click', function () {
-//        $('#deleteConfirmationModal').modal('hide');
-//    });
-
-//    // При нажатии на "Подтвердить удаление" в модальном окне
-//    $('#confirmDeleteButton').on('click', function () {
-//        // Здесь должен быть AJAX-запрос или другой метод для удаления криптовалюты
-//        console.log('Криптовалюта удалена');
-//        $('#deleteConfirmationModal').modal('hide');
-//    });
-
-//    // Анимация для формы подписки
-//    $('#subscriptionButton').on('click', function () {
-//        $('#subscriptionForm').slideToggle();
-//    });
-
-//    // Уведомление при нажатии на "Обновить"
-//    $('#update-button').on('click', function () {
-//        alert('Данные обновляются...');
-//        // Здесь должен быть AJAX-запрос или другой метод для обновления данных
-//    });
-//});
-
-
-$('.card').click(function () {
-    $('.card').removeClass('active');
-    $(this).addClass('active');
-});
-
-// Инициализация всплывающих подсказок
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-});
-
-// JavaScript для добавления эффекта 'подпрыгивания' для кнопок при наведении
-$('.btn').hover(
-    function () { $(this).addClass('animated pulse'); },
-    function () { $(this).removeClass('animated pulse'); }
-);
