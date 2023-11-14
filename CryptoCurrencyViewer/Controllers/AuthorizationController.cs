@@ -57,7 +57,7 @@ public class AuthorizationController : Controller
             return Unauthorized(new { message = "Account not registered or credentials are incorrect" });
         }
 
-        var hashedPassword = _dbService.HashPassword(user.Password);
+        var hashedPassword = AppHelper.HashPassword(user.Password);
 
         if (hashedPassword != userFromDb.Password)
         {
@@ -90,7 +90,7 @@ public class AuthorizationController : Controller
 
         try
         {
-            user.Password= _dbService.HashPassword(user.Password);
+            user.Password= AppHelper.HashPassword(user.Password);
             await _dbService.AddItemAsync(user);
             return Ok();
         }

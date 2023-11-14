@@ -25,9 +25,11 @@ namespace CryptoCurrencyViewer.Controllers
         }
 
 
-        [HttpPost]
-        public  IActionResult ExchangeFrom([FromBody]CryptoModel crypto)
+        [HttpGet]
+        public  async Task<IActionResult> ExchangeFrom([FromQuery]string cryptoName)
         { 
+            var crypto = await _dbService.GetCryptoWithDetailsAsync(cryptoName);
+
             return View("Exchanges",crypto.TickerCryptoModels);
         }
     }

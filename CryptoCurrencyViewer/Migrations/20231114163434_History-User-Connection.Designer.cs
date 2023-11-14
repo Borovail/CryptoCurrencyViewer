@@ -4,6 +4,7 @@ using CryptoCurrencyViewer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoCurrencyViewer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114163434_History-User-Connection")]
+    partial class HistoryUserConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,14 +127,14 @@ namespace CryptoCurrencyViewer.Migrations
                     b.Property<DateTime>("SearchTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserModelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CryptoModelName");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("ExchangeHistoryModel");
                 });
@@ -213,14 +216,14 @@ namespace CryptoCurrencyViewer.Migrations
                     b.Property<DateTime>("SearchTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserModelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CryptoModelName");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("SearchHistoryModel");
                 });
@@ -341,15 +344,11 @@ namespace CryptoCurrencyViewer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CryptoCurrencyViewer.Models.UserModel", "User")
+                    b.HasOne("CryptoCurrencyViewer.Models.UserModel", null)
                         .WithMany("ExchangeHistory")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("UserModelId");
 
                     b.Navigation("Crypto");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.ExtendedCryptoModel", b =>
@@ -371,15 +370,11 @@ namespace CryptoCurrencyViewer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CryptoCurrencyViewer.Models.UserModel", "User")
+                    b.HasOne("CryptoCurrencyViewer.Models.UserModel", null)
                         .WithMany("SearchHistory")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("UserModelId");
 
                     b.Navigation("Crypto");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.TickerCryptoModel", b =>

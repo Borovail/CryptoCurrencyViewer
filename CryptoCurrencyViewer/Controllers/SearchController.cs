@@ -1,6 +1,7 @@
 ﻿using CryptoCurrencyViewer.Interfaces;
 using CryptoCurrencyViewer.Models.Crypto;
 using CryptoCurrencyViewer.Models.MainPagesModels;
+using CryptoCurrencyViewer.Services;
 using System.Security.Claims;
 
 namespace CryptoCurrencyViewer.Controllers;
@@ -22,6 +23,7 @@ namespace CryptoCurrencyViewer.Controllers;
 
         public async Task<IActionResult> Search()
         {
+
         var btc = await _apiService.GetFullCryptoInfoByNameAsync("bitcoin");
 
         return View(btc);
@@ -32,7 +34,7 @@ namespace CryptoCurrencyViewer.Controllers;
         
 
        
-        [HttpPost]
+        [HttpGet]
         ///////function to load this page from main page with selected crypto
         public async Task<IActionResult> ExtendedInfo([FromQuery] CryptoRequestModel cryptoName)
         {
@@ -55,31 +57,29 @@ namespace CryptoCurrencyViewer.Controllers;
 
         [HttpPost]
         //////for saving element to db
-        public async Task SaveSearchHistory([FromBody] CryptoModel crypto)
+        public async Task SaveSearchHistory([FromBody] string cryptoName)
         {
+       
+        SearchHistoryModel history = new SearchHistoryModel();
 
-        var btc = await _apiService.GetFullCryptoInfoByNameAsync("bitcoin");
+        history.CryptoModelName = cryptoName;
 
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-        int userId = int.Parse(userIdClaim.Value);
-
-        btc.DefaultCryptoModel.UserId = userId;
-
+        await _dbService.AddItemAsync(history);
+    }
 
 
-        //await _dbService.AddItemAsync(crypto);
-        }
-
-
-    [Authorize]
+       [Authorize]
         [HttpGet]
         /////for initialization history
-        public async Task<List<CryptoModel>> GetSearchHistory()
+        public async Task<List<SearchHistoryModel>> GetSearchHistory()
         {
-            //return await _dbService.GetAllItemsAsync<CryptoModel>();
+  
+        var user = await _dbService.GetUserByIdAsync(AppHelper.GetCurrentUserId(User));
 
-        return null;
+        var historyList  = user.SearchHistory.ToList();
+
+        return historyList;
+
         }
 
 
@@ -96,17 +96,28 @@ namespace CryptoCurrencyViewer.Controllers;
        ///mark as favourite
         public async Task MarkAsFavourite([FromBody] CryptoModel crypto)
         {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-        int userId = int.Parse(userIdClaim.Value);
+        var tempCrypto = await _dbService.GetItemByNameAsync<DefaultCryptoModel>(crypto.Name);
 
-        crypto.DefaultCryptoModel.UserId=userId;
+        if(tempCrypto == null)
+        {
+
+       AppHelper.MakeCorrectFormat(crypto, AppHelper.GetCurrentUserId(User));
 
         crypto.DefaultCryptoModel.IsFavorite=true;
 
-        await   _dbService.AddCryptoAsync(crypto);
-
+          await  _dbService.AddItemAsync(crypto);
         }
+        else
+        {
+            tempCrypto.IsFavorite = true;
+
+            await _dbService.UpdateItemAsync(tempCrypto);
+        }
+
+
+
+    }
 
 
 }

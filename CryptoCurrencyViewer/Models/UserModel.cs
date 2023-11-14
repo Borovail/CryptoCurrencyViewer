@@ -29,8 +29,6 @@ namespace CryptoCurrencyViewer.Models
 
         public string Role { get; set; }
 
-        public virtual ICollection<DefaultCryptoModel> DefaultCryptos { get; set; } = new List<DefaultCryptoModel>();
-        // Связь "один ко многим" с SearchHistoryModel
         public virtual ICollection<SearchHistoryModel> SearchHistory { get; set; } = new List<SearchHistoryModel>();
 
         public virtual ICollection<ExchangeHistoryModel> ExchangeHistory { get; set; } = new List<ExchangeHistoryModel>();

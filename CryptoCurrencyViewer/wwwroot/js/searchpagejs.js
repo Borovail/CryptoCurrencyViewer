@@ -1,33 +1,31 @@
 
 var currentCrypto;
-
 document.addEventListener("DOMContentLoaded", async function (event) {
-
-    saveSearchHistoryToDb(null);
-
-
-    var token = getToket();
+    var token = getToket(); // Исправлено на правильное имя функции
 
     if (!token) {
-        alert("You are not logged in or your session has expired.");
         return;
     }
 
     await fetch('/Search/GetSearchHistory', {
-        method: "POST",
+        method: "GET",
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         }
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             data.forEach(item => {
-                saveSearchHistoryLocally(item);
-            })
+                // Используйте литерал объекта для создания объекта, а не 'new'
+                saveSearchHistoryLocally({ name: item.name, symbol: item.defaultCryptoModel.symbol, searchTime: item.defaultCryptoModel.searchTime });
+            });
         })
         .catch((error) => console.error('Ошибка:', error));
-
 });
 
 
@@ -39,7 +37,6 @@ document.getElementById("searchButton").addEventListener("click", async function
     var token = localStorage.getItem("jwtToken");
 
     if (!token) {
-        alert("You are not logged in or your session has expired.");
         return;
     }
 
@@ -54,17 +51,28 @@ document.getElementById("searchButton").addEventListener("click", async function
         body: JSON.stringify({
             selectedCrypto: inputField.value
         })
-    }).catch((error) => console.error('Error: Unable to save history', error));
+    }).catch((error) => console.log('Error:', error));
 
 
 
     if (response.ok) {
         const result = await response.json();
 
+        if (result == null) {
+
+            Swal.fire({
+                title: "Sorry, it looks like there are not crypto that match your request",
+                position: "top",
+                timer : 3000
+                });
+
+
+        }
+
         currentCrypto = result;
 
-        saveSearchHistoryToDb(result);
-        saveSearchHistoryLocally(result);
+      await  saveSearchHistoryToDb(result.name);
+      await  saveSearchHistoryLocally(result);
 
 
         document.getElementById("cryptoIcon").src = result.defaultCryptoModel.imageUrl;
@@ -81,7 +89,11 @@ document.getElementById("searchButton").addEventListener("click", async function
         document.getElementById("cryptoMaxSupply").innerText = `Max Supply: ${result.extendedCryptoModel.maxSupply}`;
 
     } else {
-        alert("Crypto name is incorrect");
+        Swal.fire({
+            title: "Sorry, it looks like there are not crypto that match your request",
+            position: "top",
+            timer: 3000
+        });
     }
 
 
@@ -89,45 +101,46 @@ document.getElementById("searchButton").addEventListener("click", async function
 
 
 
-
-document.getElementById("markFavouriteButton").addEventListener("click", async function (event)
-{
+async function markFavorite() {
     var token = localStorage.getItem("jwtToken");
 
     if (!token) {
-        alert("You are not logged in or your session has expired.");
         return;
     }
 
+    // Обратите внимание, что .then() должен следовать сразу за вызовом fetch, а не быть внутри body
     await fetch("/Search/MarkAsFavourite", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         },
-        body: JSON.stringify(currentCrypto)
-    }).catch((error) => console.error('Error: Unable to save history', error));
+        body: JSON.stringify(currentCrypto) // Здесь заканчивается body
+    })
 
-})
-
-document.getElementById("tradePairsBtn").addEventListener("click", function (event) {
-    var token = localStorage.getItem("jwtToken");
-
-    if (!token) {
-        alert("You are not logged in or your session has expired.");
-        return;
-    }
-
-    openSearchPage(currentCrypto);
-
-});
-
-
-
-
-function openSearchPage(crypto) {
-    window.location.href = `/Exchanges/ExchangeFrom?crypto=${crypto}`;
+        .then(() => {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: currentCrypto.name + " successfully added to your favorites list",
+                showConfirmButton: false,
+                timer: 3000
+            });
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            // Показать сообщение об ошибке пользователю, если это уместно
+        });
 }
+
+
+
+
+
+function openExchangePage(cryptoName) {
+    window.location.href = `/Exchanges/ExchangeFrom?cryptoName=${cryptoName}`;
+}
+
 
 
 async function saveSearchHistoryToDb(result) {
@@ -135,7 +148,6 @@ async function saveSearchHistoryToDb(result) {
     var token = getToket();
 
     if (token == null) {
-        alert("You are not logged in or your session has expired.");
         return;
     }
 
@@ -144,18 +156,18 @@ async function saveSearchHistoryToDb(result) {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
-        }//,
-        //body: JSON.stringify(result)
+        },
+         body: JSON.stringify(result) // Добавляем result в тело запроса
             
-    }).catch((error) => console.error('Error: Unable to save history', error));
+    }).catch((error) => console.log('Error: Unable to save history'+ error));
 }
 
 
 function saveSearchHistoryLocally(result) {
     const ul = document.getElementById("search-history");
     const li = document.createElement("li");
-    li.textContent = `${result.name} - ${result.symbol}`;
-    li.className = "search-history-item";
+    li.textContent = `${result.name} - ${result.symbol}  ||  ${result?.searchTime}`;
+    li.className = "search-history-item list-group-item";
     li.id = result.name;
     li.addEventListener("dblclick", function () {
         restoreCryptoFromHistory(li.id)
@@ -207,7 +219,10 @@ function updateCryptoToNew(data) {
 
     // Убедитесь, что токен существует, иначе обработайте отсутствие авторизации
     if (!token) {
-        alert("You are not logged in or your session has expired.");
+        Swal.fire({
+            title: "You are not logged in or your session has expired.",
+            position: "top"
+        });
         return null; // Возвращаем null или throw new Error("No token available.");
     }
 

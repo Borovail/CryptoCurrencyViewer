@@ -22,38 +22,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        // var defaultcryptoList = (await _dbService.GetAllItemsAsync<CryptoModel>())
-        //.Where(c => /*c.DefaultCryptoModel.IsFavorite &&*/ c.DefaultCryptoModel.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) // Замените userId на фактический ID пользователя
-        //.Select(c => c.DefaultCryptoModel) // Выбираем связанную DefaultCryptoModel напрямую
-        //.ToList();
-
-        // Предположим, что это данные, полученные из API
-
-        //var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-        //    int userId = int.Parse(userIdClaim.Value);
-
-        //        cryptoApiData.DefaultCryptoModel.UserId = 3;
-        //        cryptoApiData.DefaultCryptoModel.CryptoModelName = cryptoApiData.Name;
-        //        cryptoApiData.ExtendedCryptoModel.CryptoModelName = cryptoApiData.Name;
-
-        //foreach (var tickerData in cryptoApiData.TickerCryptoModels)
-        //        {
-        //            tickerData.MarketId = tickerData.Market.Id;
-        //            tickerData.CryptoModelName = cryptoApiData.Name;
-        //        }
-
-
-        //          await   _dbService.AddItemAsync(cryptoApiData);
-
-        //      // После сохранения можно получить данные, включая связанные модели, используя eager loading (жадную загрузку)
-
-
-        //      var dbCrypto=  await _dbService.GetCryptoWithDetailsAsync("solana");
-
-
-        var crypto = await _dbService.GetCryptoWithDetailsAsync("bitcoin");
-
+       
       var favorites=  (await _dbService.GetAllItemsAsync<DefaultCryptoModel>()).Where(i=>i.IsFavorite).ToList();
 
         return View(favorites);
@@ -70,38 +39,48 @@ public class HomeController : Controller
     /// <returns></returns>
     [HttpPost]
     [Authorize]
-    public async Task<JsonResult> UpdateSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
+    public async Task<JsonResult> UpdateSelectedCrypto([FromBody] string selectedCrypto)
         {
-            bool success = false;
-        ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto) =   ApiServices.GetCryptoInfoByName(selectedcrypto)  bd.uptade();
-        ///
-        ////возможно стоит переписать метод  ,  так как он  возвращзет избыточные данные, некоторые данные о критповалюте не могут обновлятся
-        //var updatedCrypto = await _apiService.GetDefaultCryptoInfoByNameAsync(selectedCrypto.selectedCrypto) ;
+   
+       var updatedCrypto = await _apiService.GetDefaultCryptoInfoByNameAsync(selectedCrypto);
 
-        //await _dbService.UpdateItemAsync(updatedCrypto);
+        ///может рил стоит   обєденить методы в сервисе
+        var crypto = await _dbService.GetItemByNameAsync<DefaultCryptoModel>(selectedCrypto);
 
+        crypto.CurrentPrice = updatedCrypto.CurrentPrice;
+        crypto.MarketCap = updatedCrypto.MarketCap;
 
-        /////delete
+        await _dbService.UpdateItemAsync(crypto);
 
-        //var updatedCrypto = (await _dbService.GetItemByNameAsync<CryptoModel>("bitcoin"));
-
-        //updatedCrypto.DefaultCryptoModel.UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-
-            return Json(new { success = true,/* updatedCrypto = updatedCrypto */});
+        return Json(new { currentPrice= crypto.CurrentPrice, marketCap= crypto.MarketCap} );
         }
 
 
     ///нужно попробывать вынести реализации в services    и бдшки  и апишки   так  как с рассылкой сделано
     [Authorize]
     [HttpPost]
-        public async Task<JsonResult> DeleteSelectedCrypto([FromBody] CryptoRequestModel selectedCrypto)
+        public async Task<JsonResult> DeleteSelectedCrypto([FromBody]string cryptoName)
         {
-            bool success = false;
-            ////нужно обновить список/ базу данных    типа так  dbcontext.db.first(i=>i.symbol == selectedcrypto).remove   bd.uptade();
-            ///
 
-            return Json(new { success = true });
+        string message = string.Empty;
+
+        try
+        {
+                var selectedCrypto =await _dbService.GetItemByNameAsync<DefaultCryptoModel>(cryptoName);
+                selectedCrypto.IsFavorite = false;
+                await _dbService.UpdateItemAsync(selectedCrypto);
+        }
+        catch(DbUpdateException ex)
+        {
+            message = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+        }
+
+
+            return Json(new { message = message });
         }
 
 

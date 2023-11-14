@@ -8,18 +8,15 @@ public class SearchHistoryModel
    
         [Key]
         public int Id { get; set; } // Уникальный идентификатор для истории поиска
-        public int UserId { get; set; } // ID пользователя для связи с таблицей пользователей
+    [ForeignKey("UserId")]
+    public int UserId { get; set; } // Уникальный идентификатор для истории поиска
+
+    [ForeignKey("CryptoModelName")]
         public string CryptoModelName { get; set; } // Название криптовалюты для связи с CryptoModel
         public DateTime SearchTime { get; set; } // Время поиска
 
-        // Связи с другими моделями
-        [ForeignKey("UserId")]
-        public virtual UserModel User { get; set; }
-
-        [ForeignKey("CryptoModelName")]
-        public virtual CryptoModel Crypto { get; set; }
-
-
+    public virtual UserModel User { get; set; }
+    public virtual CryptoModel Crypto { get; set; }
 
        public SearchHistoryModel()
        {

@@ -1,158 +1,120 @@
 
+body {
+    background: linear-gradient(to right, #bdc3c7, #2c3e50); /* Градиент от светло-серого к темно-синему */
+    color: #f5f5f5; /* Светлый цвет текста для контраста с темным фоном */
+}
 
- Собранные стили для этой страницы, подогнанные под предыдущие 
+/* Подсветка текста при поиске */
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+    display: inline; /* Добавьте это, чтобы span вел себя как текст, а не как блочный элемент */
+}
 
-.main-container {
-    margin: 20px auto;
-    max-width: 1000px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+@keyframes flashUpdate {
+    from {
+        background-color: #ffff8d;
+    }
+
+    to {
+        background-color: transparent;
+    }
+}
+
+.updated-row-animation {
+    animation: flashUpdate 1s forwards;
 }
 
 
 
-.buttons-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    padding: 0 20px;
+.move-animation {
+    transition: transform 5s ease;
 }
 
-.action-button {
-    background-color: #008CBA;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+
+
+
+
+
+
+body {
+    /* Градиент от нежно-голубого к нежно-серому */
+    background: linear-gradient(to right, #dae2f8, #d6d6d6);
+    color: #333; /* Умеренно темный цвет текста для хорошего контраста */
+}
+
+/* Стили для элементов таблиц, форм и других контейнеров, которые должны оставаться видимыми на фоне */
+.table, .form-control, .button, .card {
+    background: #ffffff; /* Белый фон для элементов внутри тела */
+    color: #333; /* Согласованный цвет текста */
     font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 8px;
+    font-weight: bold;
 }
 
-.update-button:hover {
-    background-color: #005f5f;
-}
+/* Ссылки и кнопки с соответствующими цветами для лучшего внешнего вида */
+a, .custom-link {
 
-.delete-button {
-    background-color: #f44336;
-}
-
-    .delete-button:hover {
-        background-color: #da190b;
-    }
-
-.subscription-form {
-    display: none;
-    background-color: #f9f9f9;
-    padding: 20px;
-    margin-top: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.crypto-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    text-align: left;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-input[type=radio] {
-    margin: 0;
-    padding: 0;
-    width: 20px;
-    height: 20px;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
- Форма поиска 
-.search-input-group {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-}
-
-.search-input {
-    flex: 3;
-    padding: 10px 15px;
-    font-size: 18px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-.search-button {
-    flex: 1;
-    padding: 10px 15px;
-    font-size: 18px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-
- Стили для списка подсказок 
-.suggestions {
-    display: none;  Скрываем по умолчанию 
-    max-width: 300px;  Максимальная ширина 
-    border: 1px solid #ccc;  Граница 
-    border-radius: 4px;  Скругленные углы 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  Тень 
-    overflow-y: auto;  Прокрутка, если много элементов 
-    max-height: 200px;  Максимальная высота 
-}
-
-    .suggestions.active {
-        display: block;  Показываем, если есть активные подсказки 
-    }
-
-     Стили для элементов в списке подсказок 
-    .suggestions div {
-        padding: 8px;  Отступы 
-        cursor: pointer;  Курсор рука 
-        border-bottom: 1px solid #eee;  Граница снизу 
-    }
-
-        .suggestions div:last-child {
-            border-bottom: none;  Убираем границу у последнего элемента 
-        }
-
-        .suggestions div:hover {
-            background-color: #f5f5f5;  Фон при наведении 
-        }
-
-
-
-
-
-.custom-link {
-    color: blue;
     text-decoration: underline;
     cursor: pointer;
+    color: #007bff; /* Стандартный bootstrap синий для ссылок */
 }
 
-    .custom-link:hover {
+    a:hover, .custom-link:hover {
+        color: #0056b3; /* Темно-синий цвет для состояния при наведении */
         text-decoration: none;
     }
 
-
+/* Подсветка при поиске */
 .highlight {
-    background-color: yellow;
+    background-color: #ffff00; /* Ярко-желтый для выделения текста */
+    color: #333; /* Снова умеренно темный цвет текста */
+}
+
+/* Стилизация кнопок для лучшего внешнего вида */
+.btn-primary {
+    background-color: #007bff; /* Синий фон для первичной кнопки */
+    border-color: #007bff; /* Граница сопоставляется с фоном */
+    color: #fff; /* Белый текст для контраста */
+    font-size: 18px;
+    font-weight: bold;
+}
+
+    .btn-primary:hover {
+        background-color: #0069d9; /* Темно-синий при наведении */
+        border-color: #0062cc; /* Соответствующий цвет границы */
+    }
+
+.btn-danger {
+    background-color: #dc3545; /* Красный фон для опасной кнопки */
+    border-color: #dc3545; /* Согласованный цвет границы */
+    color: #fff; /* Белый текст */
+    font-size: 18px;
+    font-weight: bold;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333; /* Более темный красный при наведении */
+        border-color: #bd2130; /* Соответствующий цвет границы */
+    }
+
+.btn-outline-secondary {
+    background-color: slategray !important;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+
+/* Удаление фокусного свечения для всех кнопок и устранение контура при активации */
+button:focus, button:active {
+    outline: none !important; /* Использование !important для переопределения всех других CSS правил */
+    box-shadow: none !important; /* Также убираем тень, если она была, с использованием !important */
+    border: 1px solid transparent; /* Прозрачная граница для элементов в состоянии фокуса/активации */
+}
+
+/* Улучшение визуального отклика для пользователя при активации */
+button:active {
+    transform: scale(0.98); /* Небольшое уменьшение размера кнопки при ее нажатии для имитации нажатия */
 }

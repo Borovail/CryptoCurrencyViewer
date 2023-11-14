@@ -1,79 +1,121 @@
 ﻿// Объявление переменных и констант
 const pathToDeleteFunction = "/Home/DeleteSelectedCrypto";
 const pathToUpdateFunction = "/Home/UpdateSelectedCrypto";
-let selectedCrypto;
-let data;
+let selectedCrypto, toket;
+var responseCrypto;
 
 // Обработчик события загрузки DOM
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded",async function () {
 
     // Удаление криптовалюты
     const deleteButton = document.getElementById("delete-button");
     deleteButton.addEventListener("click", async function () {
-        if (await appealToSharpScript(pathToDeleteFunction)) {
-            deleteCrypto();
-        }
+        if (!checkCondotions()) return;
+
+        Swal.fire({
+            title: "Are you want to delete "+selectedCrypto+" from favorites?",
+            showDenyButton: true,
+            confirmButtonText: "Yes",
+            denyButtonText: `Don't`
+        }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                if (await appealToSharpScript(pathToDeleteFunction)) {
+
+                deleteCrypto();
+                Swal.fire("Deleted!", "", "success");
+
+                }
+            } 
+        });
+
+
+
     });
+
+
+
 
     // Обновление криптовалюты
     const updateButton = document.getElementById("update-button");
     updateButton.addEventListener("click", async function () {
+        if (!checkCondotions()) return;
         if (await appealToSharpScript(pathToUpdateFunction)) {
+
+
             updateCrypto();
+
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Crypto succesfully updated",
+                showConfirmButton: false,
+                timer: 1500
+            });
+
         }
+       
+     
+      
     });
 });
 
 
-
-
-async function appealToSharpScript(funcName) {
+function checkCondotions() {
     const radio = document.querySelector('input[name="selectedCrypto"]:checked');
-    var token = getToket();
+     token = getToket();
 
     if (!radio) {
-        alert("Please select a cryptocurrency first.");
+        Swal.fire({
+            title: "Please select a cryptocurrency first.",
+            position: "top",
+            timer:2000
+        });
         return false;
     }
 
     if (!token) {
-        alert("You are not logged in or your session has expired.");
-        return;
+        return false;
     }
 
-    const selectedCrypto = radio.value;
+    selectedCrypto = radio.value;
+    return true;
+}
+
+async function appealToSharpScript(funcName) {
+
 
     try {
-        // Вызываем fetchWithAuth и обрабатываем ответ
+        // Вызываем fetch и обрабатываем ответ
         const response = await fetch(funcName, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify({ selectedCrypto: selectedCrypto })
+            body: JSON.stringify(selectedCrypto)
         });
 
-        // Поскольку fetchWithAuth возвращает результат response.json(), 
-        // мы можем сразу же использовать переменную data
-        if (response.success) {
-            // Успех
+        if (response.ok) { // Проверяем, что ответ успешный
+            responseCrypto = await response.json();
             return true;
         } else {
-            // Ошибка связанная с логикой на сервере
-            alert("Something went wrong. Perhaps you forgot to save the selected cryptocurrency.");
+            // Обработка HTTP-ошибок, например, когда response.ok === false
+            const errorText = await response.text();
             return false;
         }
     } catch (error) {
         // Ошибка связанная с сетевым запросом или обработкой данных
         alert('An error occurred: ' + error.message); // Убедитесь, что используете error.message
-        return false;
+        return false; // Явно возвращаем false в случае ошибки
     }
 }
 
 function deleteCrypto() {
     const element = document.getElementById(selectedCrypto);
     if (element) element.remove();
+
+
 }
 
 function updateCrypto() {
@@ -85,10 +127,15 @@ function updateCrypto() {
     const priceElement = row.querySelector(".price");
     const marketCapElement = row.querySelector(".marketCap");
 
-    if (priceElement) priceElement.innerText = data.updatedCrypto.currentPrice+" USD";
-    if (marketCapElement) marketCapElement.innerText = data.updatedCrypto.marketCap +" USD";
-}
+    if (priceElement) priceElement.innerText = responseCrypto.currentPrice + " USD";
+    if (marketCapElement) marketCapElement.innerText = responseCrypto.marketCap + " USD";
 
+    row.classList.add('updated-row-animation');
+    // Удалите класс анимации после ее выполнения, если он не удаляется автоматически
+    row.addEventListener('animationend', () => {
+        row.classList.remove('updated-row-animation');
+    });
+}
 
 
 
@@ -109,34 +156,46 @@ document.addEventListener("DOMContentLoaded", function () {
     let lastQuery = "";
 
     searchInput.addEventListener("input", function () {
-        const query = this.value.trim().toLowerCase();
+        let debounceTimeout = null;
+        const debounceDelay = 300; // Задержка в мс
 
-        if (query === lastQuery) return;
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
 
-        lastQuery = query;
+                const query = this.value.trim().toLowerCase();
 
-        // Очистка и восстановление таблицы
-        rows.forEach(row => tbody.appendChild(row));
+                if (query === lastQuery) return;
 
-        // Фильтрация и подсветка строк
-        rows.forEach(row => {
-            const nameCell = row.querySelector(".crypto-name");
-            const name = nameCell.textContent.trim().toLowerCase();
-            if (name.includes(query)) {
-                nameCell.innerHTML = highlightText(name, query); // подсветить текст
-            } else {
-                nameCell.innerHTML = name;
-            }
-        });
+                lastQuery = query;
 
-        // Перемещение совпадающих строк вверх
-        const matchingRows = rows.filter(row => {
-            const nameCell = row.querySelector(".crypto-name");
-            const name = nameCell.textContent.trim().toLowerCase();
-            return name.includes(query);
-        });
+                // Очистка и восстановление таблицы
+                rows.forEach(row => tbody.appendChild(row));
 
-        matchingRows.forEach(row => tbody.insertBefore(row, tbody.firstChild));
+                // Фильтрация и подсветка строк
+                rows.forEach(row => {
+                    const nameCell = row.querySelector(".crypto-name");
+                    const name = nameCell.textContent.trim().toLowerCase();
+                    if (name.includes(query)) {
+                        nameCell.innerHTML = highlightText(name, query); // подсветить текст
+                    } else {
+                        nameCell.innerHTML = name;
+                    }
+
+                });
+
+                // Перемещение совпадающих строк вверх
+                const matchingRows = rows.filter(row => {
+                    const nameCell = row.querySelector(".crypto-name");
+                    const name = nameCell.textContent.trim().toLowerCase();
+                    return name.includes(query);
+                });
+
+                matchingRows.forEach(row => tbody.insertBefore(row, tbody.firstChild));
+
+               
+
+            }, debounceDelay);
+    
     });
 
     searchButton.addEventListener("click", function (event) {
@@ -150,11 +209,16 @@ document.addEventListener("DOMContentLoaded", function () {
             const name = nameCell.textContent.trim().toLowerCase();
             row.style.display = name.includes(query) ? "" : "none";
         });
+
     });
 
+
     function highlightText(text, query) {
-        const regex = new RegExp(`(${query})`, "gi");
-        return text.replace(regex, "<span class='highlight'>$1</span>");
+        if (query.length > 0) {
+            const regex = new RegExp(`(${query})`, "gi");
+            return text.replace(regex, "<span class='highlight'>$1</span>");
+        }
+        return text; // Возвращайте исходный текст, если запрос пустой
     }
 
     rows.forEach(row => {
@@ -163,7 +227,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const name = nameCell.textContent.trim();
             searchInput.value = name;
         });
+
     });
+
+
+
+
 });
 
 
@@ -173,10 +242,16 @@ function getToket() {
 
     // Убедитесь, что токен существует, иначе обработайте отсутствие авторизации
     if (!token) {
-        alert("You are not logged in or your session has expired.");
+        Swal.fire({
+            title: "You are not logged in or your session has expired.",
+            position: "top"
+        });
         return null; // Возвращаем null или throw new Error("No token available.");
     }
 
     return token;
 }
+
+
+
 

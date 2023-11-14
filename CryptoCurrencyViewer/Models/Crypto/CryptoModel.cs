@@ -9,6 +9,11 @@ public class CryptoModel : IHasName
     [Key]
     public string Name { get; set; }
 
+    [ForeignKey("UserId")]
+    public int UserId { get; set; }
+
+
+    public virtual UserModel User { get; set; }
     // Связь "один к одному" с DefaultCryptoModel и ExtendedCryptoModel
     public virtual DefaultCryptoModel DefaultCryptoModel { get; set; }
     public virtual ExtendedCryptoModel ExtendedCryptoModel { get; set; }
@@ -30,7 +35,7 @@ public class CryptoModel : IHasName
 
 // Обратите внимание, что я удалил атрибут [Key] с DefaultCryptoModel и ExtendedCryptoModel,
 // так как они будут связаны с CryptoModel через внешний ключ.
-public class DefaultCryptoModel
+public class DefaultCryptoModel : IHasForeignKeyForName
 {
 
     [Key] // Это PK для DefaultCryptoModel
@@ -38,9 +43,6 @@ public class DefaultCryptoModel
 
     [ForeignKey("CryptoModel")] // Это FK, связывающий с CryptoModel
     public string CryptoModelName { get; set; }
-
-    [ForeignKey("UserId")]
-    public int UserId { get; set; } // ID пользователя, который добавил криптовалюту в избранное
 
 
     public string Symbol { get; set; }
@@ -52,9 +54,6 @@ public class DefaultCryptoModel
                                          
    
 
-
-
-    public virtual UserModel User { get; set; }
     public virtual CryptoModel CryptoModel { get; set; }
 
     public DefaultCryptoModel(string symbol, double? currentPrice, string imageUrl, double? marketCap)

@@ -4,6 +4,7 @@ using CryptoCurrencyViewer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoCurrencyViewer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114120053_testChanges")]
+    partial class testChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -314,7 +317,7 @@ namespace CryptoCurrencyViewer.Migrations
             modelBuilder.Entity("CryptoCurrencyViewer.Models.Crypto.CryptoModel", b =>
                 {
                     b.HasOne("CryptoCurrencyViewer.Models.UserModel", "User")
-                        .WithMany()
+                        .WithMany("Cryptos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -430,6 +433,8 @@ namespace CryptoCurrencyViewer.Migrations
 
             modelBuilder.Entity("CryptoCurrencyViewer.Models.UserModel", b =>
                 {
+                    b.Navigation("Cryptos");
+
                     b.Navigation("ExchangeHistory");
 
                     b.Navigation("SearchHistory");
