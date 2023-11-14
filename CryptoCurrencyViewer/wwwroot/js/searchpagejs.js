@@ -101,7 +101,7 @@ document.getElementById("searchButton").addEventListener("click", async function
 
 
 
-async function markFavorite() {
+async function markFavorite(currentCrypto) {
     var token = localStorage.getItem("jwtToken");
 
     if (!token) {
@@ -138,6 +138,9 @@ async function markFavorite() {
 
 
 function openExchangePage(cryptoName) {
+
+    cryptoName = currentCrypto.name;
+
     window.location.href = `/Exchanges/ExchangeFrom?cryptoName=${cryptoName}`;
 }
 

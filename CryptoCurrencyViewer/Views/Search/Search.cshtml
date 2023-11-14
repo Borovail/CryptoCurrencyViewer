@@ -14,69 +14,91 @@
 </head>
 <body>
 
+
+
     <div class="container my-5">
         <!-- Search Form -->
-        <div class="row mb-4">
-            <div class="col-12">
+        <div class="row mb-4 justify-content-center">
+            <div class="col-lg-8">
                 <div class="input-group input-group-lg">
-                    <input type="text" class="form-control" name="cryptoId" id="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required>
-                    <button class="btn btn-primary" type="button" id="searchButton">
+                    <input type="text" class="form-control bg-secondary text-white" name="cryptoId" id="cryptoId" placeholder="Enter cryptocurrency ID or symbol" required>
+                    <button class="btn btn-secondary ms-2" type="button" id="searchButton">
                         <i class="fas fa-search"></i> Search
                     </button>
-
-                    <button class="btn btn-primary" type="button" id="markFavouriteButton" onclick="markFavorite('@Model.')">
-                        <i class="fas"></i> Mark As Favourite
-                    </button>
+                   
                 </div>
             </div>
         </div>
 
         <!-- Crypto Information Holder -->
-        <div class="card mb-5 shadow">
-            <div class="card-header bg-primary text-white">
+        <div class="card mb-5 shadow bg-secondary">
+            <div class="card-header text-center">
                 <h3 class="mb-0">Crypto Information</h3>
             </div>
-            <div class="card-body bg-light">
+            <div class="card-body">
                 <div class="row">
                     <!-- Crypto icon -->
-                    <div class="col-md-3 d-flex align-items-center justify-content-center">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center mb-3">
                         <img src="@Model.DefaultCryptoModel.ImageUrl" alt="Crypto Icon" class="img-fluid rounded-circle" id="cryptoIcon">
                     </div>
+
                     <!-- Crypto info -->
-                    <div class="col-md-9">
-                        <h4 id="cryptoName">@Model.Name (@Model.DefaultCryptoModel.Symbol)</h4>
+                    <div class="col-md-8 text-center">
+                        <h1 id="cryptoName">@Model.Name (@Model.DefaultCryptoModel.Symbol)</h1>
                         <p id="cryptoCurrentPrice">Current Price: @Model.DefaultCryptoModel.CurrentPrice USD</p>
-                        <div><strong>Market Info:</strong></div>
-                        <ul class="list-unstyled">
-                            <li id="cryptoSymbol" class="crypto-symbol">Symbol: @Model.DefaultCryptoModel.Symbol</li>
-                            <li id="cryptoMarketCap">Market Cap: @Model.DefaultCryptoModel.MarketCap USD</li>
-                            <li id="cryptoVolume24h">Volume (24h): @Model.ExtendedCryptoModel.Volume24h USD</li>
-                            <li id="cryptoPriceChange24h">Price Change (24h): @Model.ExtendedCryptoModel.PriceChangePercentage24h%</li>
-                            <li id="cryptoHigh24h">High (24h):  @Model.ExtendedCryptoModel.High24h</li>
-                            <li id="cryptoLow24h">Low (24h):  @Model.ExtendedCryptoModel.Low24h</li>
-                            <li id="cryptoPriceChange7d">Price Change (7d):  @Model.ExtendedCryptoModel.PriceChangePercentage7d%</li>
 
-                        </ul>
-                        <div><strong>Supply Info:</strong></div>
-                        <ul class="list-unstyled">
-                            <li id="cryptoTotalSupply">Total Supply: @Model.ExtendedCryptoModel.TotalSupply</li>
-                            <li id="cryptoMaxSupply">Max Supply: @Model.ExtendedCryptoModel.MaxSupply</li>
-                        </ul>
+                        <div class="row">
+                            <!-- Market Info Column -->
+                            <div class="col-md-6">
+                                <div id="title"><strong>Market Info:</strong></div>
+                                <ul class="list-unstyled">
+                                    <li id="cryptoSymbol" class="crypto-symbol">Symbol: @Model.DefaultCryptoModel.Symbol</li>
+                                    <li id="cryptoMarketCap">Market Cap: @Model.DefaultCryptoModel.MarketCap USD</li>
+                                    <li id="cryptoVolume24h">Volume (24h): @Model.ExtendedCryptoModel.Volume24h USD</li>
+                                    <li id="cryptoPriceChange24h">Price Change (24h): @Model.ExtendedCryptoModel.PriceChangePercentage24h%</li>
+                                    <li id="cryptoHigh24h">High (24h):  @Model.ExtendedCryptoModel.High24h</li>
+                                    <li id="cryptoLow24h">Low (24h):  @Model.ExtendedCryptoModel.Low24h</li>
+                                    <li id="cryptoPriceChange7d">Price Change (7d):  @Model.ExtendedCryptoModel.PriceChangePercentage7d%</li>
+
+                                </ul>
+                            </div>
+
+                            <!-- Supply Info Column -->
+                            <div class="col-md-6">
+                                <div id="title"><strong>Supply Info:</strong></div>
+                                <ul class="list-unstyled">
+                                    <li id="cryptoTotalSupply">Total Supply: @Model.ExtendedCryptoModel.TotalSupply</li>
+                                    <li id="cryptoMaxSupply">Max Supply: @Model.ExtendedCryptoModel.MaxSupply</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Buttons aligned to the right -->
+                        <div class="row mt-3">
+                            <div class="col text-end">
+                                <button class="btn btn-secondary  fw-bold" type="button" id="markFavouriteButton" onclick="markFavorite('@Model.')">
+                                    <i class="fas"></i> Mark As Favourite
+                                </button>
+                                <button class="btn btn-light  fw-bold" type="button" id="tradePairsBtn" onclick="openExchangePage('@Model.Name')">
+                                    <i class="fas"></i> See Trade Pairs
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
-
-                    <button class="btn btn-primary" type="button" id="tradePairsBtn" onclick="openExchangePage('@Model.Name')">
-                        <i class="fas"></i> See Trade Pairs
-                    </button>
                 </div>
             </div>
         </div>
 
+
+
         <!-- Crypto History Holder -->
-        <div class="card border-primary">
-            <div class="card-header bg-primary text-white">
+        <div class="card border-primary bg-secondary">
+            <div class="card-header text-center">
                 <h3 class="mb-0">Search History</h3>
             </div>
             <ul class="list-group list-group-flush" id="search-history">
+                <!-- ... Ваша история поиска ... -->
             </ul>
         </div>
     </div>
